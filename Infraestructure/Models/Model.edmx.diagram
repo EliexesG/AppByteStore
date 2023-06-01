@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6248fcf3788c48ecacde2d9752ce00b8" Name="Diagram1">
+      <Diagram DiagramId="8a1806feca8f4ca4b97867d34d718ffb" Name="Diagram1">
         <EntityTypeShape EntityType="ByteStoreBDModel.Canton" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
         <EntityTypeShape EntityType="ByteStoreBDModel.Categoria" Width="1.5" PointX="6" PointY="5.625" IsExpanded="true" />
         <EntityTypeShape EntityType="ByteStoreBDModel.Direccion" Width="1.5" PointX="5.25" PointY="8.125" IsExpanded="true" />
