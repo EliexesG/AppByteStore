@@ -4,47 +4,43 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8a1806feca8f4ca4b97867d34d718ffb" Name="Diagram1">
-        <EntityTypeShape EntityType="ByteStoreBDModel.Canton" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.Categoria" Width="1.5" PointX="6" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.Direccion" Width="1.5" PointX="5.25" PointY="8.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.Distrito" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.Evaluacion" Width="1.5" PointX="5.25" PointY="12.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.FacturaDetalle" Width="1.5" PointX="13.5" PointY="9.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.FacturaEncabezado" Width="1.5" PointX="8.25" PointY="10.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.FotoProducto" Width="1.5" PointX="10.5" PointY="7.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.Mensaje" Width="1.5" PointX="5.25" PointY="18.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.MetodoPago" Width="1.5" PointX="5.25" PointY="15.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.Pedido" Width="1.5" PointX="10.5" PointY="10.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.Producto" Width="1.5" PointX="8.25" PointY="6.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.Provincia" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.Rol" Width="1.5" PointX="0.75" PointY="11.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.Telefono" Width="1.5" PointX="5.25" PointY="28.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.TipoPago" Width="1.5" PointX="3" PointY="15.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ByteStoreBDModel.Usuario" Width="1.5" PointX="3" PointY="10.125" IsExpanded="true" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Canton__IdProvin__403A8C7D" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Direccion__IdCan__47DBAE45" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Distrito__IdCant__440B1D61" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Producto__IdCate__534D60F1" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Direccion__IdDis__48CFD27E" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Direccion__IdPro__46E78A0C" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Direccion__IdUsu__74AE54BC" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Pedido__IdDirecc__03F0984C" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Distrito__IdProv__4316F928" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Evaluacio__IdUsu__693CA210" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__FacturaDe__IdFac__619B8048" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__FacturaDe__IdPro__628FA481" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__FacturaEn__IdMet__5EBF139D" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__FacturaEn__IdUsu__5DCAEF64" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Pedido__IdFactur__02FC7413" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__FotoProdu__IdPro__571DF1D5" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Mensaje__IdMensa__5AEE82B9" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Mensaje__IdUsuar__59FA5E80" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__MetodoPag__IdTip__4E88ABD4" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__MetodoPag__IdUsu__4D94879B" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Producto__IdUsua__5441852A" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Usuario__IdRol__38996AB5" ManuallyRouted="false" />
-        <AssociationConnector Association="ByteStoreBDModel.FK__Telefono__IdUsua__3B75D760" ManuallyRouted="false" />
+      <Diagram DiagramId="897ecba1ebff481bbb76eabcd0b2966c" Name="Diagram1">
+        <EntityTypeShape EntityType="ByteStoreBDModel.Categoria" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.CompraDetalle" Width="1.5" PointX="10.75" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.CompraEncabezado" Width="1.5" PointX="7.5" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.Direccion" Width="1.5" PointX="5.25" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.Evaluacion" Width="1.5" PointX="9.75" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.FotoProducto" Width="1.5" PointX="7.5" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.MetodoPago" Width="1.5" PointX="5.25" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.Pedido" Width="1.5" PointX="9.75" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.Pregunta" Width="1.5" PointX="8.25" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.Producto" Width="1.5" PointX="5.25" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.Respuesta" Width="1.5" PointX="10.5" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.Rol" Width="1.5" PointX="0.75" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.Telefono" Width="1.5" PointX="5.25" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.TipoPago" Width="1.5" PointX="3" PointY="17.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ByteStoreBDModel.Usuario" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__Producto__IdCate__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__CompraDet__IdCom__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__CompraDet__IdPro__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__CompraEnc__IdDir__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__CompraEnc__IdMet__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__CompraEnc__IdUsu__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__Evaluacio__IdCom__5535A963" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__Pedido__IdCompra__5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__Direccion__IdUsu__2F10007B" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__Evaluacio__IdEva__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__Evaluacio__IdEva__5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__FotoProdu__IdPro__3D5E1FD2" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__MetodoPag__IdTip__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__MetodoPag__IdUsu__33D4B598" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__Pregunta__IdProd__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__Pregunta__IdUsua__403A8C7D" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__Respuesta__IdPre__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__Producto__IdUsua__3A81B327" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__Respuesta__IdUsu__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.FK__Telefono__IdUsua__2C3393D0" ManuallyRouted="false" />
+        <AssociationConnector Association="ByteStoreBDModel.RolUsuario" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -11,16 +11,16 @@ namespace Infraestructure.Models
 {
     using System;
     using System.Collections.Generic;
-    
-    public partial class FacturaDetalle
+    using System.ComponentModel.DataAnnotations;
+
+    [MetadataType(typeof(RespuestaMetadata))]
+    public partial class Respuesta
     {
-        public int IdFacturaEncabezado { get; set; }
-        public int IdProducto { get; set; }
-        public Nullable<int> Cantidad { get; set; }
-        public Nullable<double> Precio { get; set; }
-        public Nullable<int> EstadoEntrega { get; set; }
+        public int IdRespuesta { get; set; }
+        public Nullable<System.DateTime> FechaHora { get; set; }
+        public string Respuesta1 { get; set; }
     
-        public virtual FacturaEncabezado FacturaEncabezado { get; set; }
-        public virtual Producto Producto { get; set; }
+        public virtual Pregunta Pregunta { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

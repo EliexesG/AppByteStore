@@ -13,13 +13,16 @@ namespace Infraestructure.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    [MetadataType(typeof(TelefonoMetadata))]
-    public partial class Telefono
+    [MetadataType(typeof(CompraDetalleMetadata))]
+    public partial class CompraDetalle
     {
-        public int IdTelefono { get; set; }
-        public string Numero { get; set; }
-        public Nullable<bool> Tipo { get; set; }
+        public int IdCompraEncabezado { get; set; }
+        public int IdProducto { get; set; }
+        public Nullable<int> Cantidad { get; set; }
+        public Nullable<double> Precio { get; set; }
+        public Nullable<bool> EstadoEntrega { get; set; }
     
-        public virtual Usuario Usuario { get; set; }
+        public virtual CompraEncabezado CompraEncabezado { get; set; }
+        public virtual Producto Producto { get; set; }
     }
 }

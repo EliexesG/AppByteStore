@@ -11,21 +11,24 @@ namespace Infraestructure.Models
 {
     using System;
     using System.Collections.Generic;
-    
-    public partial class Mensaje
+    using System.ComponentModel.DataAnnotations;
+
+    [MetadataType(typeof(PreguntaMetadata))]
+    public partial class Pregunta
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Mensaje()
+        public Pregunta()
         {
-            this.Mensaje11 = new HashSet<Mensaje>();
+            this.Respuesta = new HashSet<Respuesta>();
         }
     
-        public int IdMensaje { get; set; }
-        public string Mensaje1 { get; set; }
+        public int IdPregunta { get; set; }
+        public Nullable<System.DateTime> FechaHora { get; set; }
+        public string Pregunta1 { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Mensaje> Mensaje11 { get; set; }
-        public virtual Mensaje Mensaje2 { get; set; }
+        public virtual Producto Producto { get; set; }
         public virtual Usuario Usuario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Respuesta> Respuesta { get; set; }
     }
 }

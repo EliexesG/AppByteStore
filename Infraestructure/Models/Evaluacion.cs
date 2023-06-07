@@ -11,13 +11,17 @@ namespace Infraestructure.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
+    [MetadataType(typeof(EvaluacionMetadata))]
     public partial class Evaluacion
     {
         public int IdEvaluacion { get; set; }
-        public Nullable<int> Evaluacion1 { get; set; }
+        public Nullable<int> Escala { get; set; }
         public string Comentario { get; set; }
     
+        public virtual CompraEncabezado CompraEncabezado { get; set; }
         public virtual Usuario Usuario { get; set; }
+        public virtual Usuario Usuario1 { get; set; }
     }
 }

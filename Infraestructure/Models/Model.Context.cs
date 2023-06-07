@@ -25,19 +25,17 @@ namespace Infraestructure.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Canton> Canton { get; set; }
         public virtual DbSet<Categoria> Categoria { get; set; }
+        public virtual DbSet<CompraDetalle> CompraDetalle { get; set; }
+        public virtual DbSet<CompraEncabezado> CompraEncabezado { get; set; }
         public virtual DbSet<Direccion> Direccion { get; set; }
-        public virtual DbSet<Distrito> Distrito { get; set; }
         public virtual DbSet<Evaluacion> Evaluacion { get; set; }
-        public virtual DbSet<FacturaDetalle> FacturaDetalle { get; set; }
-        public virtual DbSet<FacturaEncabezado> FacturaEncabezado { get; set; }
         public virtual DbSet<FotoProducto> FotoProducto { get; set; }
-        public virtual DbSet<Mensaje> Mensaje { get; set; }
         public virtual DbSet<MetodoPago> MetodoPago { get; set; }
         public virtual DbSet<Pedido> Pedido { get; set; }
+        public virtual DbSet<Pregunta> Pregunta { get; set; }
         public virtual DbSet<Producto> Producto { get; set; }
-        public virtual DbSet<Provincia> Provincia { get; set; }
+        public virtual DbSet<Respuesta> Respuesta { get; set; }
         public virtual DbSet<Rol> Rol { get; set; }
         public virtual DbSet<Telefono> Telefono { get; set; }
         public virtual DbSet<TipoPago> TipoPago { get; set; }

@@ -11,24 +11,27 @@ namespace Infraestructure.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
+    [MetadataType(typeof(DireccionMetadata))]
     public partial class Direccion
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Direccion()
         {
-            this.Pedido = new HashSet<Pedido>();
+            this.CompraEncabezado = new HashSet<CompraEncabezado>();
         }
     
         public int IdDireccion { get; set; }
+        public Nullable<int> Provincia { get; set; }
+        public Nullable<int> Canton { get; set; }
+        public Nullable<int> Distrito { get; set; }
         public string Sennas { get; set; }
         public string Telefono { get; set; }
+        public Nullable<bool> Tipo { get; set; }
     
-        public virtual Canton Canton { get; set; }
-        public virtual Distrito Distrito { get; set; }
-        public virtual Provincia Provincia { get; set; }
-        public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Pedido> Pedido { get; set; }
+        public virtual ICollection<CompraEncabezado> CompraEncabezado { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

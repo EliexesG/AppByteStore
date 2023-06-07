@@ -11,13 +11,14 @@ namespace Infraestructure.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
+    [MetadataType(typeof(PedidoMetadata))]
     public partial class Pedido
     {
-        public int IdFacturaEncabezado { get; set; }
+        public int IdCompraEncabezado { get; set; }
         public Nullable<int> EstadoEntrega { get; set; }
     
-        public virtual Direccion Direccion { get; set; }
-        public virtual FacturaEncabezado FacturaEncabezado { get; set; }
+        public virtual CompraEncabezado CompraEncabezado { get; set; }
     }
 }

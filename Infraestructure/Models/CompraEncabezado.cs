@@ -11,23 +11,31 @@ namespace Infraestructure.Models
 {
     using System;
     using System.Collections.Generic;
-    
-    public partial class Canton
+    using System.ComponentModel.DataAnnotations;
+
+    [MetadataType(typeof(CompraEncabezadoMetadata))]
+    public partial class CompraEncabezado
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Canton()
+        public CompraEncabezado()
         {
-            this.Direccion = new HashSet<Direccion>();
-            this.Distrito = new HashSet<Distrito>();
+            this.CompraDetalle = new HashSet<CompraDetalle>();
+            this.Evaluacion = new HashSet<Evaluacion>();
         }
     
-        public int IdCanton { get; set; }
-        public string Descripcion { get; set; }
+        public int IdCompraEncabezado { get; set; }
+        public Nullable<System.DateTime> FechaHora { get; set; }
+        public Nullable<double> SubTotal { get; set; }
+        public Nullable<double> Impuesto { get; set; }
+        public Nullable<double> Total { get; set; }
     
-        public virtual Provincia Provincia { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Direccion> Direccion { get; set; }
+        public virtual ICollection<CompraDetalle> CompraDetalle { get; set; }
+        public virtual Direccion Direccion { get; set; }
+        public virtual MetodoPago MetodoPago { get; set; }
+        public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Distrito> Distrito { get; set; }
+        public virtual ICollection<Evaluacion> Evaluacion { get; set; }
+        public virtual Pedido Pedido { get; set; }
     }
 }

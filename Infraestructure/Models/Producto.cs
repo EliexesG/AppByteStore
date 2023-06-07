@@ -11,14 +11,17 @@ namespace Infraestructure.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
+    [MetadataType(typeof(ProductoMetadata))]
     public partial class Producto
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Producto()
         {
-            this.FacturaDetalle = new HashSet<FacturaDetalle>();
+            this.CompraDetalle = new HashSet<CompraDetalle>();
             this.FotoProducto = new HashSet<FotoProducto>();
+            this.Pregunta = new HashSet<Pregunta>();
         }
     
         public int IdProducto { get; set; }
@@ -30,9 +33,11 @@ namespace Infraestructure.Models
     
         public virtual Categoria Categoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FacturaDetalle> FacturaDetalle { get; set; }
+        public virtual ICollection<CompraDetalle> CompraDetalle { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FotoProducto> FotoProducto { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Pregunta> Pregunta { get; set; }
         public virtual Usuario Usuario { get; set; }
     }
 }

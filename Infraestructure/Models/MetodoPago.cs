@@ -11,13 +11,15 @@ namespace Infraestructure.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
+    [MetadataType(typeof(MetodoPagoMetadata))]
     public partial class MetodoPago
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MetodoPago()
         {
-            this.FacturaEncabezado = new HashSet<FacturaEncabezado>();
+            this.CompraEncabezado = new HashSet<CompraEncabezado>();
         }
     
         public int IdMetodoPago { get; set; }
@@ -27,7 +29,7 @@ namespace Infraestructure.Models
         public string Codigo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FacturaEncabezado> FacturaEncabezado { get; set; }
+        public virtual ICollection<CompraEncabezado> CompraEncabezado { get; set; }
         public virtual TipoPago TipoPago { get; set; }
         public virtual Usuario Usuario { get; set; }
     }

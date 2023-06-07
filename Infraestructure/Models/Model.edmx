@@ -5,14 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="ByteStoreBDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Canton">
-          <Key>
-            <PropertyRef Name="IdCanton" />
-          </Key>
-          <Property Name="IdCanton" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdProvincia" Type="int" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
-        </EntityType>
         <EntityType Name="Categoria">
           <Key>
             <PropertyRef Name="IdCategoria" />
@@ -20,60 +12,53 @@
           <Property Name="IdCategoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="CompraDetalle">
+          <Key>
+            <PropertyRef Name="IdCompraEncabezado" />
+            <PropertyRef Name="IdProducto" />
+          </Key>
+          <Property Name="IdCompraEncabezado" Type="int" Nullable="false" />
+          <Property Name="IdProducto" Type="int" Nullable="false" />
+          <Property Name="Cantidad" Type="int" />
+          <Property Name="Precio" Type="float" />
+          <Property Name="EstadoEntrega" Type="bit" />
+        </EntityType>
+        <EntityType Name="CompraEncabezado">
+          <Key>
+            <PropertyRef Name="IdCompraEncabezado" />
+          </Key>
+          <Property Name="IdCompraEncabezado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" />
+          <Property Name="IdMetodoPago" Type="int" />
+          <Property Name="IdDireccion" Type="int" />
+          <Property Name="FechaHora" Type="datetime" />
+          <Property Name="SubTotal" Type="float" />
+          <Property Name="Impuesto" Type="float" />
+          <Property Name="Total" Type="float" />
+        </EntityType>
         <EntityType Name="Direccion">
           <Key>
             <PropertyRef Name="IdDireccion" />
           </Key>
           <Property Name="IdDireccion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdProvincia" Type="int" />
-          <Property Name="IdCanton" Type="int" />
-          <Property Name="IdDistrito" Type="int" />
+          <Property Name="IdUsuario" Type="int" />
+          <Property Name="Provincia" Type="int" />
+          <Property Name="Canton" Type="int" />
+          <Property Name="Distrito" Type="int" />
           <Property Name="Sennas" Type="varchar" MaxLength="100" />
           <Property Name="Telefono" Type="varchar" MaxLength="8" />
-          <Property Name="IdUsuario" Type="int" />
-        </EntityType>
-        <EntityType Name="Distrito">
-          <Key>
-            <PropertyRef Name="IdDistrito" />
-          </Key>
-          <Property Name="IdDistrito" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdProvincia" Type="int" />
-          <Property Name="IdCanton" Type="int" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
-          <Property Name="CodigoPostal" Type="int" />
+          <Property Name="Tipo" Type="bit" />
         </EntityType>
         <EntityType Name="Evaluacion">
           <Key>
             <PropertyRef Name="IdEvaluacion" />
           </Key>
           <Property Name="IdEvaluacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdUsuario" Type="int" />
-          <Property Name="Evaluacion" Type="int" />
+          <Property Name="IdEvaluador" Type="int" />
+          <Property Name="IdEvaluado" Type="int" />
+          <Property Name="IdCompraEncabezado" Type="int" />
+          <Property Name="Escala" Type="int" />
           <Property Name="Comentario" Type="varchar" MaxLength="500" />
-        </EntityType>
-        <EntityType Name="FacturaDetalle">
-          <Key>
-            <PropertyRef Name="IdFacturaEncabezado" />
-            <PropertyRef Name="IdProducto" />
-          </Key>
-          <Property Name="IdFacturaEncabezado" Type="int" Nullable="false" />
-          <Property Name="IdProducto" Type="int" Nullable="false" />
-          <Property Name="Cantidad" Type="int" />
-          <Property Name="Precio" Type="float" />
-          <Property Name="EstadoEntrega" Type="int" />
-        </EntityType>
-        <EntityType Name="FacturaEncabezado">
-          <Key>
-            <PropertyRef Name="IdFacturaEncabezado" />
-          </Key>
-          <Property Name="IdFacturaEncabezado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdUsuario" Type="int" />
-          <Property Name="IdMetodoPago" Type="int" />
-          <Property Name="FechaHora" Type="datetime" />
-          <Property Name="SubTotal" Type="float" />
-          <Property Name="Impuesto" Type="float" />
-          <Property Name="Total" Type="float" />
-          <Property Name="Estado" Type="bit" />
         </EntityType>
         <EntityType Name="FotoProducto">
           <Key>
@@ -82,15 +67,6 @@
           <Property Name="IdFotoProducto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdProducto" Type="int" />
           <Property Name="Foto" Type="varbinary(max)" />
-        </EntityType>
-        <EntityType Name="Mensaje">
-          <Key>
-            <PropertyRef Name="IdMensaje" />
-          </Key>
-          <Property Name="IdMensaje" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdUsuario" Type="int" />
-          <Property Name="IdMensajeRespuesta" Type="int" />
-          <Property Name="Mensaje" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="MetodoPago">
           <Key>
@@ -106,11 +82,20 @@
         </EntityType>
         <EntityType Name="Pedido">
           <Key>
-            <PropertyRef Name="IdFacturaEncabezado" />
+            <PropertyRef Name="IdCompraEncabezado" />
           </Key>
-          <Property Name="IdFacturaEncabezado" Type="int" Nullable="false" />
-          <Property Name="IdDireccion" Type="int" />
+          <Property Name="IdCompraEncabezado" Type="int" Nullable="false" />
           <Property Name="EstadoEntrega" Type="int" />
+        </EntityType>
+        <EntityType Name="Pregunta">
+          <Key>
+            <PropertyRef Name="IdPregunta" />
+          </Key>
+          <Property Name="IdPregunta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" />
+          <Property Name="IdProducto" Type="int" />
+          <Property Name="FechaHora" Type="datetime" />
+          <Property Name="Pregunta" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="Producto">
           <Key>
@@ -125,12 +110,15 @@
           <Property Name="Stock" Type="int" />
           <Property Name="Estado" Type="int" />
         </EntityType>
-        <EntityType Name="Provincia">
+        <EntityType Name="Respuesta">
           <Key>
-            <PropertyRef Name="IdProvincia" />
+            <PropertyRef Name="IdRespuesta" />
           </Key>
-          <Property Name="IdProvincia" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="IdRespuesta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" />
+          <Property Name="IdPregunta" Type="int" />
+          <Property Name="FechaHora" Type="datetime" />
+          <Property Name="Respuesta" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="Rol">
           <Key>
@@ -138,6 +126,14 @@
           </Key>
           <Property Name="IdRol" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="RolUsuario">
+          <Key>
+            <PropertyRef Name="IdRol" />
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdRol" Type="int" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Telefono">
           <Key>
@@ -160,7 +156,6 @@
             <PropertyRef Name="IdUsuario" />
           </Key>
           <Property Name="IdUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdRol" Type="int" />
           <Property Name="NombreProveedor" Type="varchar" MaxLength="50" />
           <Property Name="Identificacion" Type="varchar" MaxLength="12" />
           <Property Name="Nombre" Type="varchar" MaxLength="50" />
@@ -171,55 +166,67 @@
           <Property Name="PromedioEvaluaciones" Type="int" />
           <Property Name="Estado" Type="bit" />
         </EntityType>
-        <Association Name="FK__Canton__IdProvin__403A8C7D">
-          <End Role="Provincia" Type="Self.Provincia" Multiplicity="0..1" />
-          <End Role="Canton" Type="Self.Canton" Multiplicity="*" />
+        <Association Name="FK__CompraDet__IdCom__4CA06362">
+          <End Role="CompraEncabezado" Type="Self.CompraEncabezado" Multiplicity="1" />
+          <End Role="CompraDetalle" Type="Self.CompraDetalle" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Provincia">
-              <PropertyRef Name="IdProvincia" />
+            <Principal Role="CompraEncabezado">
+              <PropertyRef Name="IdCompraEncabezado" />
             </Principal>
-            <Dependent Role="Canton">
-              <PropertyRef Name="IdProvincia" />
+            <Dependent Role="CompraDetalle">
+              <PropertyRef Name="IdCompraEncabezado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Direccion__IdCan__47DBAE45">
-          <End Role="Canton" Type="Self.Canton" Multiplicity="0..1" />
-          <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
+        <Association Name="FK__CompraDet__IdPro__4D94879B">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="CompraDetalle" Type="Self.CompraDetalle" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Canton">
-              <PropertyRef Name="IdCanton" />
+            <Principal Role="Producto">
+              <PropertyRef Name="IdProducto" />
             </Principal>
-            <Dependent Role="Direccion">
-              <PropertyRef Name="IdCanton" />
+            <Dependent Role="CompraDetalle">
+              <PropertyRef Name="IdProducto" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Direccion__IdDis__48CFD27E">
-          <End Role="Distrito" Type="Self.Distrito" Multiplicity="0..1" />
-          <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
+        <Association Name="FK__CompraEnc__IdDir__49C3F6B7">
+          <End Role="Direccion" Type="Self.Direccion" Multiplicity="0..1" />
+          <End Role="CompraEncabezado" Type="Self.CompraEncabezado" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Distrito">
-              <PropertyRef Name="IdDistrito" />
+            <Principal Role="Direccion">
+              <PropertyRef Name="IdDireccion" />
             </Principal>
-            <Dependent Role="Direccion">
-              <PropertyRef Name="IdDistrito" />
+            <Dependent Role="CompraEncabezado">
+              <PropertyRef Name="IdDireccion" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Direccion__IdPro__46E78A0C">
-          <End Role="Provincia" Type="Self.Provincia" Multiplicity="0..1" />
-          <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
+        <Association Name="FK__CompraEnc__IdMet__48CFD27E">
+          <End Role="MetodoPago" Type="Self.MetodoPago" Multiplicity="0..1" />
+          <End Role="CompraEncabezado" Type="Self.CompraEncabezado" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Provincia">
-              <PropertyRef Name="IdProvincia" />
+            <Principal Role="MetodoPago">
+              <PropertyRef Name="IdMetodoPago" />
             </Principal>
-            <Dependent Role="Direccion">
-              <PropertyRef Name="IdProvincia" />
+            <Dependent Role="CompraEncabezado">
+              <PropertyRef Name="IdMetodoPago" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Direccion__IdUsu__74AE54BC">
+        <Association Name="FK__CompraEnc__IdUsu__47DBAE45">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="CompraEncabezado" Type="Self.CompraEncabezado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="CompraEncabezado">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Direccion__IdUsu__2F10007B">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
           <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
           <ReferentialConstraint>
@@ -231,31 +238,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distrito__IdCant__440B1D61">
-          <End Role="Canton" Type="Self.Canton" Multiplicity="0..1" />
-          <End Role="Distrito" Type="Self.Distrito" Multiplicity="*" />
+        <Association Name="FK__Evaluacio__IdCom__5535A963">
+          <End Role="CompraEncabezado" Type="Self.CompraEncabezado" Multiplicity="0..1" />
+          <End Role="Evaluacion" Type="Self.Evaluacion" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Canton">
-              <PropertyRef Name="IdCanton" />
+            <Principal Role="CompraEncabezado">
+              <PropertyRef Name="IdCompraEncabezado" />
             </Principal>
-            <Dependent Role="Distrito">
-              <PropertyRef Name="IdCanton" />
+            <Dependent Role="Evaluacion">
+              <PropertyRef Name="IdCompraEncabezado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Distrito__IdProv__4316F928">
-          <End Role="Provincia" Type="Self.Provincia" Multiplicity="0..1" />
-          <End Role="Distrito" Type="Self.Distrito" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Provincia">
-              <PropertyRef Name="IdProvincia" />
-            </Principal>
-            <Dependent Role="Distrito">
-              <PropertyRef Name="IdProvincia" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Evaluacio__IdUsu__693CA210">
+        <Association Name="FK__Evaluacio__IdEva__534D60F1">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
           <End Role="Evaluacion" Type="Self.Evaluacion" Multiplicity="*" />
           <ReferentialConstraint>
@@ -263,59 +258,23 @@
               <PropertyRef Name="IdUsuario" />
             </Principal>
             <Dependent Role="Evaluacion">
-              <PropertyRef Name="IdUsuario" />
+              <PropertyRef Name="IdEvaluador" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FacturaDe__IdFac__619B8048">
-          <End Role="FacturaEncabezado" Type="Self.FacturaEncabezado" Multiplicity="1" />
-          <End Role="FacturaDetalle" Type="Self.FacturaDetalle" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FacturaEncabezado">
-              <PropertyRef Name="IdFacturaEncabezado" />
-            </Principal>
-            <Dependent Role="FacturaDetalle">
-              <PropertyRef Name="IdFacturaEncabezado" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__FacturaDe__IdPro__628FA481">
-          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
-          <End Role="FacturaDetalle" Type="Self.FacturaDetalle" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Producto">
-              <PropertyRef Name="IdProducto" />
-            </Principal>
-            <Dependent Role="FacturaDetalle">
-              <PropertyRef Name="IdProducto" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__FacturaEn__IdMet__5EBF139D">
-          <End Role="MetodoPago" Type="Self.MetodoPago" Multiplicity="0..1" />
-          <End Role="FacturaEncabezado" Type="Self.FacturaEncabezado" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MetodoPago">
-              <PropertyRef Name="IdMetodoPago" />
-            </Principal>
-            <Dependent Role="FacturaEncabezado">
-              <PropertyRef Name="IdMetodoPago" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__FacturaEn__IdUsu__5DCAEF64">
+        <Association Name="FK__Evaluacio__IdEva__5441852A">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
-          <End Role="FacturaEncabezado" Type="Self.FacturaEncabezado" Multiplicity="*" />
+          <End Role="Evaluacion" Type="Self.Evaluacion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Usuario">
               <PropertyRef Name="IdUsuario" />
             </Principal>
-            <Dependent Role="FacturaEncabezado">
-              <PropertyRef Name="IdUsuario" />
+            <Dependent Role="Evaluacion">
+              <PropertyRef Name="IdEvaluado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FotoProdu__IdPro__571DF1D5">
+        <Association Name="FK__FotoProdu__IdPro__3D5E1FD2">
           <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
           <End Role="FotoProducto" Type="Self.FotoProducto" Multiplicity="*" />
           <ReferentialConstraint>
@@ -327,31 +286,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Mensaje__IdMensa__5AEE82B9">
-          <End Role="Mensaje" Type="Self.Mensaje" Multiplicity="0..1" />
-          <End Role="Mensaje1" Type="Self.Mensaje" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Mensaje">
-              <PropertyRef Name="IdMensaje" />
-            </Principal>
-            <Dependent Role="Mensaje1">
-              <PropertyRef Name="IdMensajeRespuesta" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Mensaje__IdUsuar__59FA5E80">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
-          <End Role="Mensaje" Type="Self.Mensaje" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="IdUsuario" />
-            </Principal>
-            <Dependent Role="Mensaje">
-              <PropertyRef Name="IdUsuario" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__MetodoPag__IdTip__4E88ABD4">
+        <Association Name="FK__MetodoPag__IdTip__34C8D9D1">
           <End Role="TipoPago" Type="Self.TipoPago" Multiplicity="0..1" />
           <End Role="MetodoPago" Type="Self.MetodoPago" Multiplicity="*" />
           <ReferentialConstraint>
@@ -363,7 +298,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__MetodoPag__IdUsu__4D94879B">
+        <Association Name="FK__MetodoPag__IdUsu__33D4B598">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
           <End Role="MetodoPago" Type="Self.MetodoPago" Multiplicity="*" />
           <ReferentialConstraint>
@@ -375,31 +310,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Pedido__IdDirecc__03F0984C">
-          <End Role="Direccion" Type="Self.Direccion" Multiplicity="0..1" />
-          <End Role="Pedido" Type="Self.Pedido" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Direccion">
-              <PropertyRef Name="IdDireccion" />
-            </Principal>
-            <Dependent Role="Pedido">
-              <PropertyRef Name="IdDireccion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Pedido__IdFactur__02FC7413">
-          <End Role="FacturaEncabezado" Type="Self.FacturaEncabezado" Multiplicity="1" />
+        <Association Name="FK__Pedido__IdCompra__5070F446">
+          <End Role="CompraEncabezado" Type="Self.CompraEncabezado" Multiplicity="1" />
           <End Role="Pedido" Type="Self.Pedido" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="FacturaEncabezado">
-              <PropertyRef Name="IdFacturaEncabezado" />
+            <Principal Role="CompraEncabezado">
+              <PropertyRef Name="IdCompraEncabezado" />
             </Principal>
             <Dependent Role="Pedido">
-              <PropertyRef Name="IdFacturaEncabezado" />
+              <PropertyRef Name="IdCompraEncabezado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Producto__IdCate__534D60F1">
+        <Association Name="FK__Pregunta__IdProd__412EB0B6">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="IdProducto" />
+            </Principal>
+            <Dependent Role="Pregunta">
+              <PropertyRef Name="IdProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Pregunta__IdUsua__403A8C7D">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Pregunta">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Producto__IdCate__398D8EEE">
           <End Role="Categoria" Type="Self.Categoria" Multiplicity="0..1" />
           <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
           <ReferentialConstraint>
@@ -411,7 +358,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Producto__IdUsua__5441852A">
+        <Association Name="FK__Producto__IdUsua__3A81B327">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
           <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
           <ReferentialConstraint>
@@ -423,7 +370,55 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Telefono__IdUsua__3B75D760">
+        <Association Name="FK__Respuesta__IdPre__44FF419A">
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="0..1" />
+          <End Role="Respuesta" Type="Self.Respuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pregunta">
+              <PropertyRef Name="IdPregunta" />
+            </Principal>
+            <Dependent Role="Respuesta">
+              <PropertyRef Name="IdPregunta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Respuesta__IdUsu__440B1D61">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Respuesta" Type="Self.Respuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Respuesta">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RolUsuari__IdRol__286302EC">
+          <End Role="Rol" Type="Self.Rol" Multiplicity="1" />
+          <End Role="RolUsuario" Type="Self.RolUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="IdRol" />
+            </Principal>
+            <Dependent Role="RolUsuario">
+              <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RolUsuari__IdUsu__29572725">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="RolUsuario" Type="Self.RolUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="RolUsuario">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Telefono__IdUsua__2C3393D0">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
           <End Role="Telefono" Type="Self.Telefono" Multiplicity="*" />
           <ReferentialConstraint>
@@ -435,127 +430,110 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Usuario__IdRol__38996AB5">
-          <End Role="Rol" Type="Self.Rol" Multiplicity="0..1" />
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Rol">
-              <PropertyRef Name="IdRol" />
-            </Principal>
-            <Dependent Role="Usuario">
-              <PropertyRef Name="IdRol" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="ByteStoreBDModelStoreContainer">
-          <EntitySet Name="Canton" EntityType="Self.Canton" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompraDetalle" EntityType="Self.CompraDetalle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompraEncabezado" EntityType="Self.CompraEncabezado" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Direccion" EntityType="Self.Direccion" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Distrito" EntityType="Self.Distrito" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Evaluacion" EntityType="Self.Evaluacion" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="FacturaDetalle" EntityType="Self.FacturaDetalle" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="FacturaEncabezado" EntityType="Self.FacturaEncabezado" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FotoProducto" EntityType="Self.FotoProducto" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Mensaje" EntityType="Self.Mensaje" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MetodoPago" EntityType="Self.MetodoPago" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pedido" EntityType="Self.Pedido" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pregunta" EntityType="Self.Pregunta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Producto" EntityType="Self.Producto" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Provincia" EntityType="Self.Provincia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Respuesta" EntityType="Self.Respuesta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rol" EntityType="Self.Rol" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RolUsuario" EntityType="Self.RolUsuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Telefono" EntityType="Self.Telefono" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TipoPago" EntityType="Self.TipoPago" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Canton__IdProvin__403A8C7D" Association="Self.FK__Canton__IdProvin__403A8C7D">
-            <End Role="Provincia" EntitySet="Provincia" />
-            <End Role="Canton" EntitySet="Canton" />
+          <AssociationSet Name="FK__CompraDet__IdCom__4CA06362" Association="Self.FK__CompraDet__IdCom__4CA06362">
+            <End Role="CompraEncabezado" EntitySet="CompraEncabezado" />
+            <End Role="CompraDetalle" EntitySet="CompraDetalle" />
           </AssociationSet>
-          <AssociationSet Name="FK__Direccion__IdCan__47DBAE45" Association="Self.FK__Direccion__IdCan__47DBAE45">
-            <End Role="Canton" EntitySet="Canton" />
+          <AssociationSet Name="FK__CompraDet__IdPro__4D94879B" Association="Self.FK__CompraDet__IdPro__4D94879B">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="CompraDetalle" EntitySet="CompraDetalle" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CompraEnc__IdDir__49C3F6B7" Association="Self.FK__CompraEnc__IdDir__49C3F6B7">
             <End Role="Direccion" EntitySet="Direccion" />
+            <End Role="CompraEncabezado" EntitySet="CompraEncabezado" />
           </AssociationSet>
-          <AssociationSet Name="FK__Direccion__IdDis__48CFD27E" Association="Self.FK__Direccion__IdDis__48CFD27E">
-            <End Role="Distrito" EntitySet="Distrito" />
-            <End Role="Direccion" EntitySet="Direccion" />
+          <AssociationSet Name="FK__CompraEnc__IdMet__48CFD27E" Association="Self.FK__CompraEnc__IdMet__48CFD27E">
+            <End Role="MetodoPago" EntitySet="MetodoPago" />
+            <End Role="CompraEncabezado" EntitySet="CompraEncabezado" />
           </AssociationSet>
-          <AssociationSet Name="FK__Direccion__IdPro__46E78A0C" Association="Self.FK__Direccion__IdPro__46E78A0C">
-            <End Role="Provincia" EntitySet="Provincia" />
-            <End Role="Direccion" EntitySet="Direccion" />
+          <AssociationSet Name="FK__CompraEnc__IdUsu__47DBAE45" Association="Self.FK__CompraEnc__IdUsu__47DBAE45">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="CompraEncabezado" EntitySet="CompraEncabezado" />
           </AssociationSet>
-          <AssociationSet Name="FK__Direccion__IdUsu__74AE54BC" Association="Self.FK__Direccion__IdUsu__74AE54BC">
+          <AssociationSet Name="FK__Direccion__IdUsu__2F10007B" Association="Self.FK__Direccion__IdUsu__2F10007B">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Direccion" EntitySet="Direccion" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distrito__IdCant__440B1D61" Association="Self.FK__Distrito__IdCant__440B1D61">
-            <End Role="Canton" EntitySet="Canton" />
-            <End Role="Distrito" EntitySet="Distrito" />
+          <AssociationSet Name="FK__Evaluacio__IdCom__5535A963" Association="Self.FK__Evaluacio__IdCom__5535A963">
+            <End Role="CompraEncabezado" EntitySet="CompraEncabezado" />
+            <End Role="Evaluacion" EntitySet="Evaluacion" />
           </AssociationSet>
-          <AssociationSet Name="FK__Distrito__IdProv__4316F928" Association="Self.FK__Distrito__IdProv__4316F928">
-            <End Role="Provincia" EntitySet="Provincia" />
-            <End Role="Distrito" EntitySet="Distrito" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Evaluacio__IdUsu__693CA210" Association="Self.FK__Evaluacio__IdUsu__693CA210">
+          <AssociationSet Name="FK__Evaluacio__IdEva__534D60F1" Association="Self.FK__Evaluacio__IdEva__534D60F1">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Evaluacion" EntitySet="Evaluacion" />
           </AssociationSet>
-          <AssociationSet Name="FK__FacturaDe__IdFac__619B8048" Association="Self.FK__FacturaDe__IdFac__619B8048">
-            <End Role="FacturaEncabezado" EntitySet="FacturaEncabezado" />
-            <End Role="FacturaDetalle" EntitySet="FacturaDetalle" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FacturaDe__IdPro__628FA481" Association="Self.FK__FacturaDe__IdPro__628FA481">
-            <End Role="Producto" EntitySet="Producto" />
-            <End Role="FacturaDetalle" EntitySet="FacturaDetalle" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FacturaEn__IdMet__5EBF139D" Association="Self.FK__FacturaEn__IdMet__5EBF139D">
-            <End Role="MetodoPago" EntitySet="MetodoPago" />
-            <End Role="FacturaEncabezado" EntitySet="FacturaEncabezado" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FacturaEn__IdUsu__5DCAEF64" Association="Self.FK__FacturaEn__IdUsu__5DCAEF64">
+          <AssociationSet Name="FK__Evaluacio__IdEva__5441852A" Association="Self.FK__Evaluacio__IdEva__5441852A">
             <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="FacturaEncabezado" EntitySet="FacturaEncabezado" />
+            <End Role="Evaluacion" EntitySet="Evaluacion" />
           </AssociationSet>
-          <AssociationSet Name="FK__FotoProdu__IdPro__571DF1D5" Association="Self.FK__FotoProdu__IdPro__571DF1D5">
+          <AssociationSet Name="FK__FotoProdu__IdPro__3D5E1FD2" Association="Self.FK__FotoProdu__IdPro__3D5E1FD2">
             <End Role="Producto" EntitySet="Producto" />
             <End Role="FotoProducto" EntitySet="FotoProducto" />
           </AssociationSet>
-          <AssociationSet Name="FK__Mensaje__IdMensa__5AEE82B9" Association="Self.FK__Mensaje__IdMensa__5AEE82B9">
-            <End Role="Mensaje" EntitySet="Mensaje" />
-            <End Role="Mensaje1" EntitySet="Mensaje" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Mensaje__IdUsuar__59FA5E80" Association="Self.FK__Mensaje__IdUsuar__59FA5E80">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="Mensaje" EntitySet="Mensaje" />
-          </AssociationSet>
-          <AssociationSet Name="FK__MetodoPag__IdTip__4E88ABD4" Association="Self.FK__MetodoPag__IdTip__4E88ABD4">
+          <AssociationSet Name="FK__MetodoPag__IdTip__34C8D9D1" Association="Self.FK__MetodoPag__IdTip__34C8D9D1">
             <End Role="TipoPago" EntitySet="TipoPago" />
             <End Role="MetodoPago" EntitySet="MetodoPago" />
           </AssociationSet>
-          <AssociationSet Name="FK__MetodoPag__IdUsu__4D94879B" Association="Self.FK__MetodoPag__IdUsu__4D94879B">
+          <AssociationSet Name="FK__MetodoPag__IdUsu__33D4B598" Association="Self.FK__MetodoPag__IdUsu__33D4B598">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="MetodoPago" EntitySet="MetodoPago" />
           </AssociationSet>
-          <AssociationSet Name="FK__Pedido__IdDirecc__03F0984C" Association="Self.FK__Pedido__IdDirecc__03F0984C">
-            <End Role="Direccion" EntitySet="Direccion" />
+          <AssociationSet Name="FK__Pedido__IdCompra__5070F446" Association="Self.FK__Pedido__IdCompra__5070F446">
+            <End Role="CompraEncabezado" EntitySet="CompraEncabezado" />
             <End Role="Pedido" EntitySet="Pedido" />
           </AssociationSet>
-          <AssociationSet Name="FK__Pedido__IdFactur__02FC7413" Association="Self.FK__Pedido__IdFactur__02FC7413">
-            <End Role="FacturaEncabezado" EntitySet="FacturaEncabezado" />
-            <End Role="Pedido" EntitySet="Pedido" />
+          <AssociationSet Name="FK__Pregunta__IdProd__412EB0B6" Association="Self.FK__Pregunta__IdProd__412EB0B6">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="Pregunta" EntitySet="Pregunta" />
           </AssociationSet>
-          <AssociationSet Name="FK__Producto__IdCate__534D60F1" Association="Self.FK__Producto__IdCate__534D60F1">
+          <AssociationSet Name="FK__Pregunta__IdUsua__403A8C7D" Association="Self.FK__Pregunta__IdUsua__403A8C7D">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Pregunta" EntitySet="Pregunta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__IdCate__398D8EEE" Association="Self.FK__Producto__IdCate__398D8EEE">
             <End Role="Categoria" EntitySet="Categoria" />
             <End Role="Producto" EntitySet="Producto" />
           </AssociationSet>
-          <AssociationSet Name="FK__Producto__IdUsua__5441852A" Association="Self.FK__Producto__IdUsua__5441852A">
+          <AssociationSet Name="FK__Producto__IdUsua__3A81B327" Association="Self.FK__Producto__IdUsua__3A81B327">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Producto" EntitySet="Producto" />
           </AssociationSet>
-          <AssociationSet Name="FK__Telefono__IdUsua__3B75D760" Association="Self.FK__Telefono__IdUsua__3B75D760">
+          <AssociationSet Name="FK__Respuesta__IdPre__44FF419A" Association="Self.FK__Respuesta__IdPre__44FF419A">
+            <End Role="Pregunta" EntitySet="Pregunta" />
+            <End Role="Respuesta" EntitySet="Respuesta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Respuesta__IdUsu__440B1D61" Association="Self.FK__Respuesta__IdUsu__440B1D61">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Respuesta" EntitySet="Respuesta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RolUsuari__IdRol__286302EC" Association="Self.FK__RolUsuari__IdRol__286302EC">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="RolUsuario" EntitySet="RolUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RolUsuari__IdUsu__29572725" Association="Self.FK__RolUsuari__IdUsu__29572725">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="RolUsuario" EntitySet="RolUsuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Telefono__IdUsua__2C3393D0" Association="Self.FK__Telefono__IdUsua__2C3393D0">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Telefono" EntitySet="Telefono" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Usuario__IdRol__38996AB5" Association="Self.FK__Usuario__IdRol__38996AB5">
-            <End Role="Rol" EntitySet="Rol" />
-            <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -563,84 +541,67 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ByteStoreBDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Canton">
-          <Key>
-            <PropertyRef Name="IdCanton" />
-          </Key>
-          <Property Name="IdCanton" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Provincia" Relationship="Self.FK__Canton__IdProvin__403A8C7D" FromRole="Canton" ToRole="Provincia" />
-          <NavigationProperty Name="Direccion" Relationship="Self.FK__Direccion__IdCan__47DBAE45" FromRole="Canton" ToRole="Direccion" />
-          <NavigationProperty Name="Distrito" Relationship="Self.FK__Distrito__IdCant__440B1D61" FromRole="Canton" ToRole="Distrito" />
-        </EntityType>
         <EntityType Name="Categoria">
           <Key>
             <PropertyRef Name="IdCategoria" />
           </Key>
           <Property Name="IdCategoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__IdCate__534D60F1" FromRole="Categoria" ToRole="Producto" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__IdCate__398D8EEE" FromRole="Categoria" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="CompraDetalle">
+          <Key>
+            <PropertyRef Name="IdCompraEncabezado" />
+            <PropertyRef Name="IdProducto" />
+          </Key>
+          <Property Name="IdCompraEncabezado" Type="Int32" Nullable="false" />
+          <Property Name="IdProducto" Type="Int32" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" />
+          <Property Name="Precio" Type="Double" />
+          <Property Name="EstadoEntrega" Type="Boolean" />
+          <NavigationProperty Name="CompraEncabezado" Relationship="Self.FK__CompraDet__IdCom__4CA06362" FromRole="CompraDetalle" ToRole="CompraEncabezado" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__CompraDet__IdPro__4D94879B" FromRole="CompraDetalle" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="CompraEncabezado">
+          <Key>
+            <PropertyRef Name="IdCompraEncabezado" />
+          </Key>
+          <Property Name="IdCompraEncabezado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaHora" Type="DateTime" Precision="3" />
+          <Property Name="SubTotal" Type="Double" />
+          <Property Name="Impuesto" Type="Double" />
+          <Property Name="Total" Type="Double" />
+          <NavigationProperty Name="CompraDetalle" Relationship="Self.FK__CompraDet__IdCom__4CA06362" FromRole="CompraEncabezado" ToRole="CompraDetalle" />
+          <NavigationProperty Name="Direccion" Relationship="Self.FK__CompraEnc__IdDir__49C3F6B7" FromRole="CompraEncabezado" ToRole="Direccion" />
+          <NavigationProperty Name="MetodoPago" Relationship="Self.FK__CompraEnc__IdMet__48CFD27E" FromRole="CompraEncabezado" ToRole="MetodoPago" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__CompraEnc__IdUsu__47DBAE45" FromRole="CompraEncabezado" ToRole="Usuario" />
+          <NavigationProperty Name="Evaluacion" Relationship="Self.FK__Evaluacio__IdCom__5535A963" FromRole="CompraEncabezado" ToRole="Evaluacion" />
+          <NavigationProperty Name="Pedido" Relationship="Self.FK__Pedido__IdCompra__5070F446" FromRole="CompraEncabezado" ToRole="Pedido" />
         </EntityType>
         <EntityType Name="Direccion">
           <Key>
             <PropertyRef Name="IdDireccion" />
           </Key>
           <Property Name="IdDireccion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Provincia" Type="Int32" />
+          <Property Name="Canton" Type="Int32" />
+          <Property Name="Distrito" Type="Int32" />
           <Property Name="Sennas" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Telefono" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Canton" Relationship="Self.FK__Direccion__IdCan__47DBAE45" FromRole="Direccion" ToRole="Canton" />
-          <NavigationProperty Name="Distrito" Relationship="Self.FK__Direccion__IdDis__48CFD27E" FromRole="Direccion" ToRole="Distrito" />
-          <NavigationProperty Name="Provincia" Relationship="Self.FK__Direccion__IdPro__46E78A0C" FromRole="Direccion" ToRole="Provincia" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK__Direccion__IdUsu__74AE54BC" FromRole="Direccion" ToRole="Usuario" />
-          <NavigationProperty Name="Pedido" Relationship="Self.FK__Pedido__IdDirecc__03F0984C" FromRole="Direccion" ToRole="Pedido" />
-        </EntityType>
-        <EntityType Name="Distrito">
-          <Key>
-            <PropertyRef Name="IdDistrito" />
-          </Key>
-          <Property Name="IdDistrito" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CodigoPostal" Type="Int32" />
-          <NavigationProperty Name="Canton" Relationship="Self.FK__Distrito__IdCant__440B1D61" FromRole="Distrito" ToRole="Canton" />
-          <NavigationProperty Name="Direccion" Relationship="Self.FK__Direccion__IdDis__48CFD27E" FromRole="Distrito" ToRole="Direccion" />
-          <NavigationProperty Name="Provincia" Relationship="Self.FK__Distrito__IdProv__4316F928" FromRole="Distrito" ToRole="Provincia" />
+          <Property Name="Tipo" Type="Boolean" />
+          <NavigationProperty Name="CompraEncabezado" Relationship="Self.FK__CompraEnc__IdDir__49C3F6B7" FromRole="Direccion" ToRole="CompraEncabezado" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Direccion__IdUsu__2F10007B" FromRole="Direccion" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="Evaluacion">
           <Key>
             <PropertyRef Name="IdEvaluacion" />
           </Key>
           <Property Name="IdEvaluacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Evaluacion1" Type="Int32" />
+          <Property Name="Escala" Type="Int32" />
           <Property Name="Comentario" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK__Evaluacio__IdUsu__693CA210" FromRole="Evaluacion" ToRole="Usuario" />
-        </EntityType>
-        <EntityType Name="FacturaDetalle">
-          <Key>
-            <PropertyRef Name="IdFacturaEncabezado" />
-            <PropertyRef Name="IdProducto" />
-          </Key>
-          <Property Name="IdFacturaEncabezado" Type="Int32" Nullable="false" />
-          <Property Name="IdProducto" Type="Int32" Nullable="false" />
-          <Property Name="Cantidad" Type="Int32" />
-          <Property Name="Precio" Type="Double" />
-          <Property Name="EstadoEntrega" Type="Int32" />
-          <NavigationProperty Name="FacturaEncabezado" Relationship="Self.FK__FacturaDe__IdFac__619B8048" FromRole="FacturaDetalle" ToRole="FacturaEncabezado" />
-          <NavigationProperty Name="Producto" Relationship="Self.FK__FacturaDe__IdPro__628FA481" FromRole="FacturaDetalle" ToRole="Producto" />
-        </EntityType>
-        <EntityType Name="FacturaEncabezado">
-          <Key>
-            <PropertyRef Name="IdFacturaEncabezado" />
-          </Key>
-          <Property Name="IdFacturaEncabezado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FechaHora" Type="DateTime" Precision="3" />
-          <Property Name="SubTotal" Type="Double" />
-          <Property Name="Impuesto" Type="Double" />
-          <Property Name="Total" Type="Double" />
-          <Property Name="Estado" Type="Boolean" />
-          <NavigationProperty Name="FacturaDetalle" Relationship="Self.FK__FacturaDe__IdFac__619B8048" FromRole="FacturaEncabezado" ToRole="FacturaDetalle" />
-          <NavigationProperty Name="MetodoPago" Relationship="Self.FK__FacturaEn__IdMet__5EBF139D" FromRole="FacturaEncabezado" ToRole="MetodoPago" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK__FacturaEn__IdUsu__5DCAEF64" FromRole="FacturaEncabezado" ToRole="Usuario" />
-          <NavigationProperty Name="Pedido" Relationship="Self.FK__Pedido__IdFactur__02FC7413" FromRole="FacturaEncabezado" ToRole="Pedido" />
+          <NavigationProperty Name="CompraEncabezado" Relationship="Self.FK__Evaluacio__IdCom__5535A963" FromRole="Evaluacion" ToRole="CompraEncabezado" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Evaluacio__IdEva__534D60F1" FromRole="Evaluacion" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="Self.FK__Evaluacio__IdEva__5441852A" FromRole="Evaluacion" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="FotoProducto">
           <Key>
@@ -648,17 +609,7 @@
           </Key>
           <Property Name="IdFotoProducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Foto" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <NavigationProperty Name="Producto" Relationship="Self.FK__FotoProdu__IdPro__571DF1D5" FromRole="FotoProducto" ToRole="Producto" />
-        </EntityType>
-        <EntityType Name="Mensaje">
-          <Key>
-            <PropertyRef Name="IdMensaje" />
-          </Key>
-          <Property Name="IdMensaje" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Mensaje1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Mensaje11" Relationship="Self.FK__Mensaje__IdMensa__5AEE82B9" FromRole="Mensaje" ToRole="Mensaje1" />
-          <NavigationProperty Name="Mensaje2" Relationship="Self.FK__Mensaje__IdMensa__5AEE82B9" FromRole="Mensaje1" ToRole="Mensaje" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK__Mensaje__IdUsuar__59FA5E80" FromRole="Mensaje" ToRole="Usuario" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__FotoProdu__IdPro__3D5E1FD2" FromRole="FotoProducto" ToRole="Producto" />
         </EntityType>
         <EntityType Name="MetodoPago">
           <Key>
@@ -669,18 +620,28 @@
           <Property Name="NumeroTarjeta" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="FechaExpiracion" Type="DateTime" Precision="0" />
           <Property Name="Codigo" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="FacturaEncabezado" Relationship="Self.FK__FacturaEn__IdMet__5EBF139D" FromRole="MetodoPago" ToRole="FacturaEncabezado" />
-          <NavigationProperty Name="TipoPago" Relationship="Self.FK__MetodoPag__IdTip__4E88ABD4" FromRole="MetodoPago" ToRole="TipoPago" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK__MetodoPag__IdUsu__4D94879B" FromRole="MetodoPago" ToRole="Usuario" />
+          <NavigationProperty Name="CompraEncabezado" Relationship="Self.FK__CompraEnc__IdMet__48CFD27E" FromRole="MetodoPago" ToRole="CompraEncabezado" />
+          <NavigationProperty Name="TipoPago" Relationship="Self.FK__MetodoPag__IdTip__34C8D9D1" FromRole="MetodoPago" ToRole="TipoPago" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__MetodoPag__IdUsu__33D4B598" FromRole="MetodoPago" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="Pedido">
           <Key>
-            <PropertyRef Name="IdFacturaEncabezado" />
+            <PropertyRef Name="IdCompraEncabezado" />
           </Key>
-          <Property Name="IdFacturaEncabezado" Type="Int32" Nullable="false" />
+          <Property Name="IdCompraEncabezado" Type="Int32" Nullable="false" />
           <Property Name="EstadoEntrega" Type="Int32" />
-          <NavigationProperty Name="Direccion" Relationship="Self.FK__Pedido__IdDirecc__03F0984C" FromRole="Pedido" ToRole="Direccion" />
-          <NavigationProperty Name="FacturaEncabezado" Relationship="Self.FK__Pedido__IdFactur__02FC7413" FromRole="Pedido" ToRole="FacturaEncabezado" />
+          <NavigationProperty Name="CompraEncabezado" Relationship="Self.FK__Pedido__IdCompra__5070F446" FromRole="Pedido" ToRole="CompraEncabezado" />
+        </EntityType>
+        <EntityType Name="Pregunta">
+          <Key>
+            <PropertyRef Name="IdPregunta" />
+          </Key>
+          <Property Name="IdPregunta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaHora" Type="DateTime" Precision="3" />
+          <Property Name="Pregunta1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__Pregunta__IdProd__412EB0B6" FromRole="Pregunta" ToRole="Producto" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Pregunta__IdUsua__403A8C7D" FromRole="Pregunta" ToRole="Usuario" />
+          <NavigationProperty Name="Respuesta" Relationship="Self.FK__Respuesta__IdPre__44FF419A" FromRole="Pregunta" ToRole="Respuesta" />
         </EntityType>
         <EntityType Name="Producto">
           <Key>
@@ -692,20 +653,21 @@
           <Property Name="Precio" Type="Double" />
           <Property Name="Stock" Type="Int32" />
           <Property Name="Estado" Type="Int32" />
-          <NavigationProperty Name="Categoria" Relationship="Self.FK__Producto__IdCate__534D60F1" FromRole="Producto" ToRole="Categoria" />
-          <NavigationProperty Name="FacturaDetalle" Relationship="Self.FK__FacturaDe__IdPro__628FA481" FromRole="Producto" ToRole="FacturaDetalle" />
-          <NavigationProperty Name="FotoProducto" Relationship="Self.FK__FotoProdu__IdPro__571DF1D5" FromRole="Producto" ToRole="FotoProducto" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK__Producto__IdUsua__5441852A" FromRole="Producto" ToRole="Usuario" />
+          <NavigationProperty Name="Categoria" Relationship="Self.FK__Producto__IdCate__398D8EEE" FromRole="Producto" ToRole="Categoria" />
+          <NavigationProperty Name="CompraDetalle" Relationship="Self.FK__CompraDet__IdPro__4D94879B" FromRole="Producto" ToRole="CompraDetalle" />
+          <NavigationProperty Name="FotoProducto" Relationship="Self.FK__FotoProdu__IdPro__3D5E1FD2" FromRole="Producto" ToRole="FotoProducto" />
+          <NavigationProperty Name="Pregunta" Relationship="Self.FK__Pregunta__IdProd__412EB0B6" FromRole="Producto" ToRole="Pregunta" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Producto__IdUsua__3A81B327" FromRole="Producto" ToRole="Usuario" />
         </EntityType>
-        <EntityType Name="Provincia">
+        <EntityType Name="Respuesta">
           <Key>
-            <PropertyRef Name="IdProvincia" />
+            <PropertyRef Name="IdRespuesta" />
           </Key>
-          <Property Name="IdProvincia" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Canton" Relationship="Self.FK__Canton__IdProvin__403A8C7D" FromRole="Provincia" ToRole="Canton" />
-          <NavigationProperty Name="Direccion" Relationship="Self.FK__Direccion__IdPro__46E78A0C" FromRole="Provincia" ToRole="Direccion" />
-          <NavigationProperty Name="Distrito" Relationship="Self.FK__Distrito__IdProv__4316F928" FromRole="Provincia" ToRole="Distrito" />
+          <Property Name="IdRespuesta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaHora" Type="DateTime" Precision="3" />
+          <Property Name="Respuesta1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Pregunta" Relationship="Self.FK__Respuesta__IdPre__44FF419A" FromRole="Respuesta" ToRole="Pregunta" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Respuesta__IdUsu__440B1D61" FromRole="Respuesta" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="Rol">
           <Key>
@@ -713,7 +675,7 @@
           </Key>
           <Property Name="IdRol" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Descripcion" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK__Usuario__IdRol__38996AB5" FromRole="Rol" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario" Relationship="Self.RolUsuario" FromRole="Rol" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="Telefono">
           <Key>
@@ -722,7 +684,7 @@
           <Property Name="IdTelefono" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Numero" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Name="Tipo" Type="Boolean" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK__Telefono__IdUsua__3B75D760" FromRole="Telefono" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Telefono__IdUsua__2C3393D0" FromRole="Telefono" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="TipoPago">
           <Key>
@@ -730,7 +692,7 @@
           </Key>
           <Property Name="IdTipoPago" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="MetodoPago" Relationship="Self.FK__MetodoPag__IdTip__4E88ABD4" FromRole="TipoPago" ToRole="MetodoPago" />
+          <NavigationProperty Name="MetodoPago" Relationship="Self.FK__MetodoPag__IdTip__34C8D9D1" FromRole="TipoPago" ToRole="MetodoPago" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
@@ -746,240 +708,224 @@
           <Property Name="Contrasenna" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="PromedioEvaluaciones" Type="Int32" />
           <Property Name="Estado" Type="Boolean" />
-          <NavigationProperty Name="Direccion" Relationship="Self.FK__Direccion__IdUsu__74AE54BC" FromRole="Usuario" ToRole="Direccion" />
-          <NavigationProperty Name="Evaluacion" Relationship="Self.FK__Evaluacio__IdUsu__693CA210" FromRole="Usuario" ToRole="Evaluacion" />
-          <NavigationProperty Name="FacturaEncabezado" Relationship="Self.FK__FacturaEn__IdUsu__5DCAEF64" FromRole="Usuario" ToRole="FacturaEncabezado" />
-          <NavigationProperty Name="Mensaje" Relationship="Self.FK__Mensaje__IdUsuar__59FA5E80" FromRole="Usuario" ToRole="Mensaje" />
-          <NavigationProperty Name="MetodoPago" Relationship="Self.FK__MetodoPag__IdUsu__4D94879B" FromRole="Usuario" ToRole="MetodoPago" />
-          <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__IdUsua__5441852A" FromRole="Usuario" ToRole="Producto" />
-          <NavigationProperty Name="Rol" Relationship="Self.FK__Usuario__IdRol__38996AB5" FromRole="Usuario" ToRole="Rol" />
-          <NavigationProperty Name="Telefono" Relationship="Self.FK__Telefono__IdUsua__3B75D760" FromRole="Usuario" ToRole="Telefono" />
+          <NavigationProperty Name="CompraEncabezado" Relationship="Self.FK__CompraEnc__IdUsu__47DBAE45" FromRole="Usuario" ToRole="CompraEncabezado" />
+          <NavigationProperty Name="Direccion" Relationship="Self.FK__Direccion__IdUsu__2F10007B" FromRole="Usuario" ToRole="Direccion" />
+          <NavigationProperty Name="Evaluacion" Relationship="Self.FK__Evaluacio__IdEva__534D60F1" FromRole="Usuario" ToRole="Evaluacion" />
+          <NavigationProperty Name="Evaluacion1" Relationship="Self.FK__Evaluacio__IdEva__5441852A" FromRole="Usuario" ToRole="Evaluacion" />
+          <NavigationProperty Name="MetodoPago" Relationship="Self.FK__MetodoPag__IdUsu__33D4B598" FromRole="Usuario" ToRole="MetodoPago" />
+          <NavigationProperty Name="Pregunta" Relationship="Self.FK__Pregunta__IdUsua__403A8C7D" FromRole="Usuario" ToRole="Pregunta" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__IdUsua__3A81B327" FromRole="Usuario" ToRole="Producto" />
+          <NavigationProperty Name="Respuesta" Relationship="Self.FK__Respuesta__IdUsu__440B1D61" FromRole="Usuario" ToRole="Respuesta" />
+          <NavigationProperty Name="Telefono" Relationship="Self.FK__Telefono__IdUsua__2C3393D0" FromRole="Usuario" ToRole="Telefono" />
+          <NavigationProperty Name="Rol" Relationship="Self.RolUsuario" FromRole="Usuario" ToRole="Rol" />
         </EntityType>
-        <Association Name="FK__Canton__IdProvin__403A8C7D">
-          <End Role="Provincia" Type="Self.Provincia" Multiplicity="0..1" />
-          <End Role="Canton" Type="Self.Canton" Multiplicity="*" />
-        </Association>
-        <Association Name="FK__Direccion__IdCan__47DBAE45">
-          <End Role="Canton" Type="Self.Canton" Multiplicity="0..1" />
-          <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
-        </Association>
-        <Association Name="FK__Distrito__IdCant__440B1D61">
-          <End Role="Canton" Type="Self.Canton" Multiplicity="0..1" />
-          <End Role="Distrito" Type="Self.Distrito" Multiplicity="*" />
-        </Association>
-        <Association Name="FK__Producto__IdCate__534D60F1">
+        <Association Name="FK__Producto__IdCate__398D8EEE">
           <End Role="Categoria" Type="Self.Categoria" Multiplicity="0..1" />
           <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
         </Association>
-        <Association Name="FK__Direccion__IdDis__48CFD27E">
-          <End Role="Distrito" Type="Self.Distrito" Multiplicity="0..1" />
-          <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
-        </Association>
-        <Association Name="FK__Direccion__IdPro__46E78A0C">
-          <End Role="Provincia" Type="Self.Provincia" Multiplicity="0..1" />
-          <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
-        </Association>
-        <Association Name="FK__Direccion__IdUsu__74AE54BC">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
-          <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
-        </Association>
-        <Association Name="FK__Pedido__IdDirecc__03F0984C">
-          <End Role="Direccion" Type="Self.Direccion" Multiplicity="0..1" />
-          <End Role="Pedido" Type="Self.Pedido" Multiplicity="*" />
-        </Association>
-        <Association Name="FK__Distrito__IdProv__4316F928">
-          <End Role="Provincia" Type="Self.Provincia" Multiplicity="0..1" />
-          <End Role="Distrito" Type="Self.Distrito" Multiplicity="*" />
-        </Association>
-        <Association Name="FK__Evaluacio__IdUsu__693CA210">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
-          <End Role="Evaluacion" Type="Self.Evaluacion" Multiplicity="*" />
-        </Association>
-        <Association Name="FK__FacturaDe__IdFac__619B8048">
-          <End Role="FacturaEncabezado" Type="Self.FacturaEncabezado" Multiplicity="1" />
-          <End Role="FacturaDetalle" Type="Self.FacturaDetalle" Multiplicity="*" />
+        <Association Name="FK__CompraDet__IdCom__4CA06362">
+          <End Role="CompraEncabezado" Type="Self.CompraEncabezado" Multiplicity="1" />
+          <End Role="CompraDetalle" Type="Self.CompraDetalle" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="FacturaEncabezado">
-              <PropertyRef Name="IdFacturaEncabezado" />
+            <Principal Role="CompraEncabezado">
+              <PropertyRef Name="IdCompraEncabezado" />
             </Principal>
-            <Dependent Role="FacturaDetalle">
-              <PropertyRef Name="IdFacturaEncabezado" />
+            <Dependent Role="CompraDetalle">
+              <PropertyRef Name="IdCompraEncabezado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FacturaDe__IdPro__628FA481">
+        <Association Name="FK__CompraDet__IdPro__4D94879B">
           <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
-          <End Role="FacturaDetalle" Type="Self.FacturaDetalle" Multiplicity="*" />
+          <End Role="CompraDetalle" Type="Self.CompraDetalle" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Producto">
               <PropertyRef Name="IdProducto" />
             </Principal>
-            <Dependent Role="FacturaDetalle">
+            <Dependent Role="CompraDetalle">
               <PropertyRef Name="IdProducto" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FacturaEn__IdMet__5EBF139D">
+        <Association Name="FK__CompraEnc__IdDir__49C3F6B7">
+          <End Role="Direccion" Type="Self.Direccion" Multiplicity="0..1" />
+          <End Role="CompraEncabezado" Type="Self.CompraEncabezado" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__CompraEnc__IdMet__48CFD27E">
           <End Role="MetodoPago" Type="Self.MetodoPago" Multiplicity="0..1" />
-          <End Role="FacturaEncabezado" Type="Self.FacturaEncabezado" Multiplicity="*" />
+          <End Role="CompraEncabezado" Type="Self.CompraEncabezado" Multiplicity="*" />
         </Association>
-        <Association Name="FK__FacturaEn__IdUsu__5DCAEF64">
+        <Association Name="FK__CompraEnc__IdUsu__47DBAE45">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
-          <End Role="FacturaEncabezado" Type="Self.FacturaEncabezado" Multiplicity="*" />
+          <End Role="CompraEncabezado" Type="Self.CompraEncabezado" Multiplicity="*" />
         </Association>
-        <Association Name="FK__Pedido__IdFactur__02FC7413">
-          <End Role="FacturaEncabezado" Type="Self.FacturaEncabezado" Multiplicity="1" />
+        <Association Name="FK__Evaluacio__IdCom__5535A963">
+          <End Role="CompraEncabezado" Type="Self.CompraEncabezado" Multiplicity="0..1" />
+          <End Role="Evaluacion" Type="Self.Evaluacion" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Pedido__IdCompra__5070F446">
+          <End Role="CompraEncabezado" Type="Self.CompraEncabezado" Multiplicity="1" />
           <End Role="Pedido" Type="Self.Pedido" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="FacturaEncabezado">
-              <PropertyRef Name="IdFacturaEncabezado" />
+            <Principal Role="CompraEncabezado">
+              <PropertyRef Name="IdCompraEncabezado" />
             </Principal>
             <Dependent Role="Pedido">
-              <PropertyRef Name="IdFacturaEncabezado" />
+              <PropertyRef Name="IdCompraEncabezado" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__FotoProdu__IdPro__571DF1D5">
+        <Association Name="FK__Direccion__IdUsu__2F10007B">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Evaluacio__IdEva__534D60F1">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Evaluacion" Type="Self.Evaluacion" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Evaluacio__IdEva__5441852A">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Evaluacion" Type="Self.Evaluacion" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__FotoProdu__IdPro__3D5E1FD2">
           <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
           <End Role="FotoProducto" Type="Self.FotoProducto" Multiplicity="*" />
         </Association>
-        <Association Name="FK__Mensaje__IdMensa__5AEE82B9">
-          <End Role="Mensaje" Type="Self.Mensaje" Multiplicity="0..1" />
-          <End Role="Mensaje1" Type="Self.Mensaje" Multiplicity="*" />
-        </Association>
-        <Association Name="FK__Mensaje__IdUsuar__59FA5E80">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
-          <End Role="Mensaje" Type="Self.Mensaje" Multiplicity="*" />
-        </Association>
-        <Association Name="FK__MetodoPag__IdTip__4E88ABD4">
+        <Association Name="FK__MetodoPag__IdTip__34C8D9D1">
           <End Role="TipoPago" Type="Self.TipoPago" Multiplicity="0..1" />
           <End Role="MetodoPago" Type="Self.MetodoPago" Multiplicity="*" />
         </Association>
-        <Association Name="FK__MetodoPag__IdUsu__4D94879B">
+        <Association Name="FK__MetodoPag__IdUsu__33D4B598">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
           <End Role="MetodoPago" Type="Self.MetodoPago" Multiplicity="*" />
         </Association>
-        <Association Name="FK__Producto__IdUsua__5441852A">
+        <Association Name="FK__Pregunta__IdProd__412EB0B6">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Pregunta__IdUsua__403A8C7D">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Respuesta__IdPre__44FF419A">
+          <End Role="Pregunta" Type="Self.Pregunta" Multiplicity="0..1" />
+          <End Role="Respuesta" Type="Self.Respuesta" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Producto__IdUsua__3A81B327">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
           <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
         </Association>
-        <Association Name="FK__Usuario__IdRol__38996AB5">
-          <End Role="Rol" Type="Self.Rol" Multiplicity="0..1" />
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+        <Association Name="FK__Respuesta__IdUsu__440B1D61">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Respuesta" Type="Self.Respuesta" Multiplicity="*" />
         </Association>
-        <Association Name="FK__Telefono__IdUsua__3B75D760">
+        <Association Name="FK__Telefono__IdUsua__2C3393D0">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
           <End Role="Telefono" Type="Self.Telefono" Multiplicity="*" />
         </Association>
+        <Association Name="RolUsuario">
+          <End Role="Rol" Type="Self.Rol" Multiplicity="*" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+        </Association>
         <EntityContainer Name="ByteStoreBDEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Canton" EntityType="Self.Canton" />
           <EntitySet Name="Categoria" EntityType="Self.Categoria" />
+          <EntitySet Name="CompraDetalle" EntityType="Self.CompraDetalle" />
+          <EntitySet Name="CompraEncabezado" EntityType="Self.CompraEncabezado" />
           <EntitySet Name="Direccion" EntityType="Self.Direccion" />
-          <EntitySet Name="Distrito" EntityType="Self.Distrito" />
           <EntitySet Name="Evaluacion" EntityType="Self.Evaluacion" />
-          <EntitySet Name="FacturaDetalle" EntityType="Self.FacturaDetalle" />
-          <EntitySet Name="FacturaEncabezado" EntityType="Self.FacturaEncabezado" />
           <EntitySet Name="FotoProducto" EntityType="Self.FotoProducto" />
-          <EntitySet Name="Mensaje" EntityType="Self.Mensaje" />
           <EntitySet Name="MetodoPago" EntityType="Self.MetodoPago" />
           <EntitySet Name="Pedido" EntityType="Self.Pedido" />
+          <EntitySet Name="Pregunta" EntityType="Self.Pregunta" />
           <EntitySet Name="Producto" EntityType="Self.Producto" />
-          <EntitySet Name="Provincia" EntityType="Self.Provincia" />
+          <EntitySet Name="Respuesta" EntityType="Self.Respuesta" />
           <EntitySet Name="Rol" EntityType="Self.Rol" />
           <EntitySet Name="Telefono" EntityType="Self.Telefono" />
           <EntitySet Name="TipoPago" EntityType="Self.TipoPago" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" />
-          <AssociationSet Name="FK__Canton__IdProvin__403A8C7D" Association="Self.FK__Canton__IdProvin__403A8C7D">
-            <End Role="Provincia" EntitySet="Provincia" />
-            <End Role="Canton" EntitySet="Canton" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Direccion__IdCan__47DBAE45" Association="Self.FK__Direccion__IdCan__47DBAE45">
-            <End Role="Canton" EntitySet="Canton" />
-            <End Role="Direccion" EntitySet="Direccion" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Distrito__IdCant__440B1D61" Association="Self.FK__Distrito__IdCant__440B1D61">
-            <End Role="Canton" EntitySet="Canton" />
-            <End Role="Distrito" EntitySet="Distrito" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Producto__IdCate__534D60F1" Association="Self.FK__Producto__IdCate__534D60F1">
+          <AssociationSet Name="FK__Producto__IdCate__398D8EEE" Association="Self.FK__Producto__IdCate__398D8EEE">
             <End Role="Categoria" EntitySet="Categoria" />
             <End Role="Producto" EntitySet="Producto" />
           </AssociationSet>
-          <AssociationSet Name="FK__Direccion__IdDis__48CFD27E" Association="Self.FK__Direccion__IdDis__48CFD27E">
-            <End Role="Distrito" EntitySet="Distrito" />
-            <End Role="Direccion" EntitySet="Direccion" />
+          <AssociationSet Name="FK__CompraDet__IdCom__4CA06362" Association="Self.FK__CompraDet__IdCom__4CA06362">
+            <End Role="CompraEncabezado" EntitySet="CompraEncabezado" />
+            <End Role="CompraDetalle" EntitySet="CompraDetalle" />
           </AssociationSet>
-          <AssociationSet Name="FK__Direccion__IdPro__46E78A0C" Association="Self.FK__Direccion__IdPro__46E78A0C">
-            <End Role="Provincia" EntitySet="Provincia" />
-            <End Role="Direccion" EntitySet="Direccion" />
+          <AssociationSet Name="FK__CompraDet__IdPro__4D94879B" Association="Self.FK__CompraDet__IdPro__4D94879B">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="CompraDetalle" EntitySet="CompraDetalle" />
           </AssociationSet>
-          <AssociationSet Name="FK__Direccion__IdUsu__74AE54BC" Association="Self.FK__Direccion__IdUsu__74AE54BC">
+          <AssociationSet Name="FK__CompraEnc__IdDir__49C3F6B7" Association="Self.FK__CompraEnc__IdDir__49C3F6B7">
+            <End Role="Direccion" EntitySet="Direccion" />
+            <End Role="CompraEncabezado" EntitySet="CompraEncabezado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CompraEnc__IdMet__48CFD27E" Association="Self.FK__CompraEnc__IdMet__48CFD27E">
+            <End Role="MetodoPago" EntitySet="MetodoPago" />
+            <End Role="CompraEncabezado" EntitySet="CompraEncabezado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CompraEnc__IdUsu__47DBAE45" Association="Self.FK__CompraEnc__IdUsu__47DBAE45">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="CompraEncabezado" EntitySet="CompraEncabezado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Evaluacio__IdCom__5535A963" Association="Self.FK__Evaluacio__IdCom__5535A963">
+            <End Role="CompraEncabezado" EntitySet="CompraEncabezado" />
+            <End Role="Evaluacion" EntitySet="Evaluacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pedido__IdCompra__5070F446" Association="Self.FK__Pedido__IdCompra__5070F446">
+            <End Role="CompraEncabezado" EntitySet="CompraEncabezado" />
+            <End Role="Pedido" EntitySet="Pedido" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Direccion__IdUsu__2F10007B" Association="Self.FK__Direccion__IdUsu__2F10007B">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Direccion" EntitySet="Direccion" />
           </AssociationSet>
-          <AssociationSet Name="FK__Pedido__IdDirecc__03F0984C" Association="Self.FK__Pedido__IdDirecc__03F0984C">
-            <End Role="Direccion" EntitySet="Direccion" />
-            <End Role="Pedido" EntitySet="Pedido" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Distrito__IdProv__4316F928" Association="Self.FK__Distrito__IdProv__4316F928">
-            <End Role="Provincia" EntitySet="Provincia" />
-            <End Role="Distrito" EntitySet="Distrito" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Evaluacio__IdUsu__693CA210" Association="Self.FK__Evaluacio__IdUsu__693CA210">
+          <AssociationSet Name="FK__Evaluacio__IdEva__534D60F1" Association="Self.FK__Evaluacio__IdEva__534D60F1">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Evaluacion" EntitySet="Evaluacion" />
           </AssociationSet>
-          <AssociationSet Name="FK__FacturaDe__IdFac__619B8048" Association="Self.FK__FacturaDe__IdFac__619B8048">
-            <End Role="FacturaEncabezado" EntitySet="FacturaEncabezado" />
-            <End Role="FacturaDetalle" EntitySet="FacturaDetalle" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FacturaDe__IdPro__628FA481" Association="Self.FK__FacturaDe__IdPro__628FA481">
-            <End Role="Producto" EntitySet="Producto" />
-            <End Role="FacturaDetalle" EntitySet="FacturaDetalle" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FacturaEn__IdMet__5EBF139D" Association="Self.FK__FacturaEn__IdMet__5EBF139D">
-            <End Role="MetodoPago" EntitySet="MetodoPago" />
-            <End Role="FacturaEncabezado" EntitySet="FacturaEncabezado" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FacturaEn__IdUsu__5DCAEF64" Association="Self.FK__FacturaEn__IdUsu__5DCAEF64">
+          <AssociationSet Name="FK__Evaluacio__IdEva__5441852A" Association="Self.FK__Evaluacio__IdEva__5441852A">
             <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="FacturaEncabezado" EntitySet="FacturaEncabezado" />
+            <End Role="Evaluacion" EntitySet="Evaluacion" />
           </AssociationSet>
-          <AssociationSet Name="FK__Pedido__IdFactur__02FC7413" Association="Self.FK__Pedido__IdFactur__02FC7413">
-            <End Role="FacturaEncabezado" EntitySet="FacturaEncabezado" />
-            <End Role="Pedido" EntitySet="Pedido" />
-          </AssociationSet>
-          <AssociationSet Name="FK__FotoProdu__IdPro__571DF1D5" Association="Self.FK__FotoProdu__IdPro__571DF1D5">
+          <AssociationSet Name="FK__FotoProdu__IdPro__3D5E1FD2" Association="Self.FK__FotoProdu__IdPro__3D5E1FD2">
             <End Role="Producto" EntitySet="Producto" />
             <End Role="FotoProducto" EntitySet="FotoProducto" />
           </AssociationSet>
-          <AssociationSet Name="FK__Mensaje__IdMensa__5AEE82B9" Association="Self.FK__Mensaje__IdMensa__5AEE82B9">
-            <End Role="Mensaje" EntitySet="Mensaje" />
-            <End Role="Mensaje1" EntitySet="Mensaje" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Mensaje__IdUsuar__59FA5E80" Association="Self.FK__Mensaje__IdUsuar__59FA5E80">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="Mensaje" EntitySet="Mensaje" />
-          </AssociationSet>
-          <AssociationSet Name="FK__MetodoPag__IdTip__4E88ABD4" Association="Self.FK__MetodoPag__IdTip__4E88ABD4">
+          <AssociationSet Name="FK__MetodoPag__IdTip__34C8D9D1" Association="Self.FK__MetodoPag__IdTip__34C8D9D1">
             <End Role="TipoPago" EntitySet="TipoPago" />
             <End Role="MetodoPago" EntitySet="MetodoPago" />
           </AssociationSet>
-          <AssociationSet Name="FK__MetodoPag__IdUsu__4D94879B" Association="Self.FK__MetodoPag__IdUsu__4D94879B">
+          <AssociationSet Name="FK__MetodoPag__IdUsu__33D4B598" Association="Self.FK__MetodoPag__IdUsu__33D4B598">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="MetodoPago" EntitySet="MetodoPago" />
           </AssociationSet>
-          <AssociationSet Name="FK__Producto__IdUsua__5441852A" Association="Self.FK__Producto__IdUsua__5441852A">
+          <AssociationSet Name="FK__Pregunta__IdProd__412EB0B6" Association="Self.FK__Pregunta__IdProd__412EB0B6">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="Pregunta" EntitySet="Pregunta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Pregunta__IdUsua__403A8C7D" Association="Self.FK__Pregunta__IdUsua__403A8C7D">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Pregunta" EntitySet="Pregunta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Respuesta__IdPre__44FF419A" Association="Self.FK__Respuesta__IdPre__44FF419A">
+            <End Role="Pregunta" EntitySet="Pregunta" />
+            <End Role="Respuesta" EntitySet="Respuesta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Producto__IdUsua__3A81B327" Association="Self.FK__Producto__IdUsua__3A81B327">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Producto" EntitySet="Producto" />
           </AssociationSet>
-          <AssociationSet Name="FK__Usuario__IdRol__38996AB5" Association="Self.FK__Usuario__IdRol__38996AB5">
-            <End Role="Rol" EntitySet="Rol" />
+          <AssociationSet Name="FK__Respuesta__IdUsu__440B1D61" Association="Self.FK__Respuesta__IdUsu__440B1D61">
             <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Respuesta" EntitySet="Respuesta" />
           </AssociationSet>
-          <AssociationSet Name="FK__Telefono__IdUsua__3B75D760" Association="Self.FK__Telefono__IdUsua__3B75D760">
+          <AssociationSet Name="FK__Telefono__IdUsua__2C3393D0" Association="Self.FK__Telefono__IdUsua__2C3393D0">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Telefono" EntitySet="Telefono" />
+          </AssociationSet>
+          <AssociationSet Name="RolUsuario" Association="Self.RolUsuario">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -988,14 +934,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ByteStoreBDModelStoreContainer" CdmEntityContainer="ByteStoreBDEntities">
-          <EntitySetMapping Name="Canton">
-            <EntityTypeMapping TypeName="ByteStoreBDModel.Canton">
-              <MappingFragment StoreEntitySet="Canton">
-                <ScalarProperty Name="IdCanton" ColumnName="IdCanton" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Categoria">
             <EntityTypeMapping TypeName="ByteStoreBDModel.Categoria">
               <MappingFragment StoreEntitySet="Categoria">
@@ -1004,37 +942,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Direccion">
-            <EntityTypeMapping TypeName="ByteStoreBDModel.Direccion">
-              <MappingFragment StoreEntitySet="Direccion">
-                <ScalarProperty Name="IdDireccion" ColumnName="IdDireccion" />
-                <ScalarProperty Name="Sennas" ColumnName="Sennas" />
-                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Distrito">
-            <EntityTypeMapping TypeName="ByteStoreBDModel.Distrito">
-              <MappingFragment StoreEntitySet="Distrito">
-                <ScalarProperty Name="IdDistrito" ColumnName="IdDistrito" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-                <ScalarProperty Name="CodigoPostal" ColumnName="CodigoPostal" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Evaluacion">
-            <EntityTypeMapping TypeName="ByteStoreBDModel.Evaluacion">
-              <MappingFragment StoreEntitySet="Evaluacion">
-                <ScalarProperty Name="IdEvaluacion" ColumnName="IdEvaluacion" />
-                <ScalarProperty Name="Evaluacion1" ColumnName="Evaluacion" />
-                <ScalarProperty Name="Comentario" ColumnName="Comentario" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FacturaDetalle">
-            <EntityTypeMapping TypeName="ByteStoreBDModel.FacturaDetalle">
-              <MappingFragment StoreEntitySet="FacturaDetalle">
-                <ScalarProperty Name="IdFacturaEncabezado" ColumnName="IdFacturaEncabezado" />
+          <EntitySetMapping Name="CompraDetalle">
+            <EntityTypeMapping TypeName="ByteStoreBDModel.CompraDetalle">
+              <MappingFragment StoreEntitySet="CompraDetalle">
+                <ScalarProperty Name="IdCompraEncabezado" ColumnName="IdCompraEncabezado" />
                 <ScalarProperty Name="IdProducto" ColumnName="IdProducto" />
                 <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
                 <ScalarProperty Name="Precio" ColumnName="Precio" />
@@ -1042,15 +953,36 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="FacturaEncabezado">
-            <EntityTypeMapping TypeName="ByteStoreBDModel.FacturaEncabezado">
-              <MappingFragment StoreEntitySet="FacturaEncabezado">
-                <ScalarProperty Name="IdFacturaEncabezado" ColumnName="IdFacturaEncabezado" />
+          <EntitySetMapping Name="CompraEncabezado">
+            <EntityTypeMapping TypeName="ByteStoreBDModel.CompraEncabezado">
+              <MappingFragment StoreEntitySet="CompraEncabezado">
+                <ScalarProperty Name="IdCompraEncabezado" ColumnName="IdCompraEncabezado" />
                 <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
                 <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
                 <ScalarProperty Name="Impuesto" ColumnName="Impuesto" />
                 <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Direccion">
+            <EntityTypeMapping TypeName="ByteStoreBDModel.Direccion">
+              <MappingFragment StoreEntitySet="Direccion">
+                <ScalarProperty Name="IdDireccion" ColumnName="IdDireccion" />
+                <ScalarProperty Name="Provincia" ColumnName="Provincia" />
+                <ScalarProperty Name="Canton" ColumnName="Canton" />
+                <ScalarProperty Name="Distrito" ColumnName="Distrito" />
+                <ScalarProperty Name="Sennas" ColumnName="Sennas" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Evaluacion">
+            <EntityTypeMapping TypeName="ByteStoreBDModel.Evaluacion">
+              <MappingFragment StoreEntitySet="Evaluacion">
+                <ScalarProperty Name="IdEvaluacion" ColumnName="IdEvaluacion" />
+                <ScalarProperty Name="Escala" ColumnName="Escala" />
+                <ScalarProperty Name="Comentario" ColumnName="Comentario" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1059,14 +991,6 @@
               <MappingFragment StoreEntitySet="FotoProducto">
                 <ScalarProperty Name="IdFotoProducto" ColumnName="IdFotoProducto" />
                 <ScalarProperty Name="Foto" ColumnName="Foto" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Mensaje">
-            <EntityTypeMapping TypeName="ByteStoreBDModel.Mensaje">
-              <MappingFragment StoreEntitySet="Mensaje">
-                <ScalarProperty Name="IdMensaje" ColumnName="IdMensaje" />
-                <ScalarProperty Name="Mensaje1" ColumnName="Mensaje" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1084,8 +1008,17 @@
           <EntitySetMapping Name="Pedido">
             <EntityTypeMapping TypeName="ByteStoreBDModel.Pedido">
               <MappingFragment StoreEntitySet="Pedido">
-                <ScalarProperty Name="IdFacturaEncabezado" ColumnName="IdFacturaEncabezado" />
+                <ScalarProperty Name="IdCompraEncabezado" ColumnName="IdCompraEncabezado" />
                 <ScalarProperty Name="EstadoEntrega" ColumnName="EstadoEntrega" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pregunta">
+            <EntityTypeMapping TypeName="ByteStoreBDModel.Pregunta">
+              <MappingFragment StoreEntitySet="Pregunta">
+                <ScalarProperty Name="IdPregunta" ColumnName="IdPregunta" />
+                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+                <ScalarProperty Name="Pregunta1" ColumnName="Pregunta" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1101,11 +1034,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Provincia">
-            <EntityTypeMapping TypeName="ByteStoreBDModel.Provincia">
-              <MappingFragment StoreEntitySet="Provincia">
-                <ScalarProperty Name="IdProvincia" ColumnName="IdProvincia" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <EntitySetMapping Name="Respuesta">
+            <EntityTypeMapping TypeName="ByteStoreBDModel.Respuesta">
+              <MappingFragment StoreEntitySet="Respuesta">
+                <ScalarProperty Name="IdRespuesta" ColumnName="IdRespuesta" />
+                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+                <ScalarProperty Name="Respuesta1" ColumnName="Respuesta" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1150,34 +1084,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="FK__Canton__IdProvin__403A8C7D" TypeName="ByteStoreBDModel.FK__Canton__IdProvin__403A8C7D" StoreEntitySet="Canton">
-            <EndProperty Name="Provincia">
-              <ScalarProperty Name="IdProvincia" ColumnName="IdProvincia" />
-            </EndProperty>
-            <EndProperty Name="Canton">
-              <ScalarProperty Name="IdCanton" ColumnName="IdCanton" />
-            </EndProperty>
-            <Condition IsNull="false" ColumnName="IdProvincia" />
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Direccion__IdCan__47DBAE45" TypeName="ByteStoreBDModel.FK__Direccion__IdCan__47DBAE45" StoreEntitySet="Direccion">
-            <EndProperty Name="Canton">
-              <ScalarProperty Name="IdCanton" ColumnName="IdCanton" />
-            </EndProperty>
-            <EndProperty Name="Direccion">
-              <ScalarProperty Name="IdDireccion" ColumnName="IdDireccion" />
-            </EndProperty>
-            <Condition IsNull="false" ColumnName="IdCanton" />
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Distrito__IdCant__440B1D61" TypeName="ByteStoreBDModel.FK__Distrito__IdCant__440B1D61" StoreEntitySet="Distrito">
-            <EndProperty Name="Canton">
-              <ScalarProperty Name="IdCanton" ColumnName="IdCanton" />
-            </EndProperty>
-            <EndProperty Name="Distrito">
-              <ScalarProperty Name="IdDistrito" ColumnName="IdDistrito" />
-            </EndProperty>
-            <Condition IsNull="false" ColumnName="IdCanton" />
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Producto__IdCate__534D60F1" TypeName="ByteStoreBDModel.FK__Producto__IdCate__534D60F1" StoreEntitySet="Producto">
+          <AssociationSetMapping Name="FK__Producto__IdCate__398D8EEE" TypeName="ByteStoreBDModel.FK__Producto__IdCate__398D8EEE" StoreEntitySet="Producto">
             <EndProperty Name="Categoria">
               <ScalarProperty Name="IdCategoria" ColumnName="IdCategoria" />
             </EndProperty>
@@ -1186,79 +1093,70 @@
             </EndProperty>
             <Condition IsNull="false" ColumnName="IdCategoria" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Direccion__IdDis__48CFD27E" TypeName="ByteStoreBDModel.FK__Direccion__IdDis__48CFD27E" StoreEntitySet="Direccion">
-            <EndProperty Name="Distrito">
-              <ScalarProperty Name="IdDistrito" ColumnName="IdDistrito" />
-            </EndProperty>
+          <AssociationSetMapping Name="FK__CompraEnc__IdDir__49C3F6B7" TypeName="ByteStoreBDModel.FK__CompraEnc__IdDir__49C3F6B7" StoreEntitySet="CompraEncabezado">
             <EndProperty Name="Direccion">
               <ScalarProperty Name="IdDireccion" ColumnName="IdDireccion" />
             </EndProperty>
-            <Condition IsNull="false" ColumnName="IdDistrito" />
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Direccion__IdPro__46E78A0C" TypeName="ByteStoreBDModel.FK__Direccion__IdPro__46E78A0C" StoreEntitySet="Direccion">
-            <EndProperty Name="Provincia">
-              <ScalarProperty Name="IdProvincia" ColumnName="IdProvincia" />
-            </EndProperty>
-            <EndProperty Name="Direccion">
-              <ScalarProperty Name="IdDireccion" ColumnName="IdDireccion" />
-            </EndProperty>
-            <Condition IsNull="false" ColumnName="IdProvincia" />
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Direccion__IdUsu__74AE54BC" TypeName="ByteStoreBDModel.FK__Direccion__IdUsu__74AE54BC" StoreEntitySet="Direccion">
-            <EndProperty Name="Usuario">
-              <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-            </EndProperty>
-            <EndProperty Name="Direccion">
-              <ScalarProperty Name="IdDireccion" ColumnName="IdDireccion" />
-            </EndProperty>
-            <Condition IsNull="false" ColumnName="IdUsuario" />
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Pedido__IdDirecc__03F0984C" TypeName="ByteStoreBDModel.FK__Pedido__IdDirecc__03F0984C" StoreEntitySet="Pedido">
-            <EndProperty Name="Direccion">
-              <ScalarProperty Name="IdDireccion" ColumnName="IdDireccion" />
-            </EndProperty>
-            <EndProperty Name="Pedido">
-              <ScalarProperty Name="IdFacturaEncabezado" ColumnName="IdFacturaEncabezado" />
+            <EndProperty Name="CompraEncabezado">
+              <ScalarProperty Name="IdCompraEncabezado" ColumnName="IdCompraEncabezado" />
             </EndProperty>
             <Condition IsNull="false" ColumnName="IdDireccion" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Distrito__IdProv__4316F928" TypeName="ByteStoreBDModel.FK__Distrito__IdProv__4316F928" StoreEntitySet="Distrito">
-            <EndProperty Name="Provincia">
-              <ScalarProperty Name="IdProvincia" ColumnName="IdProvincia" />
+          <AssociationSetMapping Name="FK__CompraEnc__IdMet__48CFD27E" TypeName="ByteStoreBDModel.FK__CompraEnc__IdMet__48CFD27E" StoreEntitySet="CompraEncabezado">
+            <EndProperty Name="MetodoPago">
+              <ScalarProperty Name="IdMetodoPago" ColumnName="IdMetodoPago" />
             </EndProperty>
-            <EndProperty Name="Distrito">
-              <ScalarProperty Name="IdDistrito" ColumnName="IdDistrito" />
+            <EndProperty Name="CompraEncabezado">
+              <ScalarProperty Name="IdCompraEncabezado" ColumnName="IdCompraEncabezado" />
             </EndProperty>
-            <Condition IsNull="false" ColumnName="IdProvincia" />
+            <Condition IsNull="false" ColumnName="IdMetodoPago" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Evaluacio__IdUsu__693CA210" TypeName="ByteStoreBDModel.FK__Evaluacio__IdUsu__693CA210" StoreEntitySet="Evaluacion">
+          <AssociationSetMapping Name="FK__CompraEnc__IdUsu__47DBAE45" TypeName="ByteStoreBDModel.FK__CompraEnc__IdUsu__47DBAE45" StoreEntitySet="CompraEncabezado">
             <EndProperty Name="Usuario">
               <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+            </EndProperty>
+            <EndProperty Name="CompraEncabezado">
+              <ScalarProperty Name="IdCompraEncabezado" ColumnName="IdCompraEncabezado" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="IdUsuario" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Evaluacio__IdCom__5535A963" TypeName="ByteStoreBDModel.FK__Evaluacio__IdCom__5535A963" StoreEntitySet="Evaluacion">
+            <EndProperty Name="CompraEncabezado">
+              <ScalarProperty Name="IdCompraEncabezado" ColumnName="IdCompraEncabezado" />
             </EndProperty>
             <EndProperty Name="Evaluacion">
               <ScalarProperty Name="IdEvaluacion" ColumnName="IdEvaluacion" />
             </EndProperty>
-            <Condition IsNull="false" ColumnName="IdUsuario" />
+            <Condition IsNull="false" ColumnName="IdCompraEncabezado" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__FacturaEn__IdMet__5EBF139D" TypeName="ByteStoreBDModel.FK__FacturaEn__IdMet__5EBF139D" StoreEntitySet="FacturaEncabezado">
-            <EndProperty Name="MetodoPago">
-              <ScalarProperty Name="IdMetodoPago" ColumnName="IdMetodoPago" />
-            </EndProperty>
-            <EndProperty Name="FacturaEncabezado">
-              <ScalarProperty Name="IdFacturaEncabezado" ColumnName="IdFacturaEncabezado" />
-            </EndProperty>
-            <Condition IsNull="false" ColumnName="IdMetodoPago" />
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__FacturaEn__IdUsu__5DCAEF64" TypeName="ByteStoreBDModel.FK__FacturaEn__IdUsu__5DCAEF64" StoreEntitySet="FacturaEncabezado">
+          <AssociationSetMapping Name="FK__Direccion__IdUsu__2F10007B" TypeName="ByteStoreBDModel.FK__Direccion__IdUsu__2F10007B" StoreEntitySet="Direccion">
             <EndProperty Name="Usuario">
               <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
             </EndProperty>
-            <EndProperty Name="FacturaEncabezado">
-              <ScalarProperty Name="IdFacturaEncabezado" ColumnName="IdFacturaEncabezado" />
+            <EndProperty Name="Direccion">
+              <ScalarProperty Name="IdDireccion" ColumnName="IdDireccion" />
             </EndProperty>
             <Condition IsNull="false" ColumnName="IdUsuario" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__FotoProdu__IdPro__571DF1D5" TypeName="ByteStoreBDModel.FK__FotoProdu__IdPro__571DF1D5" StoreEntitySet="FotoProducto">
+          <AssociationSetMapping Name="FK__Evaluacio__IdEva__534D60F1" TypeName="ByteStoreBDModel.FK__Evaluacio__IdEva__534D60F1" StoreEntitySet="Evaluacion">
+            <EndProperty Name="Usuario">
+              <ScalarProperty Name="IdUsuario" ColumnName="IdEvaluador" />
+            </EndProperty>
+            <EndProperty Name="Evaluacion">
+              <ScalarProperty Name="IdEvaluacion" ColumnName="IdEvaluacion" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="IdEvaluador" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Evaluacio__IdEva__5441852A" TypeName="ByteStoreBDModel.FK__Evaluacio__IdEva__5441852A" StoreEntitySet="Evaluacion">
+            <EndProperty Name="Usuario">
+              <ScalarProperty Name="IdUsuario" ColumnName="IdEvaluado" />
+            </EndProperty>
+            <EndProperty Name="Evaluacion">
+              <ScalarProperty Name="IdEvaluacion" ColumnName="IdEvaluacion" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="IdEvaluado" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__FotoProdu__IdPro__3D5E1FD2" TypeName="ByteStoreBDModel.FK__FotoProdu__IdPro__3D5E1FD2" StoreEntitySet="FotoProducto">
             <EndProperty Name="Producto">
               <ScalarProperty Name="IdProducto" ColumnName="IdProducto" />
             </EndProperty>
@@ -1267,25 +1165,7 @@
             </EndProperty>
             <Condition IsNull="false" ColumnName="IdProducto" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Mensaje__IdMensa__5AEE82B9" TypeName="ByteStoreBDModel.FK__Mensaje__IdMensa__5AEE82B9" StoreEntitySet="Mensaje">
-            <EndProperty Name="Mensaje">
-              <ScalarProperty Name="IdMensaje" ColumnName="IdMensajeRespuesta" />
-            </EndProperty>
-            <EndProperty Name="Mensaje1">
-              <ScalarProperty Name="IdMensaje" ColumnName="IdMensaje" />
-            </EndProperty>
-            <Condition IsNull="false" ColumnName="IdMensajeRespuesta" />
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Mensaje__IdUsuar__59FA5E80" TypeName="ByteStoreBDModel.FK__Mensaje__IdUsuar__59FA5E80" StoreEntitySet="Mensaje">
-            <EndProperty Name="Usuario">
-              <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-            </EndProperty>
-            <EndProperty Name="Mensaje">
-              <ScalarProperty Name="IdMensaje" ColumnName="IdMensaje" />
-            </EndProperty>
-            <Condition IsNull="false" ColumnName="IdUsuario" />
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__MetodoPag__IdTip__4E88ABD4" TypeName="ByteStoreBDModel.FK__MetodoPag__IdTip__4E88ABD4" StoreEntitySet="MetodoPago">
+          <AssociationSetMapping Name="FK__MetodoPag__IdTip__34C8D9D1" TypeName="ByteStoreBDModel.FK__MetodoPag__IdTip__34C8D9D1" StoreEntitySet="MetodoPago">
             <EndProperty Name="TipoPago">
               <ScalarProperty Name="IdTipoPago" ColumnName="IdTipoPago" />
             </EndProperty>
@@ -1294,7 +1174,7 @@
             </EndProperty>
             <Condition IsNull="false" ColumnName="IdTipoPago" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__MetodoPag__IdUsu__4D94879B" TypeName="ByteStoreBDModel.FK__MetodoPag__IdUsu__4D94879B" StoreEntitySet="MetodoPago">
+          <AssociationSetMapping Name="FK__MetodoPag__IdUsu__33D4B598" TypeName="ByteStoreBDModel.FK__MetodoPag__IdUsu__33D4B598" StoreEntitySet="MetodoPago">
             <EndProperty Name="Usuario">
               <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
             </EndProperty>
@@ -1303,7 +1183,34 @@
             </EndProperty>
             <Condition IsNull="false" ColumnName="IdUsuario" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Producto__IdUsua__5441852A" TypeName="ByteStoreBDModel.FK__Producto__IdUsua__5441852A" StoreEntitySet="Producto">
+          <AssociationSetMapping Name="FK__Pregunta__IdProd__412EB0B6" TypeName="ByteStoreBDModel.FK__Pregunta__IdProd__412EB0B6" StoreEntitySet="Pregunta">
+            <EndProperty Name="Producto">
+              <ScalarProperty Name="IdProducto" ColumnName="IdProducto" />
+            </EndProperty>
+            <EndProperty Name="Pregunta">
+              <ScalarProperty Name="IdPregunta" ColumnName="IdPregunta" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="IdProducto" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Pregunta__IdUsua__403A8C7D" TypeName="ByteStoreBDModel.FK__Pregunta__IdUsua__403A8C7D" StoreEntitySet="Pregunta">
+            <EndProperty Name="Usuario">
+              <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+            </EndProperty>
+            <EndProperty Name="Pregunta">
+              <ScalarProperty Name="IdPregunta" ColumnName="IdPregunta" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="IdUsuario" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Respuesta__IdPre__44FF419A" TypeName="ByteStoreBDModel.FK__Respuesta__IdPre__44FF419A" StoreEntitySet="Respuesta">
+            <EndProperty Name="Pregunta">
+              <ScalarProperty Name="IdPregunta" ColumnName="IdPregunta" />
+            </EndProperty>
+            <EndProperty Name="Respuesta">
+              <ScalarProperty Name="IdRespuesta" ColumnName="IdRespuesta" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="IdPregunta" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Producto__IdUsua__3A81B327" TypeName="ByteStoreBDModel.FK__Producto__IdUsua__3A81B327" StoreEntitySet="Producto">
             <EndProperty Name="Usuario">
               <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
             </EndProperty>
@@ -1312,16 +1219,16 @@
             </EndProperty>
             <Condition IsNull="false" ColumnName="IdUsuario" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Usuario__IdRol__38996AB5" TypeName="ByteStoreBDModel.FK__Usuario__IdRol__38996AB5" StoreEntitySet="Usuario">
-            <EndProperty Name="Rol">
-              <ScalarProperty Name="IdRol" ColumnName="IdRol" />
-            </EndProperty>
+          <AssociationSetMapping Name="FK__Respuesta__IdUsu__440B1D61" TypeName="ByteStoreBDModel.FK__Respuesta__IdUsu__440B1D61" StoreEntitySet="Respuesta">
             <EndProperty Name="Usuario">
               <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
             </EndProperty>
-            <Condition IsNull="false" ColumnName="IdRol" />
+            <EndProperty Name="Respuesta">
+              <ScalarProperty Name="IdRespuesta" ColumnName="IdRespuesta" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="IdUsuario" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK__Telefono__IdUsua__3B75D760" TypeName="ByteStoreBDModel.FK__Telefono__IdUsua__3B75D760" StoreEntitySet="Telefono">
+          <AssociationSetMapping Name="FK__Telefono__IdUsua__2C3393D0" TypeName="ByteStoreBDModel.FK__Telefono__IdUsua__2C3393D0" StoreEntitySet="Telefono">
             <EndProperty Name="Usuario">
               <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
             </EndProperty>
@@ -1329,6 +1236,14 @@
               <ScalarProperty Name="IdTelefono" ColumnName="IdTelefono" />
             </EndProperty>
             <Condition IsNull="false" ColumnName="IdUsuario" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RolUsuario" TypeName="ByteStoreBDModel.RolUsuario" StoreEntitySet="RolUsuario">
+            <EndProperty Name="Rol">
+              <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+            </EndProperty>
+            <EndProperty Name="Usuario">
+              <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+            </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
