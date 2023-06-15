@@ -15,24 +15,32 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Productos</a>
+                    @Html.ActionLink("Productos", "Index", "Producto", null, new { @class = "nav-link" })
                 </li>
-
+                <li class="nav-item">
+                    @Html.ActionLink("Pedidos", "Index", "Pedido", null, new { @class = "nav-link" })
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Carrito</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Mantenimientos</a>
+                    <div class="dropdown-menu">
+                        @Html.ActionLink("Editar Productos", "IndexAdmin", "Producto", null, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Editar Pedidos", "IndexAdmin", "Pedido", null, new { @class = "dropdown-item" })
+                    </div>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Cuenta</a>
                     <div class="dropdown-menu">
                         @Html.ActionLink("Editar Cuenta", "Perfil", "Usuario", null, new { @class = "dropdown-item" })
-                        
 
                     </div>
                 </li>
             </ul>
             <form class="d-flex">
                 <li class="nav-link my-2 my-sm-0"> 
-                    <a class="nav-link" style="color: white;" href="#">Iniciar sesión  <i class="fa-solid fa-user" style="color: #265e58;"></i></a>
+                    <a href="@Url.Action("Index","Login")" class="nav-item text-decoration-none"><i class="fa-solid fa-user"></i> Iniciar Sesión</a>
                 </li>
             </form>
         </div>
