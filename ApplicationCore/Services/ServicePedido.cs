@@ -40,7 +40,7 @@ namespace ApplicationCore.Services
 
         public Pedido Save(Pedido pedido)
         {
-            _repositoryPedido.Save(pedido);
+            return _repositoryPedido.Save(pedido);
         }
     }
 }
