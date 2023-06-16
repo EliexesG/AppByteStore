@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.Repositories
 {
-    public interface IRepositoryProductos
+    public interface IRepositoryProducto
     {
         IEnumerable<Producto> GetProducto();
         Producto GetProductoByID(int id);
