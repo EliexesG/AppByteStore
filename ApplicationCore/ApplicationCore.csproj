@@ -52,14 +52,14 @@
     <Compile Include="Services\ServiceUsuario.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DTOS\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Infraestructure\Infraestructure.csproj">
       <Project>{3b04adf6-f193-4551-9046-c4dab85907b2}</Project>
       <Name>Infraestructure</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DTOS\" />
-    <Folder Include="Utils\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
