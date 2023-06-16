@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Services
 {
-    public class ServiceProductos : IServiceProductos
+    public class ServiceProducto : IServiceProducto
     {
-        private IRepositoryProductos repository = new RepositoryProductos();
+        private IRepositoryProducto repository = new RepositoryProducto();
 
         public void DeleteProducto(int id)
         {

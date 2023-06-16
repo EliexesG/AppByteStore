@@ -12,7 +12,7 @@ using System.Runtime.Remoting.Contexts;
 
 namespace Infraestructure.Repositories
 {
-    public class RepositoryProductos : IRepositoryProductos
+    public class RepositoryProducto : IRepositoryProducto
     {
         public void DeleteProducto(int id)
         {

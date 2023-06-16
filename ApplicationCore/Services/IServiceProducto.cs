@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Services
 {
-    public interface IServiceProductos
+    public interface IServiceProducto
     {
         IEnumerable<Producto> GetProducto();
         Producto GetProductoByID(int id);

@@ -1,6 +1,10 @@
-﻿using System;
+﻿using ApplicationCore.Services;
+using Infraestructure.Models;
+using Infraestructure.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
@@ -11,8 +15,21 @@ namespace Web.Controllers
         // GET: Producto
         public ActionResult Index()
         {
-            return View();
+            IEnumerable<Producto> lista = null;
+            try
+            {
+                IServiceProducto _ServiceProducto = new ServiceProducto();
+                lista = _ServiceProducto.GetProducto();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+                return RedirectToAction("Default", "Error");
+            }
+            return View(lista);
         }
+    
 
         // GET: Producto/Details/5
         public ActionResult Details(int id)

@@ -124,11 +124,11 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\IRepositoryProductos.cs" />
+    <Compile Include="Repositories\IRepositoryProducto.cs" />
     <Compile Include="Repositories\IRepositoryPedido.cs" />
     <Compile Include="Repositories\IRepositoryUsuario.cs" />
     <Compile Include="Repositories\RepositoryUsuario.cs" />
-    <Compile Include="Repositories\RepositoryProductos.cs" />
+    <Compile Include="Repositories\RepositoryProducto.cs" />
     <Compile Include="Repositories\RepositoryPedido.cs" />
     <Compile Include="Utils\Log.cs" />
   </ItemGroup>
