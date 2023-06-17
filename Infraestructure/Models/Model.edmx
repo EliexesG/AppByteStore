@@ -57,7 +57,7 @@
           <Property Name="IdEvaluador" Type="int" />
           <Property Name="IdEvaluado" Type="int" />
           <Property Name="IdCompraEncabezado" Type="int" />
-          <Property Name="Escala" Type="int" />
+          <Property Name="Escala" Type="decimal" Precision="2" Scale="1" />
           <Property Name="Comentario" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="FotoProducto">
@@ -163,7 +163,7 @@
           <Property Name="SegundoApellido" Type="varchar" MaxLength="50" />
           <Property Name="CorreoElectronico" Type="varchar" MaxLength="100" />
           <Property Name="Contrasenna" Type="varbinary(max)" />
-          <Property Name="PromedioEvaluaciones" Type="int" />
+          <Property Name="PromedioEvaluaciones" Type="decimal" Precision="2" Scale="1" />
           <Property Name="Estado" Type="bit" />
         </EntityType>
         <Association Name="FK__CompraDet__IdCom__4CA06362">
