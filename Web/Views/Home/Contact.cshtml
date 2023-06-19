@@ -1,19 +1,36 @@
 ﻿@{
-    ViewBag.Title = "Contact";
+    ViewBag.Title = "ByteStore - Contactos";
 }
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
 
-    <address>
-        One Microsoft Way<br />
-        Redmond, WA 98052-6399<br />
-        <abbr title="Phone">P:</abbr>
-        425.555.0100
-    </address>
+<div class="d-md-flex justify-content-md-center mb-4">
+    <h2 class="w-auto text-center bg-primary text-light fw-bold p-3 rounded-4">Contáctos</h2>
+</div>
 
-    <address>
-        <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-        <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-    </address>
-</main>
+<h3 class="text-center">Si necesitas ayuda puedes contactarnos por cualquiera de estos medios</h3>
+
+<hr class="m-5" />
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card text-white p-3 rounded-4 bg-info mb-3">
+            <i class="fa-solid fa-gamepad fa-2xl m-3 shadow-lg"></i>
+            <div class="card-body">
+                <h3 class="card-title">Teléfono</h3>
+                <p class="card-text fs-4 fw-bold">+506 2556-8500</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card text-white p-3 rounded-4 bg-info mb-3">
+            <i class="fa-solid fa-gamepad fa-2xl m-3 shadow-lg"></i>
+            <div class="card-body">
+                <h3 class="card-title">E-mail</h3>
+                <p class="card-text fs-4 fw-bold">info@bytestore.com</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
