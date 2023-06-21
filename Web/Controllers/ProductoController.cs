@@ -13,7 +13,7 @@ namespace Web.Controllers
     public class ProductoController : Controller
     {
         // GET: Producto
-        public ActionResult Index()
+        public ActionResult IndexAdmin()
         {
             IEnumerable<Producto> lista = null;
             try
