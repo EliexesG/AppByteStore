@@ -120,7 +120,7 @@ namespace Infraestructure.Repositories
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
                     //Obtener Producto por nombre
-                    oProducto = ctx.Producto.ToList().FindAll(x => x.Nombre.ToLower().Contains(nombre.ToLower()));
+                    oProducto = ctx.Producto.Include("Usuario").ToList().FindAll(x => x.Nombre.ToLower().Contains(nombre.ToLower()));
 
                 }
                 return oProducto;
@@ -140,7 +140,7 @@ namespace Infraestructure.Repositories
         }
 
 
-        public IEnumerable<Producto> GetProductoPorVendedor(int idProducto)
+        public IEnumerable<Producto> GetProductoPorVendedor(int idVendedor)
         {
             IEnumerable<Producto> oProducto = null;
             try
@@ -149,7 +149,7 @@ namespace Infraestructure.Repositories
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
                     //Obtener Productos por Vendedor (Usuario) y su información
-                    oProducto = ctx.Producto.Where(l => l.IdProducto == idProducto).Include("Usuario").ToList();
+                    oProducto = ctx.Producto.Include("Usuario").Where(l => l.Usuario.IdUsuario == idVendedor).ToList();
 
                 }
                 return oProducto;

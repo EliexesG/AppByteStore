@@ -169,10 +169,12 @@ namespace Infraestructure.Models
 
         [Display(Name = "Descripción")]
         public string Descripcion { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public Nullable<double> Precio { get; set; }
         public Nullable<int> Stock { get; set; }
 
-        [Display(Name = "Estado de Uso")]
+        [Display(Name = "Estado")]
         public Nullable<int> Estado { get; set; }
 
         [Display(Name = "Categoría")]

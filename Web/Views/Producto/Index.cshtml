@@ -1,57 +1,27 @@
 ﻿@model IEnumerable<Infraestructure.Models.Producto>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Productos";
 }
 
-<h2>Index</h2>
+<h2>Productos</h2>
+<p>Gran variedad a tu alcance</p>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Precio)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Stock)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Estado)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Descripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Precio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Stock)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Estado)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdProducto }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdProducto }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdProducto })
-        </td>
-    </tr>
-}
-
-</table>
+<div class="row">
+    <div class="col-lg-3">
+        <form class="d-flex">
+            <input class="form-control me-sm-2" type="search">
+            <button class="btn btn-info my-2 my-sm-0" type="submit">Buscar</button>
+        </form>
+    </div>
+    <div class="col-lg-3">
+        <div class="form-select">
+            @* Categorías: Hacer repositorios
+                @foreach (var categoria in (List<Infraestructure.Models.Categoria>)ViewBag.listaCategoria)
+                {
+                    <button class="list-group-item filtercategoria" data-id="@categoria.IdCategoria">@categoria.Descripcion</button>
+                }
+            *@
+        </div>
+    </div>
+</div>
