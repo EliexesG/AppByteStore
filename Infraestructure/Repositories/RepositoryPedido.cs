@@ -30,7 +30,11 @@ namespace Infraestructure.Repositories
                     //Obtener todos los pedidos
                     lista = ctx.Pedido
                         .Include(x => x.CompraEncabezado)
+                        .Include(x => x.CompraEncabezado.Usuario)
                         .Include(x => x.CompraEncabezado.CompraDetalle)
+                        .Include(x => x.CompraEncabezado.Direccion)
+                        .Include(x => x.CompraEncabezado.MetodoPago)
+                        .Include(x => x.CompraEncabezado.MetodoPago.TipoPago)
                         .Include(x => x.CompraEncabezado.CompraDetalle.Select(c => c.Producto))
                         .Include(x => x.CompraEncabezado.CompraDetalle.Select(c => c.Producto.Usuario))
                         .Where(pedido => pedido.CompraEncabezado.Usuario.IdUsuario == idCliente)
@@ -67,7 +71,11 @@ namespace Infraestructure.Repositories
                     //Obtener todos los pedidos
                     pedido = ctx.Pedido
                         .Include(x => x.CompraEncabezado)
+                        .Include(x => x.CompraEncabezado.Usuario)
                         .Include(x => x.CompraEncabezado.CompraDetalle)
+                        .Include(x => x.CompraEncabezado.Direccion)
+                        .Include(x => x.CompraEncabezado.MetodoPago)
+                        .Include(x => x.CompraEncabezado.MetodoPago.TipoPago)
                         .Include(x => x.CompraEncabezado.CompraDetalle.Select(c => c.Producto))
                         .Include(x => x.CompraEncabezado.CompraDetalle.Select(c => c.Producto.Usuario))
                         .Where(x => x.IdCompraEncabezado == id)
@@ -104,7 +112,11 @@ namespace Infraestructure.Repositories
                     //Obtener todos los Pedidos
                     lista = ctx.Pedido
                         .Include(x => x.CompraEncabezado)
+                        .Include(x => x.CompraEncabezado.Usuario)
                         .Include(x => x.CompraEncabezado.CompraDetalle)
+                        .Include(x => x.CompraEncabezado.Direccion)
+                        .Include(x => x.CompraEncabezado.MetodoPago)
+                        .Include(x => x.CompraEncabezado.MetodoPago.TipoPago)
                         .Include(x => x.CompraEncabezado.CompraDetalle.Select(c => c.Producto))
                         .Include(x => x.CompraEncabezado.CompraDetalle.Select(c => c.Producto.Usuario))
                         .Where(pedido => pedido.CompraEncabezado.CompraDetalle.Any(c => c.Producto.Usuario.IdUsuario == idVendedor))
