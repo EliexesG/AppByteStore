@@ -1,0 +1,150 @@
+﻿@model Infraestructure.Models.Pedido
+
+@{
+    ViewBag.Title = "ByteStore - Detalle Pedido de " + Model.CompraEncabezado.Usuario.Nombre;
+}
+
+<div>
+    <div class="d-md-flex justify-content-md-center mb-4">
+        <h2 class="w-auto text-center bg-primary text-light fw-bold p-3 rounded-4">
+            Pedido de: @Model.CompraEncabezado.Usuario.Nombre
+            @Model.CompraEncabezado.Usuario.PrimerApellido
+            @Model.CompraEncabezado.Usuario.SegundoApellido
+        </h2>
+    </div>
+    <hr class="mb-4" />
+    <div class="row">
+        <div class="col-md-6" style="height:100%">
+            <div class="card text-white p-3 rounded-4 bg-info mb-3">
+                <i class="fa-solid fa-calendar-days fa-2xl m-3 shadow-lg"></i>
+                <div class="card-body">
+                    <h3 class="card-title">@Html.DisplayNameFor(model => model.CompraEncabezado.FechaHora)</h3>
+                    <p class="card-text fs-4 fw-bold">
+                        @Html.DisplayFor(model => model.CompraEncabezado.FechaHora)
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-6" style="height:100%">
+            <div class="card text-white p-3 rounded-4 bg-info mb-3">
+                <i class="fa-solid fa-truck-fast fa-2xl m-3 shadow-lg"></i>
+                <div class="card-body">
+                    <h3 class="card-title">@Html.DisplayNameFor(model => model.EstadoEntrega)</h3>
+
+                    @if (Model.EstadoEntrega == 0)
+                    {
+                        <p class="card-text fs-4 fw-bold">
+                            Pendiente
+                        </p>
+                    }
+                    else if (Model.EstadoEntrega == 1)
+                    {
+                        <p class="card-text fs-4 fw-bold">
+                            En Progreso
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="card-text fs-4 fw-bold">
+                            Finalizado
+                        </p>
+                    }
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-6" style="height:100%">
+            <div class="card text-white p-3 rounded-4 bg-info mb-3">
+                <i class="fa-solid fa-location-pin fa-2xl m-3 shadow-lg"></i>
+                <div class="card-body">
+                    <h3 class="card-title">@Html.DisplayNameFor(model => model.CompraEncabezado.Direccion)</h3>
+                    <p class="card-text fs-4 fw-bold">
+                        @Model.CompraEncabezado.Direccion.Sennas
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-6"style="height:100%">
+            <div class="card text-white p-3 rounded-4 bg-info mb-3">
+                <i class="fa-solid fa-credit-card  fa-2xl m-3 shadow-lg"></i>
+                <div class="card-body">
+                    <h3 class="card-title">@Html.DisplayNameFor(model => model.CompraEncabezado.MetodoPago)</h3>
+                    <p class="card-text fs-4 fw-bold">
+                        @Model.CompraEncabezado.MetodoPago.Proveedor (@Model.CompraEncabezado.MetodoPago.TipoPago.Descripcion) | @Html.DisplayFor(model => model.CompraEncabezado.MetodoPago.FechaExpiracion)
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-12" style="height:100%">
+            <div class="card text-white p-3 rounded-4 bg-info mb-3">
+                <i class="fa-solid fa-circle-info fa-2xl m-3 shadow-lg"></i>
+                <div class="card-body">
+                    <h3 class="card-title mb-3">@Html.DisplayNameFor(model => model.CompraEncabezado.CompraDetalle)</h3>
+                    <table class="table rounded rounded-4 overflow-hidden fs-5 shadow">
+                        <thead class="table-info">
+                            <tr>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-dark">
+                            @foreach (var detalle in (ICollection<Infraestructure.Models.CompraDetalle>)Model.CompraEncabezado.CompraDetalle)
+                            {
+                                <tr>
+                                    <th scope="row">@detalle.Producto.Nombre</th>
+                                    @if (detalle.EstadoEntrega == false)
+                                    {
+                                        <td>Sin Entregar</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Entregado</td>
+                                    }
+                                    <td>@Html.DisplayFor(model => detalle.Precio)</td>
+                                    <th>@detalle.Cantidad</th>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-12" style="height:100%">
+            <div class="card text-white p-3 rounded-4 bg-primary mb-3">
+                <i class="fa-solid fa-money-bill fa-2xl m-3 shadow-lg"></i>
+                <div class="card-body">
+                    <h3 class="card-title mb-3">Desglose</h3>
+                    <table class="table rounded rounded-4 overflow-hidden fs-5 shadow">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col">@Html.DisplayNameFor(model => model.CompraEncabezado.SubTotal)</th>
+                                <th scope="col">@Html.DisplayNameFor(model => model.CompraEncabezado.Impuesto)</th>
+                                <th scope="col">@Html.DisplayNameFor(model => model.CompraEncabezado.Total)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-dark">
+
+                            <tr>
+                                <th scope="row">@Html.DisplayFor(model => model.CompraEncabezado.SubTotal)</th>
+                                <td>@Html.DisplayFor(model => model.CompraEncabezado.Impuesto)</td>
+                                <th>@Html.DisplayFor(model => model.CompraEncabezado.Total)</th>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="mb-4" />
+<div>
+    <a href="@Url.Action("Index", "Pedido")" class="btn btn-info fs-4">Vover Atrás</a>
+</div>

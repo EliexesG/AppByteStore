@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Infraestructure.Models.Pedido>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EstadoEntrega)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompraEncabezado.IdCompraEncabezado)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstadoEntrega)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompraEncabezado.IdCompraEncabezado)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IdCompraEncabezado }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IdCompraEncabezado }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IdCompraEncabezado })
+        </td>
+    </tr>
+}
+
+</table>

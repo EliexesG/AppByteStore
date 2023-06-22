@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,6 +24,8 @@ namespace Infraestructure.Models
         public int IdCompraEncabezado { get; set; }
         public int IdProducto { get; set; }
         public Nullable<int> Cantidad { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public Nullable<double> Precio { get; set; }
 
         [Display(Name = "Estado de Entrega")]
@@ -37,15 +40,21 @@ namespace Infraestructure.Models
     {
         public int IdCompraEncabezado { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd d 'de' MMMM yyyy, hh:mm tt}")]
         [Display(Name = "Fecha y Hora de Compra")]
         public Nullable<System.DateTime> FechaHora { get; set; }
 
+        [DisplayFormat(DataFormatString ="{0:C}")]
         [Display(Name = "Sub-total")]
-        public Nullable<double> SubTotal { get; set; }
+        public Nullable<double> SubTotal { get; set; } 
+
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public Nullable<double> Impuesto { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public Nullable<double> Total { get; set; }
 
-        [Display(Name = "Detalles de Factura")]
+        [Display(Name = "Detalles de Compra")]
         public virtual ICollection<CompraDetalle> CompraDetalle { get; set; }
 
         [Display(Name = "Dirección")]
@@ -109,6 +118,7 @@ namespace Infraestructure.Models
         [Display(Name = "Número de Tarjeta")]
         public byte[] NumeroTarjeta { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/yy}")]
         [Display(Name = "Fecha de Expiración")]
         public Nullable<System.DateTime> FechaExpiracion { get; set; }
 
@@ -129,6 +139,7 @@ namespace Infraestructure.Models
     {
         public int IdCompraEncabezado { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0}")]
         [Display(Name = "Estado de Entrega")]
         public Nullable<int> EstadoEntrega { get; set; }
 
