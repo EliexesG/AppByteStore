@@ -9,8 +9,7 @@
 <div class="col-md-12">
     <div class="row">
         <p class="col-md-6">
-            @Html.ActionLink("Nuevo producto", "Create", null, new { @class = "btn btn-success" })
-
+            <a href="@Url.Action("Create", "Producto")" class="btn btn-success">Nuevo Producto <i class="fa-solid fa-plus"></i></a>
         </p>
 
         <div class="col-md-6">
@@ -24,51 +23,56 @@
     </div>
 </div>
 <div>
+    @*Datatable de los productos*@
     <table class="table table-info">
-        <tr  class="text-center">
-            <th scope="col">
-                <h3> @Html.DisplayNameFor(model => model.Nombre)</h3>
-            </th>
-            <th scope="col">
-                <h3> @Html.DisplayNameFor(model => model.Descripcion)</h3>
-</th>
-            <th scope="col">
-                <h3> @Html.DisplayNameFor(model => model.Precio)</h3>
-</th>
-            <th scope="col">
-                <h3>@Html.DisplayNameFor(model => model.Stock)</h3>
-</th>
-            <th scope="col">
-                <h3> @Html.DisplayNameFor(model => model.Estado)</h3>
-</th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr class="table-dark">
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descripcion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Precio)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Stock)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estado)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.IdProducto }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.IdProducto }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.IdProducto })
-                </td>
+        <thead>
+            <tr class="text-center">
+                <th scope="col">
+                    <h5> @Html.DisplayNameFor(model => model.Nombre)</h5>
+                </th>
+                <th scope="col">
+                    <h5> @Html.DisplayNameFor(model => model.Descripcion)</h5>
+                </th>
+                <th scope="col">
+                    <h5> @Html.DisplayNameFor(model => model.Precio)</h5>
+                </th>
+                <th scope="col">
+                    <h5>@Html.DisplayNameFor(model => model.Stock)</h5>
+                </th>
+                <th scope="col">
+                    <h5> @Html.DisplayNameFor(model => model.Estado)</h5>
+                </th>
+                <th></th>
             </tr>
-        }
+            </thead>
+        <tbody>
+            @foreach (var item in Model) //Itera la lista de los productos guardados en la BD
+            {
+                <tr class="table-dark">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Precio)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Stock)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    </td>
+                    <td>
 
+                        <a class="btn btn-primary" href="@Url.Action("Edit", "Producto", new {id = item.IdProducto})">Editar <i class="fa-solid fa-pencil"></i></a>
+
+                        <a class="btn btn-warning" href="@Url.Action("Delete", "Producto", new {id = item.IdProducto})"><i class="fa-solid fa-trash-can"></i></a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
 </div>
