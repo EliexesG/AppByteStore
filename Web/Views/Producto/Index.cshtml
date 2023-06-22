@@ -1,4 +1,4 @@
-﻿@model Infraestructure.Models.Producto
+﻿@model IEnumerable<Infraestructure.Models.Producto>
 
 @{
     ViewBag.Title = "Productos";
@@ -17,10 +17,10 @@
     <div class="col-lg-3">
         <div class="form-select">
             @* Categorías: Hacer repositorios
-        @foreach (var categoria in (List<Infraestructure.Models.Categoria>)ViewBag.listaCategoria)
-        {
-            <button class="list-group-item filtercategoria" data-id="@categoria.IdCategoria">@categoria.Descripcion</button>
-        }
+                @foreach (var categoria in (List<Infraestructure.Models.Categoria>)ViewBag.listaCategoria)
+                {
+                    <button class="list-group-item filtercategoria" data-id="@categoria.IdCategoria">@categoria.Descripcion</button>
+                }
             *@
         </div>
     </div>

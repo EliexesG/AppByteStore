@@ -12,8 +12,9 @@ namespace ApplicationCore.Services
         IEnumerable<Producto> GetProducto();
         Producto GetProductoByID(int id);
         Producto GuardarProducto(Producto producto);
-        IEnumerable<Producto> GetProductoPorNombre(String nombre);
-        IEnumerable<Producto> GetProductoPorVendedor(int idProducto);
+        IEnumerable<Producto> GetProductoPorNombre(String nombre, int idVendedor = -1);
+        IEnumerable<string> GetProductoNombres(int idVendedor = -1);
+        IEnumerable<Producto> GetProductoPorVendedor(int idVendedor);
         IEnumerable<Producto> GetProductoByCategoria(int idCategoria);
         void DeleteProducto(int id);
         Producto Save(Producto producto);
