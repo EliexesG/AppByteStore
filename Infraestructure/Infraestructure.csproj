@@ -127,6 +127,7 @@
     <Compile Include="Repositories\IRepositoryProducto.cs" />
     <Compile Include="Repositories\IRepositoryPedido.cs" />
     <Compile Include="Repositories\IRepositoryUsuario.cs" />
+    <Compile Include="Repositories\RepositoryCategoria.cs" />
     <Compile Include="Repositories\RepositoryUsuario.cs" />
     <Compile Include="Repositories\RepositoryProducto.cs" />
     <Compile Include="Repositories\RepositoryPedido.cs" />

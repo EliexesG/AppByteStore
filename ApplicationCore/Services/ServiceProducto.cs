@@ -32,14 +32,32 @@ namespace ApplicationCore.Services
             return repository.GetProductoByID(id);
         }
 
-        public IEnumerable<Producto> GetProductoPorNombre(string nombre)
+        public IEnumerable<string> GetProductoNombres(int idVendedor = -1)
         {
-            throw new NotImplementedException();
+            IEnumerable<string> lista = null;
+
+            if (idVendedor != -1)
+            {
+               lista = repository.GetProducto().Where(producto => producto.Usuario.IdUsuario == idVendedor).Select(producto => producto.Nombre);
+            }
+            else
+            {
+                lista = repository.GetProducto().Select(producto => producto.Nombre);
+            }
+
+            return lista;
+        }
+         
+
+        public IEnumerable<Producto> GetProductoPorNombre(string nombre, int idVendedor = -1)
+        {
+
+            return repository.GetProductoPorNombre(nombre).Where(producto => idVendedor != -1 ? producto.Usuario.IdUsuario == idVendedor : true);
         }
 
-        public IEnumerable<Producto> GetProductoPorVendedor(int idProducto)
+        public IEnumerable<Producto> GetProductoPorVendedor(int idVendedor)
         {
-           return repository.GetProductoPorVendedor(idProducto);
+           return repository.GetProductoPorVendedor(idVendedor);
         }
 
         public Producto GuardarProducto(Producto producto)

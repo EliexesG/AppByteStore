@@ -1,0 +1,191 @@
+﻿@model IEnumerable<Infraestructure.Models.Producto>
+
+@{
+    ViewBag.Title = "Gestión de productos";
+    int itemsPerPage = (int)ViewBag.NumItemsPerPage;
+    var numPages = Model.Count() % itemsPerPage != 0 ? Model.Count() / itemsPerPage + 1 : Model.Count() / itemsPerPage;
+}
+
+<div class="row">
+    <p class="col-md-3">
+        <a href="@Url.Action("Create", "Producto")" class="btn btn-success">Nuevo Producto <i class="fa-solid fa-plus"></i></a>
+    </p>
+    <h2 class="col-md-5 text-white">Mantenimiento de productos</h2>
+    <div class="col-md-4">
+
+        <form class="d-flex">
+            @Html.TextBox("filtro", "", new { @class = "form-control me-sm-2", @placeholder = "Buscar Producto" })
+
+            <button id="btnBuscar" class="btn btn-info my-2 my-sm-0" type="button">Buscar</button>
+        </form>
+
+    </div>
+</div>
+
+@*Datatable de los productos*@
+<table class="table table-info rounded-4 overflow-hidden p-3">
+    <thead>
+        <tr class="text-center">
+            <th scope="col">
+                <h5> @Html.DisplayNameFor(model => model.Nombre)</h5>
+            </th>
+            <th scope="col">
+                <h5> @Html.DisplayNameFor(model => model.Descripcion)</h5>
+            </th>
+            <th scope="col" class="bg-primary">
+                <h5><i class="fa-solid fa-arrow-up orden" style="cursor:pointer;"></i> @Html.DisplayNameFor(model => model.Precio)</h5>
+            </th>
+            <th scope="col">
+                <h5>@Html.DisplayNameFor(model => model.Stock)</h5>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tabla">
+
+    </tbody>
+</table>
+    @*Paginación*@
+    <div>
+        <ul class="pagination justify-content-end">
+            <li class="page-item">
+                <a class="page-link first" href="#" data-page="1">1</a>
+            </li>
+
+            @for (int i = 2; i <= numPages; i++)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="#" data-page="@i">@i</a>
+                </li>
+            }
+
+        </ul>
+    </div>
+    <div>
+    </div>
+
+    <style>
+        .r {
+            margin-left: 5px;
+        }
+    </style>
+
+    @section Scripts {
+        <script type="text/javascript">
+
+            var page = 1;
+
+            $(function () {
+
+                $(".first").addClass("active");
+
+                $.ajax({
+                    method: "GET",
+                    url: "/Producto/PaginacionYOrden",
+                    data: { "pag": page },
+                    success: function (result) {
+                        $("#tabla").html("");
+                        $("#tabla").html(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error" + error, "no Error: " + xhr.status)
+
+                    }
+                })
+            });
+
+            $(document).on('click', '.page-link',
+                function () {
+                    page = $(this).data('page');
+
+                    $(".page-link").removeClass("active");
+                    $(this).addClass("active");
+                    $(".orden").removeClass("fa-arrow-down").addClass("fa-arrow-up");
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/Producto/PaginacionYOrden",
+                        data: { "pag": page },
+                        success: function (result) {
+                            $("#tabla").html("");
+                            $("#tabla").html(result);
+                        },
+                        error: function (xhr, status, error) {
+                            console.log("error" + error, "no Error: " + xhr.status)
+
+                        }
+                    });
+                });
+
+
+            $(".orden").click(function () {
+
+                var orden = $(this).hasClass("fa-arrow-up");
+
+                if (orden) {
+
+                    $(".orden").removeClass("fa-arrow-up").addClass("fa-arrow-down");
+
+                }
+                else {
+
+                    $(".orden").removeClass("fa-arrow-down").addClass("fa-arrow-up");
+
+                }
+
+                $.ajax({
+                    method: "GET",
+                    url: "/Producto/PaginacionYOrden",
+                    data: { "pag": page, "orden": orden ? 1 : 0 },
+                    success: function (result) {
+                        $("#tabla").html("");
+                        $("#tabla").html(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error" + error, "no Error: " + xhr.status)
+
+                    }
+                });
+
+            });
+
+
+            //Buscar
+
+            $(function () {
+                var lista = @Html.Raw(Json.Encode(ViewBag.Nombres));
+                $("#filtro").autocomplete({ // aplica autocompletado para lista y nombres
+                    source: lista
+                })
+            });
+
+            $("#btnBuscar").click(function () {
+
+                var filtro = $("#filtro").val();
+
+                if (filtro.trim()) {
+                    $(".pagination").hide();
+                    $(".orden").hide();
+                }
+                else {
+                    $(".pagination").show();
+                    $(".orden").show();
+                }
+
+                $.ajax({
+                    method: "GET",
+                    url: "/Producto/buscarProductoxNombre",
+                    data: { "filtro": filtro },
+                    success: function (result) {
+                        $("#tabla").html("");
+                        $("#tabla").html(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error" + error, "no Error: " + xhr.status)
+
+                    }
+                });
+            });
+        </script>
+    }
+    
