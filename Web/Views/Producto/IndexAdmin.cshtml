@@ -170,6 +170,9 @@
                 else {
                     $(".pagination").show();
                     $(".orden").show();
+                    $(".page-link").removeClass("active");
+                    $(".first").addClass("active");
+                    $(".orden").removeClass("fa-arrow-down").addClass("fa-arrow-up");
                 }
 
                 $.ajax({

@@ -13,7 +13,7 @@ namespace Web.Controllers
     public class ProductoController : Controller
     {
 
-        private int numItemsPerPage = 5;
+        private int numItemsPerPage = 6;
 
         // GET: Producto
         //Para el mantenimiento de productos
@@ -95,7 +95,7 @@ namespace Web.Controllers
                 //
                 int startIndex = (pag * numItemsPerPage) - numItemsPerPage;
                 int count = (lista.Count() - startIndex) < numItemsPerPage ? (lista.Count() - startIndex) : numItemsPerPage;
-                lista = ((List<Producto>)_ServiceProducto.GetProducto()).GetRange(startIndex, count);
+                lista = ((List<Producto>)lista).GetRange(startIndex, count);
 
                 if(orden == 0)
                 {
