@@ -211,7 +211,7 @@
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
-    <Content Include="Views\Producto\IndexAdmin.cshtml" />
+    <Content Include="Views\Producto\IndexVendedor.cshtml" />
     <Content Include="Views\Producto\Index.cshtml" />
     <Content Include="Views\Pedido\Index.cshtml" />
     <Content Include="Views\Pedido\IndexVendedor.cshtml" />

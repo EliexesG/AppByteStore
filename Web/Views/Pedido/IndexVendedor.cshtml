@@ -6,10 +6,13 @@
 }
 
 <div class="d-md-flex justify-content-md-center mb-4">
-    <h2 class="w-auto text-center bg-primary text-light fw-bold p-3 rounded-4">
+    <h2 class="border border-primary border-3 w-auto text-center text-light fw-bold p-3 rounded-4">
         Pedidos del Vendedor
     </h2>
 </div>
+
+<h3 class="text-white mb-4 text-center">En este apartado podrás encontrar todos los pedidos con productos tuyos</h3>
+<hr class="mb-4" />
 
 @if (Model.Where(pedido => pedido.EstadoEntrega == 0).ToList().Count() > 0)
 {
