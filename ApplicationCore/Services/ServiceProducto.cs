@@ -51,8 +51,17 @@ namespace ApplicationCore.Services
 
         public IEnumerable<Producto> GetProductoPorNombre(string nombre, int idVendedor = -1)
         {
+            IEnumerable<Producto> lista = null;
 
-            return repository.GetProductoPorNombre(nombre).Where(producto => idVendedor != -1 ? producto.Usuario.IdUsuario == idVendedor : true);
+            if (idVendedor != -1)
+            {
+                lista = repository.GetProductoPorNombre(nombre).Where(producto => producto.Usuario.IdUsuario == idVendedor);
+            }
+            else
+            {
+                lista = repository.GetProductoPorNombre(nombre);
+            }
+            return lista;
         }
 
         public IEnumerable<Producto> GetProductoPorVendedor(int idVendedor)

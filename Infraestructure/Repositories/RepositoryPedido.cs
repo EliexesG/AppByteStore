@@ -17,6 +17,46 @@ namespace Infraestructure.Repositories
             throw new NotImplementedException();
         }
 
+        public IEnumerable<Pedido> GetPedido()
+        {
+            IEnumerable<Pedido> lista = null;
+            try
+            {
+
+
+                using (ByteStoreContext ctx = new ByteStoreContext())
+                {
+                    ctx.Configuration.LazyLoadingEnabled = false;
+                    //Obtener todos los Pedidos
+                    lista = ctx.Pedido
+                        .Include(x => x.CompraEncabezado)
+                        .Include(x => x.CompraEncabezado.Usuario)
+                        .Include(x => x.CompraEncabezado.CompraDetalle)
+                        .Include(x => x.CompraEncabezado.Direccion)
+                        .Include(x => x.CompraEncabezado.MetodoPago)
+                        .Include(x => x.CompraEncabezado.MetodoPago.TipoPago)
+                        .Include(x => x.CompraEncabezado.CompraDetalle.Select(c => c.Producto))
+                        .Include(x => x.CompraEncabezado.CompraDetalle.Select(c => c.Producto.Usuario))
+                        .ToList();
+
+                }
+                return lista;
+            }
+
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+        }
+
         public IEnumerable<Pedido> GetPedidoByCliente(int idCliente)
         {
             IEnumerable<Pedido> lista = null;
