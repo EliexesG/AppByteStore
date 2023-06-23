@@ -24,10 +24,12 @@ namespace Web.Controllers
                 //Instancia 
                 IServiceProducto _ServiceProducto = new ServiceProducto();
                 lista = _ServiceProducto.GetProducto(); //Obtengo todos los datos de la BD y los agrego a la lista 
-                return View(lista); //Retorno la vista con la lista ya cargada
+
                 //Para cargar la lista de categorías
                 IServiceCategoria _ServiceCategoria = new ServiceCategoria();
                 ViewBag.listaCategoria = _ServiceCategoria.GetCategoria();
+                return View(lista); //Retorno la vista con la lista ya cargada
+              
 
             }
             catch (Exception ex)
@@ -43,15 +45,34 @@ namespace Web.Controllers
             IEnumerable<Producto> lista = null;
             try
             {
-               
-
                 //Instancia 
                 IServiceProducto _ServiceProducto = new ServiceProducto();
                 lista = _ServiceProducto.GetProducto(); //Obtengo todos los datos de la BD y los agrego a la lista 
                 return View(lista); //Retorno la vista con la lista ya cargada
                 //Para cargar la lista de categorías
                 //Nota:Hacer repositorios de categorias
-                
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+                return RedirectToAction("Default", "Error");
+            }
+        }
+
+        // GET: Producto
+        //Para el mantenimiento de productos
+        public ActionResult IndexVendedor()
+        {
+            //Creo una lista tipo Producto
+            IEnumerable<Producto> lista = null;
+            try
+            {
+                //Instancia 
+                IServiceProducto _ServiceProducto = new ServiceProducto();
+                lista = _ServiceProducto.GetProductoPorVendedor(idVendedor); //Obtengo todos los datos de la BD y los agrego a la lista 
+                ViewBag.NumItemsPerPage = numItemsPerPage;
+                ViewBag.Nombres = _ServiceProducto.GetProductoNombres(idVendedor);
             }
             catch (Exception ex)
             {
