@@ -18,6 +18,11 @@ namespace ApplicationCore.Services
             _repositoryPedido = new RepositoryPedido();
         }
 
+        public IEnumerable<Pedido> GetPedido()
+        {
+            return _repositoryPedido.GetPedido();
+        }
+
         public void DeletePedido(int id)
         {
             _repositoryPedido.DeletePedido(id);

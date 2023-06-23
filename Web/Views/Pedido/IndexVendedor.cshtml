@@ -1,0 +1,158 @@
+﻿@model IEnumerable<Infraestructure.Models.Pedido>
+
+@{
+    ViewBag.Title = "IndexAdmin";
+    int vendedor = ViewBag.Vendedor;
+}
+
+<div class="d-md-flex justify-content-md-center mb-4">
+    <h2 class="border border-primary border-3 w-auto text-center text-light fw-bold p-3 rounded-4">
+        Pedidos del Vendedor
+    </h2>
+</div>
+
+<h3 class="text-white mb-4 text-center">En este apartado podrás encontrar todos los pedidos con productos tuyos</h3>
+<hr class="mb-4" />
+
+@if (Model.Where(pedido => pedido.EstadoEntrega == 0).ToList().Count() > 0)
+{
+    <h3 class="text-white fw-bold mb-4">
+        Pendientes
+    </h3>
+
+    <div class="row mb-4">
+        @foreach (var pedido in Model.Where(p => p.EstadoEntrega == 0).ToList())
+        {
+            <div class="col-md-12" style="height:100%">
+                <div class="card text-white p-3 rounded-4 bg-primary mb-3">
+                    <i class="fa-solid fa-truck-fast fa-2xl m-3 shadow-lg"></i>
+                    <div class="card-body">
+                        <h3 class="card-title mb-3">
+                            Pedido de
+                            @pedido.CompraEncabezado.Usuario.Nombre
+                            @pedido.CompraEncabezado.Usuario.PrimerApellido
+                            @pedido.CompraEncabezado.Usuario.SegundoApellido
+                        </h3>
+                        <p class="card-text mb-3">@Html.DisplayNameFor(model => model.CompraEncabezado.FechaHora): @Html.DisplayFor(model => pedido.CompraEncabezado.FechaHora)</p>
+
+                        <table class="table rounded rounded-4 overflow-hidden fs-5 shadow">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Sub-Total</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-dark">
+                                @foreach (var compraDetalle in (ICollection<Infraestructure.Models.CompraDetalle>)pedido.CompraEncabezado.CompraDetalle.Where(compra => compra.Producto.Usuario.IdUsuario == vendedor).ToList())
+                                {
+                                    <tr>
+                                        <th scope="row">@Html.DisplayFor(model => compraDetalle.Producto.Nombre)</th>
+                                        <th>@Html.DisplayFor(model => compraDetalle.Cantidad)</th>
+                                        <th>@Html.DisplayFor(model => compraDetalle.Precio)</th>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (Model.Where(pedido => pedido.EstadoEntrega == 1).ToList().Count() > 0)
+{
+    <h3 class="text-white fw-bold mb-4">
+        En Progreso
+    </h3>
+
+    <div class="row mb-4">
+        @foreach (var pedido in Model.Where(p => p.EstadoEntrega == 1).ToList())
+        {
+            <div class="col-md-12" style="height:100%">
+                <div class="card text-white p-3 rounded-4 bg-primary mb-3">
+                    <i class="fa-solid fa-truck-fast fa-2xl m-3 shadow-lg"></i>
+                    <div class="card-body">
+                        <h3 class="card-title mb-3">
+                            Pedido de
+                            @pedido.CompraEncabezado.Usuario.Nombre
+                            @pedido.CompraEncabezado.Usuario.PrimerApellido
+                            @pedido.CompraEncabezado.Usuario.SegundoApellido
+                        </h3>
+                        <p class="card-text mb-3">@Html.DisplayNameFor(model => model.CompraEncabezado.FechaHora): @Html.DisplayFor(model => pedido.CompraEncabezado.FechaHora)</p>
+
+                        <table class="table rounded rounded-4 overflow-hidden fs-5 shadow">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Sub-Total</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-dark">
+                                @foreach (var compraDetalle in (ICollection<Infraestructure.Models.CompraDetalle>)pedido.CompraEncabezado.CompraDetalle.Where(compra => compra.Producto.Usuario.IdUsuario == vendedor).ToList())
+                                {
+                                    <tr>
+                                        <th scope="row">@Html.DisplayFor(model => compraDetalle.Producto.Nombre)</th>
+                                        <th>@Html.DisplayFor(model => compraDetalle.Cantidad)</th>
+                                        <th>@Html.DisplayFor(model => compraDetalle.Precio)</th>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (Model.Where(pedido => pedido.EstadoEntrega == 2).ToList().Count() > 0)
+{
+    <h3 class="text-white fw-bold mb-4">
+        Finalizado
+    </h3>
+
+    <div class="row mb-4">
+        @foreach (var pedido in Model.Where(p => p.EstadoEntrega == 2).ToList())
+        {
+            <div class="col-md-12" style="height:100%">
+                <div class="card text-white p-3 rounded-4 bg-primary mb-3">
+                    <i class="fa-solid fa-truck-fast fa-2xl m-3 shadow-lg"></i>
+                    <div class="card-body">
+                        <h3 class="card-title mb-3">
+                            Pedido de
+                            @pedido.CompraEncabezado.Usuario.Nombre
+                            @pedido.CompraEncabezado.Usuario.PrimerApellido
+                            @pedido.CompraEncabezado.Usuario.SegundoApellido
+                        </h3>
+                        <p class="card-text mb-3">@Html.DisplayNameFor(model => model.CompraEncabezado.FechaHora): @Html.DisplayFor(model => pedido.CompraEncabezado.FechaHora)</p>
+
+                        <table class="table rounded rounded-4 overflow-hidden fs-5 shadow">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Sub-Total</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-dark">
+                                @foreach (var compraDetalle in (ICollection<Infraestructure.Models.CompraDetalle>)pedido.CompraEncabezado.CompraDetalle.Where(compra => compra.Producto.Usuario.IdUsuario == vendedor).ToList())
+                                {
+                                    <tr>
+                                        <th scope="row">@Html.DisplayFor(model => compraDetalle.Producto.Nombre)</th>
+                                        <th>@Html.DisplayFor(model => compraDetalle.Cantidad)</th>
+                                        <th>@Html.DisplayFor(model => compraDetalle.Precio)</th>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

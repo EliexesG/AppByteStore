@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Infraestructure.Models.Pedido>
+
+@foreach (var item in Model) //Itera la lista de los productos guardados en la BD
+{
+    <tr class="table-dark text-center">
+        <td class="p-3">
+            @Html.DisplayFor(modelItem => item.CompraEncabezado.FechaHora)
+        </td>
+        <td class="p-3">
+            @Html.DisplayFor(modelItem => item.CompraEncabezado.MetodoPago.Proveedor) (@Html.DisplayFor(modelItem => item.CompraEncabezado.MetodoPago.TipoPago.Descripcion))
+        </td>
+        <td class="p-3">
+            @Html.DisplayFor(modelItem => item.CompraEncabezado.Total)
+        </td>
+        @if (item.EstadoEntrega == 0)
+        {
+            <td class="p-3">
+                Pendiente
+            </td>
+        }
+        else if (item.EstadoEntrega == 1)
+        {
+            <td class="p-3">
+                En Progreso
+            </td>
+        }
+        else
+        {
+            <td class="p-3">
+                Finalizado
+            </td>
+        }
+        <td class="p-3">
+            <div class="d-flex">
+                <a class="btn r btn-info" href="@Url.Action("Details", "Pedido", new {id = item.IdCompraEncabezado})"><i class="fa-solid fa-circle-info"></i></a>
+            </div>
+        </td>
+    </tr>
+}

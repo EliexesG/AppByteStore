@@ -9,6 +9,7 @@ namespace Infraestructure.Repositories
 {
     public interface IRepositoryPedido
     {
+        IEnumerable<Pedido> GetPedido();
         IEnumerable<Pedido> GetPedidoByCliente(int idCliente);
         IEnumerable<Pedido> GetPedidoByVendedor(int idVendedor);
         Pedido GetPedidoByID(int id);

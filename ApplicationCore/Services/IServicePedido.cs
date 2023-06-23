@@ -9,6 +9,7 @@ namespace ApplicationCore.Services
 {
     public interface IServicePedido
     {
+        IEnumerable<Pedido> GetPedido();
         IEnumerable<Pedido> GetPedidoByCliente(int idCliente);
         IEnumerable<Pedido> GetPedidoByVendedor(int idVendedor);
         Pedido GetPedidoByID(int id);

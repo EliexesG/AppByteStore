@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Infraestructure.Models.Pedido>
+
+@{
+    ViewBag.Title = "Index";
+    int itemsPerPage = (int)ViewBag.NumItemsPerPage;
+    var numPages = Model.Count() % itemsPerPage != 0 ? Model.Count() / itemsPerPage + 1 : Model.Count() / itemsPerPage;
+}
+
+<div class="d-md-flex justify-content-md-center mb-4">
+    <h2 class="border border-3 border-warning w-auto text-center text-light fw-bold p-3 rounded-4">Pedidos de Cliente</h2>
+</div>
+<h3 class="text-white mb-4 text-center">En este apartado podrás encontrar todos tus pedidos</h3>
+<hr class="mb-4" />
+
+@*DataTable delos pedidos*@
+<table class="table table-info rounded-4 overflow-hidden p-3">
+    <thead>
+        <tr class="text-center">
+            <th scope="col" class="bg-primary">
+                <h5> <i class="fa-solid fa-arrow-up orden" style="cursor:pointer;"></i> @Html.DisplayNameFor(model => model.CompraEncabezado.FechaHora)</h5>
+            </th>
+            <th scope="col">
+                <h5> @Html.DisplayNameFor(model => model.CompraEncabezado.MetodoPago)</h5>
+            </th>
+            <th scope="col">
+                <h5>@Html.DisplayNameFor(model => model.CompraEncabezado.Total)</h5>
+            </th>
+            <th scope="col">
+                <h5>@Html.DisplayNameFor(model => model.EstadoEntrega)</h5>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tabla">
+    </tbody>
+</table>
+
+@*Paginación*@
+<div>
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <a class="page-link first" href="#" data-page="1">1</a>
+        </li>
+
+        @for (int i = 2; i <= numPages; i++)
+        {
+            <li class="page-item">
+                <a class="page-link" href="#" data-page="@i">@i</a>
+            </li>
+        }
+
+    </ul>
+</div>
+<div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        var page = 1;
+
+        $(function () {
+
+            $(".first").addClass("active");
+
+            $.ajax({
+                method: "GET",
+                url: "/Pedido/PaginacionYOrden",
+                data: { "pag": page, "tipoUsuario": 3 },
+                success: function (result) {
+                    $("#tabla").html("");
+                    $("#tabla").html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+
+                }
+            })
+        });
+
+        $(document).on('click', '.page-link',
+            function () {
+                page = $(this).data('page');
+
+                $(".page-link").removeClass("active");
+                $(this).addClass("active");
+                $(".orden").removeClass("fa-arrow-down").addClass("fa-arrow-up");
+
+                $.ajax({
+                    method: "GET",
+                    url: "/Pedido/PaginacionYOrden",
+                    data: { "pag": page, "tipoUsuario": 3 },
+                    success: function (result) {
+                        $("#tabla").html("");
+                        $("#tabla").html(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error" + error, "no Error: " + xhr.status)
+
+                    }
+                });
+            });
+
+        $(".orden").click(function () {
+
+            var orden = $(this).hasClass("fa-arrow-up");
+
+            if (orden) {
+
+                $(".orden").removeClass("fa-arrow-up").addClass("fa-arrow-down");
+
+            }
+            else {
+
+                $(".orden").removeClass("fa-arrow-down").addClass("fa-arrow-up");
+
+            }
+
+            $.ajax({
+                method: "GET",
+                url: "/Pedido/PaginacionYOrden",
+                data: { "pag": page, "tipoUsuario": 3, "orden": orden ? 1 : 0 },
+                success: function (result) {
+                    $("#tabla").html("");
+                    $("#tabla").html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+
+                }
+            });
+
+        });
+    </script>    
+}
