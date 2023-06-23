@@ -43,13 +43,17 @@ namespace Web.Controllers
             IEnumerable<Producto> lista = null;
             try
             {
+               
+
                 //Instancia 
                 IServiceProducto _ServiceProducto = new ServiceProducto();
                 lista = _ServiceProducto.GetProducto(); //Obtengo todos los datos de la BD y los agrego a la lista 
 
                 //Para cargar la lista de categorías
-                //Nota:Hacer repositorios de categorias
-                
+                IServiceCategoria _ServiceCategoria = new ServiceCategoria();
+                ViewBag.listaCategoria = _ServiceCategoria.GetCategoria();
+
+
             }
             catch (Exception ex)
             {
