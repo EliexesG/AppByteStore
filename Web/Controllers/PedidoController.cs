@@ -14,6 +14,8 @@ namespace Web.Controllers
     {
 
         private int numItemsPerPage = 6;
+        private int idCliente = 3;
+        private int idVendedor = 2;
 
         // GET: Pedido
         public ActionResult Index()
@@ -23,7 +25,7 @@ namespace Web.Controllers
             try
             {
                 IServicePedido _ServicePedido = new ServicePedido();
-                lista = _ServicePedido.GetPedidoByCliente(3);
+                lista = _ServicePedido.GetPedidoByCliente(idCliente);
                 ViewBag.NumItemsPerPage = numItemsPerPage;
                 return View(lista);
             }
@@ -42,8 +44,26 @@ namespace Web.Controllers
             try
             {
                 IServicePedido _ServicePedido = new ServicePedido();
-                lista = _ServicePedido.GetPedidoByVendedor(2);
-                ViewBag.NumItemsPerPage = numItemsPerPage;
+                lista = _ServicePedido.GetPedido();
+                return View(lista);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+                return RedirectToAction("Default", "Error");
+            }
+        }
+
+        public ActionResult IndexVendedor()
+        {
+            IEnumerable<Pedido> lista = new List<Pedido>();
+
+            try
+            {
+                IServicePedido _ServicePedido = new ServicePedido();
+                lista = _ServicePedido.GetPedidoByVendedor(idVendedor);
+                ViewBag.Vendedor = idVendedor;
                 return View(lista);
             }
             catch (Exception ex)
@@ -83,13 +103,13 @@ namespace Web.Controllers
                 //Instancia 
                 IServicePedido _ServicePedido = new ServicePedido();
 
-                if(tipoUsuario == 2)
+                if(tipoUsuario == 1)
                 {
-                    lista = _ServicePedido.GetPedidoByVendedor(2);
+                    lista = _ServicePedido.GetPedido();
                 }
                 else
                 {
-                    lista = _ServicePedido.GetPedidoByCliente(3);
+                    lista = _ServicePedido.GetPedidoByCliente(idCliente);
                 }
                 
                 //
@@ -113,7 +133,7 @@ namespace Web.Controllers
                 TempData["Message"] = "Error al procesar los datos!" + ex.Message;
             }
 
-            return PartialView("_PaginacionView", lista);
+            return PartialView("_PaginacionYOrdenViewPedido", lista);
         }
 
     }

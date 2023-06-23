@@ -2,38 +2,130 @@
 
 @{
     ViewBag.Title = "Index";
+    int itemsPerPage = (int)ViewBag.NumItemsPerPage;
+    var numPages = Model.Count() % itemsPerPage != 0 ? Model.Count() / itemsPerPage + 1 : Model.Count() / itemsPerPage;
 }
 
-<h2>Index</h2>
+<h2 class="text-white mb-4">Pedidos del Cliente</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.EstadoEntrega)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CompraEncabezado.IdCompraEncabezado)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.EstadoEntrega)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CompraEncabezado.IdCompraEncabezado)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdCompraEncabezado }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdCompraEncabezado }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdCompraEncabezado })
-        </td>
-    </tr>
-}
-
+@*DataTable delos pedidos*@
+<table class="table table-info rounded-4 overflow-hidden p-3">
+    <thead>
+        <tr class="text-center">
+            <th scope="col" class="bg-primary">
+                <h5> <i class="fa-solid fa-arrow-up orden" style="cursor:pointer;"></i> @Html.DisplayNameFor(model => model.CompraEncabezado.FechaHora)</h5>
+            </th>
+            <th scope="col">
+                <h5> @Html.DisplayNameFor(model => model.CompraEncabezado.MetodoPago)</h5>
+            </th>
+            <th scope="col">
+                <h5>@Html.DisplayNameFor(model => model.CompraEncabezado.Total)</h5>
+            </th>
+            <th scope="col">
+                <h5>@Html.DisplayNameFor(model => model.EstadoEntrega)</h5>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tabla">
+    </tbody>
 </table>
+
+@*Paginación*@
+<div>
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <a class="page-link first" href="#" data-page="1">1</a>
+        </li>
+
+        @for (int i = 2; i <= numPages; i++)
+        {
+            <li class="page-item">
+                <a class="page-link" href="#" data-page="@i">@i</a>
+            </li>
+        }
+
+    </ul>
+</div>
+<div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        var page = 1;
+
+        $(function () {
+
+            $(".first").addClass("active");
+
+            $.ajax({
+                method: "GET",
+                url: "/Pedido/PaginacionYOrden",
+                data: { "pag": page, "tipoUsuario": 3 },
+                success: function (result) {
+                    $("#tabla").html("");
+                    $("#tabla").html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+
+                }
+            })
+        });
+
+        $(document).on('click', '.page-link',
+            function () {
+                page = $(this).data('page');
+
+                $(".page-link").removeClass("active");
+                $(this).addClass("active");
+                $(".orden").removeClass("fa-arrow-down").addClass("fa-arrow-up");
+
+                $.ajax({
+                    method: "GET",
+                    url: "/Pedido/PaginacionYOrden",
+                    data: { "pag": page, "tipoUsuario": 3 },
+                    success: function (result) {
+                        $("#tabla").html("");
+                        $("#tabla").html(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error" + error, "no Error: " + xhr.status)
+
+                    }
+                });
+            });
+
+        $(".orden").click(function () {
+
+            var orden = $(this).hasClass("fa-arrow-up");
+
+            if (orden) {
+
+                $(".orden").removeClass("fa-arrow-up").addClass("fa-arrow-down");
+
+            }
+            else {
+
+                $(".orden").removeClass("fa-arrow-down").addClass("fa-arrow-up");
+
+            }
+
+            $.ajax({
+                method: "GET",
+                url: "/Pedido/PaginacionYOrden",
+                data: { "pag": page, "tipoUsuario": 3, "orden": orden ? 1 : 0 },
+                success: function (result) {
+                    $("#tabla").html("");
+                    $("#tabla").html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+
+                }
+            });
+
+        });
+    </script>    
+}

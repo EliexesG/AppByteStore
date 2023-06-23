@@ -75,7 +75,7 @@ namespace Web.Controllers
             else
             {
                 lista = _ServiceProducto.GetProductoPorNombre(filtro, 2);
-                return PartialView("_PaginacionView", lista);
+                return PartialView("_PaginacionYOrdenViewProducto", lista);
 
             }
 
@@ -113,7 +113,7 @@ namespace Web.Controllers
                 TempData["Message"] = "Error al procesar los datos!" + ex.Message;
             }
 
-            return PartialView("_PaginacionView", lista);
+            return PartialView("_PaginacionYOrdenViewProducto", lista);
         }
 
 

@@ -42,36 +42,35 @@
         </tr>
     </thead>
     <tbody id="tabla">
-
     </tbody>
 </table>
-    @*Paginación*@
-    <div>
-        <ul class="pagination justify-content-end">
+@*Paginación*@
+<div>
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <a class="page-link first" href="#" data-page="1">1</a>
+        </li>
+
+        @for (int i = 2; i <= numPages; i++)
+        {
             <li class="page-item">
-                <a class="page-link first" href="#" data-page="1">1</a>
+                <a class="page-link" href="#" data-page="@i">@i</a>
             </li>
-
-            @for (int i = 2; i <= numPages; i++)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="#" data-page="@i">@i</a>
-                </li>
-            }
-
-        </ul>
-    </div>
-    <div>
-    </div>
-
-    <style>
-        .r {
-            margin-left: 5px;
         }
-    </style>
 
-    @section Scripts {
-        <script type="text/javascript">
+    </ul>
+</div>
+<div>
+</div>
+
+<style>
+    .r {
+        margin-left: 5px;
+    }
+</style>
+
+@section Scripts {
+    <script type="text/javascript">
 
             var page = 1;
 
@@ -189,6 +188,6 @@
                     }
                 });
             });
-        </script>
-    }
-    
+    </script>
+}
+
