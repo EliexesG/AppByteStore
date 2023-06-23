@@ -24,9 +24,13 @@ namespace Web.Controllers
                 //Instancia 
                 IServiceProducto _ServiceProducto = new ServiceProducto();
                 lista = _ServiceProducto.GetProducto(); //Obtengo todos los datos de la BD y los agrego a la lista 
-                return View(lista); //Retorno la vista con la lista ya cargada
+
                 //Para cargar la lista de categorías
-                //Nota:Hacer repositorios de categorias
+                IServiceCategoria _ServiceCategoria = new ServiceCategoria();
+                ViewBag.listaCategoria = _ServiceCategoria.GetCategoria();
+                return View(lista); //Retorno la vista con la lista ya cargada
+              
+
             }
             catch (Exception ex)
             {
