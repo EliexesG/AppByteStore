@@ -30,7 +30,7 @@ namespace Infraestructure.Repositories
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
                     //Obtener todos los libros incluyendo el autor
-                    lista = ctx.Producto.Include("Usuario").ToList();
+                    lista = ctx.Producto.Include("Usuario").Include("FotoProducto").ToList();
                     //lista = ctx.Libro.Include(x=>x.Autor).ToList();
 
                 }
@@ -60,7 +60,7 @@ namespace Infraestructure.Repositories
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
                     //Obtener los libros que pertenecen a una categoría
-                    lista = ctx.Producto.Include(x => x.Categoria).Where(o => o.Categoria.IdCategoria == idCategoria).ToList();
+                    lista = ctx.Producto.Include(x => x.Categoria).Include("Usuario").Include("FotoProducto").Where(o => o.Categoria.IdCategoria == idCategoria).ToList();
 
                 }
                 return lista;
@@ -91,7 +91,7 @@ namespace Infraestructure.Repositories
                         ctx.Configuration.LazyLoadingEnabled = false;
                         //Obtener Producto por ID incluyendo el autor y todas sus categorías
                         oProducto = ctx.Producto.Find(id);
-                        oProducto = ctx.Producto.Where(l => l.IdProducto == id).Include("Usuario").Include("Categoria").FirstOrDefault();
+                        oProducto = ctx.Producto.Where(l => l.IdProducto == id).Include("Usuario").Include("Categoria").Include("FotoProducto").FirstOrDefault();
 
                     }
                     return oProducto;
@@ -120,7 +120,7 @@ namespace Infraestructure.Repositories
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
                     //Obtener Producto por nombre
-                    oProducto = ctx.Producto.Include("Usuario").ToList().FindAll(x => x.Nombre.ToLower().Contains(nombre.ToLower()));
+                    oProducto = ctx.Producto.Include("Usuario").Include("FotoProducto").ToList().FindAll(x => x.Nombre.ToLower().Contains(nombre.ToLower()));
 
                 }
                 return oProducto;
@@ -149,7 +149,7 @@ namespace Infraestructure.Repositories
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
                     //Obtener Productos por Vendedor (Usuario) y su información
-                    oProducto = ctx.Producto.Include("Usuario").Where(l => l.Usuario.IdUsuario == idVendedor).ToList();
+                    oProducto = ctx.Producto.Include("Usuario").Include("FotoProducto").Where(l => l.Usuario.IdUsuario == idVendedor).ToList();
 
                 }
                 return oProducto;
