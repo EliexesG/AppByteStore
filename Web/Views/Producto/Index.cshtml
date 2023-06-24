@@ -2,7 +2,7 @@
 
 
 @{
-    ViewBag.Title = "Productos";
+    ViewBag.Title = "ByteStore - Catálogo";
 }
 
 <div class="d-md-flex justify-content-md-center mb-4">
@@ -63,13 +63,13 @@
                             </p>
                             <p class="card-title text-white"> @Html.DisplayNameFor(model => model.Precio): @Html.DisplayFor(modelItem => item.Precio)</p>
 
-                            <hr class="mb-4" />
-                            @* Detalle Ajax Modal *@
-                            <button class="btn btn-info detalle w-100 position-absolute bottom-0 start-0 w-75" data-id="@item.IdProducto"><i class="fa-regular fa-note-sticky"></i> Ver más</button>
-                        </div>
+                        <hr class="mb-4" />
+                         @* Detalle Ajax Modal *@
+                         <button class="btn btn-info detalle w-100 position-absolute bottom-0 start-0 w-75" data-id="@item.IdProducto"><i class="fa-regular fa-note-sticky"></i> Ver más</button>
                     </div>
                 </div>
             </div>
+        </div>
 
         }
     }

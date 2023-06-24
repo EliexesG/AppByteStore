@@ -84,6 +84,35 @@ namespace Web.Controllers
             return View(lista); //Retorno la vista con la lista ya cargada
         }
 
+        // GET: Pedido/Details/5
+        public ActionResult Details(int id)
+        {
+            Producto producto = null;
+
+            try
+            {
+                IServiceProducto _ServiceProducto = new ServiceProducto();
+                producto = _ServiceProducto.GetProductoByID(Convert.ToInt32(id));
+               
+                if (producto == null || producto.Stock == 0 )
+                {
+                    TempData["Message"] = "El producto que seleccionaste está agotado";
+                    TempData["Redirect"] = "Producto";
+                    TempData["Redirect-Action"] = "Index";
+                    //Redireccion a la vista del error
+                    return RedirectToAction("Default", "Error");
+
+                }
+                return View(producto);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+                return RedirectToAction("Default", "Error");
+            }
+        }
+
         //Filtro por Nombre
         public PartialViewResult buscarProductoxNombre(string filtro, int tipoUsuario)
         {
