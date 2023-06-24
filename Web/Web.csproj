@@ -219,6 +219,7 @@
     <Content Include="Views\Producto\_PaginacionYOrdenViewProducto.cshtml" />
     <Content Include="Views\Pedido\_PaginacionYOrdenViewPedido.cshtml" />
     <Content Include="Views\Producto\_PartialCatalogoProducto.cshtml" />
+    <Content Include="Views\Producto\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

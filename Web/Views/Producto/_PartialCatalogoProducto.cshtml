@@ -23,10 +23,11 @@
 
                         <hr />
                         @* Detalle Ajax Modal *@
-                        <button class="btn btn-info detalle w-100" data-id="@item.IdProducto"><i class="fa-regular fa-note-sticky"></i> Ver más</button>
+                        <a href="@Url.Action("Details","Producto")" class="btn btn-info detalle w-100" data-id="@item.IdProducto"><i class="fa-regular fa-note-sticky"></i> Ver más</a>
                     </div>
                 </div>
             </div>
         </div>
+
 
     }
