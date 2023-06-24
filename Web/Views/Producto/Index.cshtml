@@ -12,26 +12,22 @@
 <hr class="mb-4" />
 
 <div class="row mb-4">
-    <div class="col-md-3 me-4">
+    <div class="col-md-5 mb-4">
         <form class="d-flex">
             @Html.TextBox("filtro", "", new { @class = "form-control me-sm-2", @placeholder = "Buscar Producto" })
             <button id="btnBuscar" class="btn btn-info my-2 my-sm-0" type="button">Buscar</button>
         </form>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
+        <select class="form-select col-md" id="categoria">
+            <option value="-1" class="active filtercategoria">Seleccione Categoría</option>
 
-        <div class="row">
-            <label for="categoria" class="form-label col-md-4">Seleccione una categoría</label>
-            <select class="form-select col-md w-100" id="categoria">
-                <option value = "-1" class="active filtercategoria">Seleccione</option>
-
-                @*Cargar lista Categorías*@
-                @foreach (var categoria in (List<Infraestructure.Models.Categoria>)ViewBag.listaCategoria)
-                {
-                    <option class="filtercategoria" value ="@categoria.IdCategoria">@categoria.Descripcion</option>
-                }
-            </select>
-        </div>
+            @*Cargar lista Categorías*@
+            @foreach (var categoria in (List<Infraestructure.Models.Categoria>)ViewBag.listaCategoria)
+            {
+                <option class="filtercategoria" value="@categoria.IdCategoria">@categoria.Descripcion</option>
+            }
+        </select>
     </div>
 </div>
 <hr class="mb-4" />
@@ -42,9 +38,12 @@
     {
         foreach (var item in Model)
         {
-            <div class="col-md-3 mb-4 ">
-                <div class="card border-dark h-100" style="max-width: 20rem;">
-                    <i class="pb-4 pt-4 ps-2 pe-2 rounded-5 bg-dark fa-solid fa-cart-shopping fa-2xl m-3 shadow-lg text-primary position-absolute" style="top: -10px; left: -10px; cursor: pointer;"></i>
+            <div class="col-md-3 mb-4">
+                <div class="card border-dark h-100 w-100" style="max-width: 20rem;">
+                    @if (item.Stock > 0)
+                    {
+                        <i class="pb-4 pt-4 ps-2 pe-2 rounded-5 fa-solid fa-cart-shopping fa-2xl m-3 shadow-lg text-primary position-absolute text-center" style="top: -10px; left: -10px; cursor: pointer; background-color: rgba(0, 0, 0, .2)"></i>
+                    }
                     <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.FotoProducto.FirstOrDefault().Foto)"
                          alt="Imagen @Html.DisplayFor(modelItem => item.Nombre)" class="card-img" />
                     <div class="card-body">
@@ -63,13 +62,13 @@
                             </p>
                             <p class="card-title text-white"> @Html.DisplayNameFor(model => model.Precio): @Html.DisplayFor(modelItem => item.Precio)</p>
 
-                        <hr class="mb-4" />
-                         @* Detalle Ajax Modal *@
-                         <button class="btn btn-info detalle w-100 position-absolute bottom-0 start-0 w-75" data-id="@item.IdProducto"><i class="fa-regular fa-note-sticky"></i> Ver más</button>
+                            <hr class="mb-4" />
+                            @* Detalle Ajax Modal *@
+                            <a href="@Url.Action("Details", "Producto", new {id = item.IdProducto})" class="btn btn-info detalle w-100 position-absolute bottom-0 start-0 w-75" data-id="@item.IdProducto"><i class="fa-regular fa-note-sticky"></i> Ver más</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
         }
     }
@@ -85,7 +84,7 @@
 @section Scripts{
     <script type="text/javascript">
 
-    //Buscar por nombre 
+    //Buscar por nombre
 
         $(function () {
             var lista = @Html.Raw(Json.Encode(ViewBag.Nombres));
@@ -103,6 +102,7 @@
                 url: "/Producto/buscarProductoxNombre",
                 data: { "filtro": filtro, "tipoUsuario": 3},
                 success: function (result) {
+                    $("#categoria").val('-1');
                     $("#resultado").html("");
                     $("#resultado").html(result);
                 },

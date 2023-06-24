@@ -30,7 +30,12 @@ namespace Infraestructure.Repositories
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
                     //Obtener todos los libros incluyendo el autor
-                    lista = ctx.Producto.Include("Usuario").Include("FotoProducto").ToList();
+                    lista = ctx.Producto.Include("Usuario").
+                        Include("FotoProducto")
+                        .Include("Categoria")
+                        .Include(producto => producto.Pregunta)
+                        .Include(producto => producto.Pregunta.Select(pregunta => pregunta.Respuesta))
+                        .ToList();
                     //lista = ctx.Libro.Include(x=>x.Autor).ToList();
 
                 }
@@ -60,7 +65,11 @@ namespace Infraestructure.Repositories
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
                     //Obtener los libros que pertenecen a una categoría
-                    lista = ctx.Producto.Include(x => x.Categoria).Include("Usuario").Include("FotoProducto").Where(o => o.Categoria.IdCategoria == idCategoria).ToList();
+                    lista = ctx.Producto
+                        .Include("Usuario")
+                        .Include("FotoProducto")
+                        .Include("Categoria")
+                        .Where(o => o.Categoria.IdCategoria == idCategoria).ToList();
 
                 }
                 return lista;
@@ -91,7 +100,16 @@ namespace Infraestructure.Repositories
                         ctx.Configuration.LazyLoadingEnabled = false;
                         //Obtener Producto por ID incluyendo el autor y todas sus categorías
                         oProducto = ctx.Producto.Find(id);
-                        oProducto = ctx.Producto.Where(l => l.IdProducto == id).Include("Usuario").Include("Categoria").Include("FotoProducto").FirstOrDefault();
+                        oProducto = ctx.Producto
+                            .Include("Usuario")
+                            .Include("Categoria")
+                            .Include("FotoProducto")
+                            .Include(producto => producto.Pregunta)
+                            .Include(producto => producto.Pregunta.Select(pregunta => pregunta.Respuesta))
+                            .Include(producto => producto.Pregunta.Select(pregunta => pregunta.Usuario))
+                            .Include(producto => producto.Pregunta.Select(pregunta => pregunta.Respuesta.Select(respuesta => respuesta.Usuario)))
+                            .Where(l => l.IdProducto == id)
+                            .FirstOrDefault();
 
                     }
                     return oProducto;
@@ -120,7 +138,13 @@ namespace Infraestructure.Repositories
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
                     //Obtener Producto por nombre
-                    oProducto = ctx.Producto.Include("Usuario").Include("FotoProducto").ToList().FindAll(x => x.Nombre.ToLower().Contains(nombre.ToLower()));
+                    oProducto = ctx.Producto
+                        .Include("Usuario")
+                        .Include("FotoProducto")
+                        .Include("Categoria")
+                        .ToList()
+                        .FindAll(x => x.Nombre.ToLower()
+                        .Contains(nombre.ToLower()));
 
                 }
                 return oProducto;
@@ -149,7 +173,12 @@ namespace Infraestructure.Repositories
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
                     //Obtener Productos por Vendedor (Usuario) y su información
-                    oProducto = ctx.Producto.Include("Usuario").Include("FotoProducto").Where(l => l.Usuario.IdUsuario == idVendedor).ToList();
+                    oProducto = ctx.Producto
+                        .Include("Usuario")
+                        .Include("FotoProducto")
+                        .Include("Categoria")
+                        .Where(l => l.Usuario.IdUsuario == idVendedor)
+                        .ToList();
 
                 }
                 return oProducto;
