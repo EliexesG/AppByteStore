@@ -93,8 +93,9 @@ namespace Web.Controllers
             {
                 IServiceProducto _ServiceProducto = new ServiceProducto();
                 producto = _ServiceProducto.GetProductoByID(Convert.ToInt32(id));
-               
-                if (producto == null || producto.Stock == 0 )
+
+                /*
+                if (producto == null || producto.Stock == 0)
                 {
                     TempData["Message"] = "El producto que seleccionaste está agotado";
                     TempData["Redirect"] = "Producto";
@@ -103,6 +104,7 @@ namespace Web.Controllers
                     return RedirectToAction("Default", "Error");
 
                 }
+                */
                 return View(producto);
             }
             catch (Exception ex)

@@ -151,6 +151,7 @@ namespace Infraestructure.Models
     {
         public int IdPregunta { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd d 'de' MMMM yyyy, hh:mm tt}")]
         [Display(Name = "Fecha y Hora de Pregunta")]
         public Nullable<System.DateTime> FechaHora { get; set; }
 
@@ -197,6 +198,7 @@ namespace Infraestructure.Models
     {
         public int IdRespuesta { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd d 'de' MMMM yyyy, hh:mm tt}")]
         [Display(Name = "Fecha y Hora de Respuesta")]
         public Nullable<System.DateTime> FechaHora { get; set; }
 
