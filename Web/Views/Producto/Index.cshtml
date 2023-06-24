@@ -1,30 +1,128 @@
 ﻿@model IEnumerable<Infraestructure.Models.Producto>
 
+
 @{
     ViewBag.Title = "Productos";
 }
 
-<h2>Productos</h2>
-<p>Gran variedad a tu alcance</p>
+<div class="d-md-flex justify-content-md-center mb-4">
+    <h2 class="w-auto text-center border border-primary border-3 text-light fw-bold p-3 rounded-4">Catálogo</h2>
+</div>
+<h3 class="text-white mb-4 text-center">Gran variedad a tu alcance</h3>
+<hr class="mb-4" />
 
-<div class="row">git
-    <div class="col-lg-3">
+<div class="row mb-4">
+    <div class="col-md-3 me-4">
         <form class="d-flex">
-            <input class="form-control me-sm-2" type="search">
-            <button class="btn btn-info my-2 my-sm-0" type="submit">Buscar</button>
+            @Html.TextBox("filtro", "", new { @class = "form-control me-sm-2", @placeholder = "Buscar Producto" })
+            <button id="btnBuscar" class="btn btn-info my-2 my-sm-0" type="button">Buscar</button>
         </form>
     </div>
-    <div class="col-lg-3">
-  
+    <div class="col-md-6">
 
-        <div class="form-select">
-            @*Cargar lista Categorías*@
-            @foreach (var categoria in (List<Infraestructure.Models.Categoria>)ViewBag.listaCategoria)
-            {
-                <button class="list-group-item filtercategoria" data-id="@categoria.IdCategoria">@categoria.Descripcion</button>
-            }
+        <div class="row">
+            <label for="categoria" class="form-label col-md-4">Seleccione una categoría</label>
+            <select class="form-select col-md w-100" id="categoria">
+                <option value = "-1" class="active filtercategoria">Seleccione</option>
 
-
+                @*Cargar lista Categorías*@
+                @foreach (var categoria in (List<Infraestructure.Models.Categoria>)ViewBag.listaCategoria)
+                {
+                    <option class="filtercategoria" value ="@categoria.IdCategoria">@categoria.Descripcion</option>
+                }
+            </select>
         </div>
     </div>
 </div>
+<hr class="mb-4" />
+
+<div id="resultado" class="row mb-4">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3 mb-4 ">
+            <div class="card border-dark h-100" style="max-width: 20rem;">
+                <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.FotoProducto.FirstOrDefault().Foto)"
+                     alt="Imagen @Html.DisplayFor(modelItem => item.Nombre)" class="card-img" />
+                <div class="card-body">
+                    <div class="card-body">
+                        <h4 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h4>
+                        <p class="card-title">
+                            @Html.DisplayNameFor(model => model.Stock):
+                            @if (@item.Stock > 0)
+                            {
+                                <span class="card-text" style="color:green">Disponible</span>
+                            }
+                            else
+                            {
+                                <span class="card-text" style="color:red">Agotado</span>
+                            }
+                        </p>
+                        <p class="card-title"> @Html.DisplayNameFor(model => model.Precio): @Html.DisplayFor(modelItem => item.Precio)</p>
+
+                        <hr />
+                        @* Detalle Ajax Modal *@
+                        <button class="btn btn-info detalle w-100" data-id="@item.IdProducto"><i class="fa-regular fa-note-sticky"></i> Ver más</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+    //Buscar por nombre 
+
+    $(function () {
+        var lista = @Html.Raw(Json.Encode(ViewBag.Nombres));
+        $("#filtro").autocomplete({ // aplica autocompletado para lista y nombres
+        source: lista
+        })
+    });
+
+    $("#btnBuscar").click(function () {
+
+        var filtro = $("#filtro").val();
+
+        $.ajax({
+            method: "GET",
+            url: "/Producto/buscarProductoxNombre",
+            data: { "filtro": filtro, "tipoUsuario": 3},
+            success: function (result) {
+                $("#resultado").html("");
+                $("#resultado").html(result);
+            },
+            error: function (xhr, status, error) {
+                console.log("error" + error, "no Error: " + xhr.status)
+
+            }
+        });
+    });
+
+        //Buscar por categoría
+
+        $("#categoria").on('change',
+            function () {
+                var categoria = $("#categoria").val();
+                //    Llamar al ajax
+                $.ajax({
+                    method: "GET",
+                    url: "/Producto/BuscarProductoxCategoria",
+                    data: { "categoria": categoria },
+                    success: function (result) {
+                        $("#resultado").html("");
+                        $("#resultado").html(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error" + error, "no Error: " + xhr.status)
+
+                    }
+                })
+            });
+    </script>
+}
+

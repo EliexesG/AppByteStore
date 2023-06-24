@@ -28,6 +28,7 @@ namespace Web.Controllers
                 //Para cargar la lista de categorías
                 IServiceCategoria _ServiceCategoria = new ServiceCategoria();
                 ViewBag.listaCategoria = _ServiceCategoria.GetCategoria();
+                ViewBag.Nombres = _ServiceProducto.GetProductoNombres();
                 return View(lista); //Retorno la vista con la lista ya cargada
               
 
@@ -88,20 +89,34 @@ namespace Web.Controllers
         {
             IEnumerable<Producto> lista = null;
             IServiceProducto _ServiceProducto = new ServiceProducto();
+            string partialView = "";
 
             //Validar si hay texto vacio
-            if (string.IsNullOrEmpty(filtro.Trim()))
+            if (string.IsNullOrEmpty(filtro.Trim()) && (tipoUsuario == 1 || tipoUsuario == 2))
             {
                 return PaginacionYOrden(1, tipoUsuario, 0);
-
+            }
+            else if (string.IsNullOrEmpty(filtro.Trim()) && (tipoUsuario == 3)) {
+                lista = _ServiceProducto.GetProducto();
+                partialView = "_PartialCatalogoProducto";
             }
             else
             {
-                lista = _ServiceProducto.GetProductoPorNombre(filtro, idVendedor);
-                return PartialView("_PaginacionYOrdenViewProducto", lista);
-
+                if(tipoUsuario == 1) {
+                    lista = _ServiceProducto.GetProductoPorNombre(filtro);
+                    partialView = "_PaginacionYOrdenViewProducto";
+                }
+                else if (tipoUsuario == 2) {
+                    lista = _ServiceProducto.GetProductoPorNombre(filtro, idVendedor);
+                    partialView = "_PaginacionYOrdenViewProducto";
+                }
+                else {
+                    lista = _ServiceProducto.GetProductoPorNombre(filtro);
+                    partialView = "_PartialCatalogoProducto";
+                }
             }
 
+            return PartialView(partialView, lista);
         }
 
         //Para la paginación
@@ -149,5 +164,30 @@ namespace Web.Controllers
 
             return PartialView("_PaginacionYOrdenViewProducto", lista);
         }
+
+        public PartialViewResult BuscarProductoxCategoria(int categoria) {
+        
+            IEnumerable<Producto> lista = null;
+
+            try {
+
+                IServiceProducto _ServiceProducto = new ServiceProducto();
+
+                if(categoria != -1) {
+                    lista = _ServiceProducto.GetProductoByCategoria(categoria);
+                }
+                else {
+                    lista = _ServiceProducto.GetProducto();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+
+            return PartialView("_PartialCatalogoProducto", lista);
+        }
     }
+
 }
