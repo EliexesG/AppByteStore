@@ -24,7 +24,7 @@ namespace Web.Controllers
                 //Instancia 
                 IServiceProducto _ServiceProducto = new ServiceProducto();
                 lista = _ServiceProducto.GetProducto(); //Obtengo todos los datos de la BD y los agrego a la lista 
-
+                TempData["GetBack"] = "Index";
                 //Para cargar la lista de categorías
                 IServiceCategoria _ServiceCategoria = new ServiceCategoria();
                 ViewBag.listaCategoria = _ServiceCategoria.GetCategoria();
@@ -49,6 +49,7 @@ namespace Web.Controllers
                 //Instancia 
                 IServiceProducto _ServiceProducto = new ServiceProducto();
                 lista = _ServiceProducto.GetProducto(); //Obtengo todos los datos de la BD y los agrego a la lista 
+                TempData["GetBack"] = "IndexAdmin";
                 return View(lista); //Retorno la vista con la lista ya cargada
                 //Para cargar la lista de categorías
                 //Nota:Hacer repositorios de categorias
@@ -72,6 +73,7 @@ namespace Web.Controllers
                 //Instancia 
                 IServiceProducto _ServiceProducto = new ServiceProducto();
                 lista = _ServiceProducto.GetProductoPorVendedor(idVendedor); //Obtengo todos los datos de la BD y los agrego a la lista 
+                TempData["GetBack"] = "IndexVendedor";
                 ViewBag.NumItemsPerPage = numItemsPerPage;
                 ViewBag.Nombres = _ServiceProducto.GetProductoNombres(idVendedor);
             }
@@ -93,7 +95,7 @@ namespace Web.Controllers
             {
                 IServiceProducto _ServiceProducto = new ServiceProducto();
                 producto = _ServiceProducto.GetProductoByID(Convert.ToInt32(id));
-
+                ViewBag.GetBack = TempData["GetBack"];
                 /*
                 if (producto == null || producto.Stock == 0)
                 {

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Infraestructure.Models.Producto>
 
 @{
-    ViewBag.Title = "Gestión de productos";
+    ViewBag.Title = "ByteStore - Tus Productos";
     int itemsPerPage = (int)ViewBag.NumItemsPerPage;
     var numPages = Model.Count() % itemsPerPage != 0 ? Model.Count() / itemsPerPage + 1 : Model.Count() / itemsPerPage;
 }
@@ -11,7 +11,7 @@
         <a href="@Url.Action("Create", "Producto")" class="btn btn-success w-100">Nuevo Producto <i class="fa-solid fa-plus"></i></a>
     </p>
     <div class="col-md-6">
-        <h2 class="text-center border border-primary border-3 text-light rounded-4">Pedidos de Cliente</h2>
+        <h2 class="text-center border border-primary border-3 text-light rounded-4">Tus Productos</h2>
     </div>
     <div class="col-md-4">
 
