@@ -23,11 +23,11 @@
         right: 0;
     }
 
-        .carousel-item img {
-            height: 100%; /* Bootstrap handles width already */
-            width: 100%;
-            object-fit: scale-down; /* or 'contain' if you want stretch instead of crop */
-        }
+    .carousel-item img {
+        height: 100%; /* Bootstrap handles width already */
+        width: 100%;
+        object-fit: scale-down; /* or 'contain' if you want stretch instead of crop */
+    }
 </style>
 
 <div class="d-md-flex justify-content-md-center mb-4">
@@ -46,7 +46,7 @@
 <hr class="mb-4" />
 
 <div class="row mb-4">
-    <div class="col-md-4 mb-4">
+    <div class="col-md-5 mb-4">
         <div class="card text-white p-3 rounded-4 bg-info mb-3" style="height:100%;">
             <i class="fa-solid fa-circle-info fa-2xl m-3 shadow-lg"></i>
             <div class="card-body">
@@ -101,7 +101,7 @@
             </div>
         </div>
     </div>
-    <div id="fotosProducto" class="carousel slide mb-4 bg-body rounded-4 p-3 col-md-8" data-bs-ride="carousel">
+    <div id="fotosProducto" class="carousel slide mb-4 bg-body rounded-4 p-3 col-md-7" data-bs-ride="carousel">
         <div class="carousel-indicators text-dark">
             <button type="button" data-bs-target="#fotosProducto" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Foto 1"></button>
             @for (int i = 1; i < Model.FotoProducto.Count(); i++)
@@ -111,12 +111,12 @@
         </div>
         <div class="carousel-inner h-100 rounded-4">
             <div class="carousel-item active mb-5">
-                <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(Model.FotoProducto.First().Foto)" class="d-block img-thumbnail bg-black" alt="...">
+                <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(Model.FotoProducto.First().Foto)" class="d-block bg-black" alt="...">
             </div>
             @for (int i = 1; i < Model.FotoProducto.Count(); i++)
             {
                 <div class="carousel-item mb-5">
-                    <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(Model.FotoProducto.ElementAt(i).Foto)" class="d-block img-thumbnail bg-black" alt="...">
+                    <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(Model.FotoProducto.ElementAt(i).Foto)" class="d-block bg-black" alt="...">
                 </div>
             }
         </div>
@@ -144,6 +144,13 @@
 <div>
     <h2 class="w-auto text-center border border-primary border-3 text-light rounded-4 mb-5 p-3">Preguntas</h2>
 
+    <form class="d-flex mb-4" style="height:60px;">
+        @Html.TextBox("pregunta", "", new { @class = "form-control me-sm-2 bg-body text-white", @placeholder = "Escribir Pregunta" })
+        <button id="btnPregunta" class="btn btn-info my-2 my-sm-0" type="button">Subir</button>
+    </form>
+
+    <hr class="mb-4" />
+
     @if (Model.Pregunta.Count() > 0)
     {
         <div class="mb-4">
@@ -155,7 +162,8 @@
                         @pregunta.Usuario.Nombre @pregunta.Usuario.PrimerApellido @pregunta.Usuario.SegundoApellido •
                         <span class="fs-5">@Html.DisplayFor(model => pregunta.FechaHora)</span>
                     </h3>
-                    <h4 class="card-text text-white-50">@pregunta.Pregunta1</h4>
+                    <h4 class="card-text text-white-50 mb-4">@pregunta.Pregunta1</h4>
+                    <button class="btn btn-info w-25" type="button"><i class="fa-solid fa-reply"></i> Responder</button>
                 </div>
 
                 <div class="row">
