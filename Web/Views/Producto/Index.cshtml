@@ -116,21 +116,23 @@
         //Buscar por categoría
 
         $("#categoria").on('change', function () {
-                var categoria = $("#categoria").val();
-                //    Llamar al ajax
-                $.ajax({
-                    method: "GET",
-                    url: "/Producto/BuscarProductoxCategoria",
-                    data: { "categoria": categoria },
-                    success: function (result) {
-                        $("#resultado").html("");
-                        $("#resultado").html(result);
-                    },
-                    error: function (xhr, status, error) {
-                        console.log("error" + error, "no Error: " + xhr.status)
 
-                    }
-                })
+            var categoria = $("#categoria").val();
+            $("#filtro").val('');
+            //    Llamar al ajax
+            $.ajax({
+                method: "GET",
+                url: "/Producto/BuscarProductoxCategoria",
+                data: { "categoria": categoria },
+                success: function (result) {
+                    $("#resultado").html("");
+                    $("#resultado").html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+
+                }
+            })
         });
     </script>
 }
