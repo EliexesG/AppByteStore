@@ -3,6 +3,7 @@
 
 @{
     ViewBag.Title = "ByteStore - " + @Html.DisplayFor(modelItem => modelItem.Nombre);
+    bool first = true;
 }
 
 <style type="text/css">
@@ -23,11 +24,11 @@
         right: 0;
     }
 
-    .carousel-item img {
-        height: 100%; /* Bootstrap handles width already */
-        width: 100%;
-        object-fit: scale-down; /* or 'contain' if you want stretch instead of crop */
-    }
+        .carousel-item img {
+            height: 100%; /* Bootstrap handles width already */
+            width: 100%;
+            object-fit: scale-down; /* or 'contain' if you want stretch instead of crop */
+        }
 </style>
 
 <div class="d-md-flex justify-content-md-center mb-4">
@@ -45,56 +46,83 @@
 </div>
 <hr class="mb-4" />
 
+<div class="d-flex mb-4">
+    <a href="@Url.Action(ViewBag.GetBack, "Producto")" class="btn btn-info fs-4 me-4">Vover Atrás</a>
+    @if (Model.Stock > 0)
+    {
+        <a href="@Url.Action("","")" class="btn btn-primary fs-4"><i class="fa-solid fa-cart-shopping"></i> Agregar al Carrito</a>
+    }
+</div>
+
 <div class="row mb-4">
     <div class="col-md-5 mb-4">
-        <div class="card text-white p-3 rounded-4 bg-info mb-3" style="height:100%;">
+        <div class="card text-white p-3 rounded-4 bg-body bg-gradient mb-3" style="height:100%;">
             <i class="fa-solid fa-circle-info fa-2xl m-3 shadow-lg"></i>
             <div class="card-body">
                 <div class="mb-4">
-                    <h3 class="card-title">@Html.DisplayNameFor(model => model.Usuario.NombreProveedor)</h3>
-                    <p class="card-text fs-4 fw-bold">
-                        @Html.DisplayFor(model => model.Usuario.NombreProveedor)
+                    <h3 class="card-title fw-bold">@Html.DisplayNameFor(model => model.Usuario.NombreProveedor)</h3>
+                    <p class="card-text fs-4">
+                        • @Html.DisplayFor(model => model.Usuario.NombreProveedor)
                     </p>
                 </div>
                 <hr class="mb-4" />
                 <div class="mb-4">
-                    <h3 class="card-title">@Html.DisplayNameFor(model => model.Categoria)</h3>
-                    <p class="card-text fs-4 fw-bold">
-                        @Html.DisplayFor(model => model.Categoria.Descripcion)
+                    <h3 class="card-title fw-bold">@Html.DisplayNameFor(model => model.Usuario.PromedioEvaluaciones)</h3>
+                    <p class="card-text fs-4">
+                        •
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= Model.Usuario.PromedioEvaluaciones)
+                            {
+                                <i class="fa-solid fa-star"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-regular fa-star"></i>
+                            }
+                        }
+                         (@Html.DisplayFor(model => model.Usuario.PromedioEvaluaciones) estrellas)
                     </p>
                 </div>
                 <hr class="mb-4" />
                 <div class="mb-4">
-                    <h3 class="card-title">@Html.DisplayNameFor(model => model.Estado)</h3>
+                    <h3 class="card-title fw-bold">@Html.DisplayNameFor(model => model.Categoria)</h3>
+                    <p class="card-text fs-4">
+                        • @Html.DisplayFor(model => model.Categoria.Descripcion)
+                    </p>
+                </div>
+                <hr class="mb-4" />
+                <div class="mb-4">
+                    <h3 class="card-title fw-bold">@Html.DisplayNameFor(model => model.Estado)</h3>
                     @if (Model.Estado == 0)
                     {
-                        <p class="card-text fs-4 fw-bold">
-                            Nuevo
+                        <p class="card-text fs-4">
+                            • Nuevo
                         </p>
                     }
                     else if (Model.Estado == 1)
                     {
-                        <p class="card-text fs-4 fw-bold">
-                            Usado (Como Nuevo)
+                        <p class="card-text fs-4">
+                            • Usado (Como Nuevo)
                         </p>
                     }
                     else if (Model.Estado == 2)
                     {
-                        <p class="card-text fs-4 fw-bold">
-                            Usado (Buen Estado)
+                        <p class="card-text fs-4">
+                            • Usado (Buen Estado)
                         </p>
                     }
                     else
                     {
-                        <p class="card-text fs-4 fw-bold">
-                            Usado (Aceptable)
+                        <p class="card-text fs-4">
+                            • Usado (Aceptable)
                         </p>
                     }
                 </div>
             </div>
         </div>
     </div>
-    <div id="fotosProducto" class="carousel slide mb-4 bg-body rounded-4 p-3 col-md-7" data-bs-ride="carousel">
+    <div id="fotosProducto" class="carousel slide mb-4 bg-body bg-gradient rounded-4 p-3 col-md-7" data-bs-ride="carousel">
         <div class="carousel-indicators text-dark">
             <button type="button" data-bs-target="#fotosProducto" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Foto 1"></button>
             @for (int i = 1; i < Model.FotoProducto.Count(); i++)
@@ -126,21 +154,13 @@
         <div class="card text-white p-3 rounded-4 bg-body" style="height:100%; width: 100%;">
             <i class="fa-solid fa-circle-info fa-2xl m-3 shadow-lg"></i>
             <div class="card-body">
-                <h3 class="card-title">@Html.DisplayNameFor(model => model.Descripcion)</h3>
-                <p class="card-text fs-4 fw-bold" style="text-align: justify;">
+                <h3 class="card-title fw-bold">@Html.DisplayNameFor(model => model.Descripcion)</h3>
+                <p class="card-text fs-4" style="text-align: justify;">
                     @Html.DisplayFor(model => model.Descripcion)
                 </p>
             </div>
         </div>
     </div>
-</div>
-
-<div class="d-flex">
-    <a href="@Url.Action(ViewBag.GetBack, "Producto")" class="btn btn-info fs-4 me-4">Vover Atrás</a>
-    @if (Model.Stock > 0)
-    {
-        <a href="@Url.Action("","")" class="btn btn-primary fs-4"><i class="fa-solid fa-cart-shopping"></i> Agregar al Carrito</a>
-    }
 </div>
 
 <hr class="mb-4" />
@@ -149,7 +169,7 @@
     <h2 class="w-auto text-center border border-primary border-3 text-light rounded-4 mb-5 p-3">Preguntas</h2>
 
     <form class="d-flex mb-4" style="height:60px;">
-        @Html.TextBox("pregunta", "", new { @class = "form-control me-sm-2 bg-body text-white", @placeholder = "Escribir Pregunta" })
+        @Html.TextBox("pregunta", "", new { @class = "form-control me-sm-2 text-black bg-white", @placeholder = "Escribir Pregunta" })
         <button id="btnPregunta" class="btn btn-info my-2 my-sm-0" type="button">Subir</button>
     </form>
 
@@ -161,7 +181,7 @@
         <div class="mb-4" id="preguntas">
             @foreach (var pregunta in Model.Pregunta)
             {
-                <div class="w-75 p-3 rounded-4 bg-body card mb-4">
+                <div class="w-75 p-3 rounded-4 bg-body card mb-4 @(first ? "bg-gradient" : "")">
                     <h3 class="card-title text-white mb-3">
                         <i class="fa-solid fa-user m-3 shadow-lg"></i>
                         @pregunta.Usuario.Nombre @pregunta.Usuario.PrimerApellido @pregunta.Usuario.SegundoApellido •
@@ -171,6 +191,12 @@
                     <button class="btn btn-info w-25" type="button"><i class="fa-solid fa-reply"></i> Responder</button>
                 </div>
 
+                {
+                    if (first)
+                    {
+                        first = false;
+                    }
+                }
 
                 foreach (var respuesta in pregunta.Respuesta)
                 {
@@ -207,5 +233,5 @@
             $("#preguntas").show();
             $('#btnPreguntas').hide();
         });
-    </script>    
+    </script>
 }
