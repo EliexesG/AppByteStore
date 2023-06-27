@@ -38,6 +38,8 @@ namespace Infraestructure.Models
 
     internal partial class CompraEncabezadoMetadata
     {
+        [DisplayFormat(DataFormatString = "{0:000000}")]
+        [Display(Name = "Número de Factura")]
         public int IdCompraEncabezado { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd d 'de' MMMM yyyy, hh:mm tt}")]
@@ -266,7 +268,7 @@ namespace Infraestructure.Models
         [Display(Name = "Contraseña")]
         public byte[] Contrasenna { get; set; }
 
-        [Display(Name = "Promedio de Evaluaciones")]
+        [Display(Name = "Calificación del Proveedor")]
         public Nullable<int> PromedioEvaluaciones { get; set; }
         public Nullable<bool> Estado { get; set; }
 
