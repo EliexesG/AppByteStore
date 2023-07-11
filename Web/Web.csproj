@@ -221,6 +221,7 @@
     <Content Include="Views\Pedido\_PaginacionYOrdenViewPedido.cshtml" />
     <Content Include="Views\Producto\_PartialCatalogoProducto.cshtml" />
     <Content Include="Views\Producto\Details.cshtml" />
+    <Content Include="Views\Producto\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
