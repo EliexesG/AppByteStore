@@ -1,0 +1,106 @@
+﻿@model Infraestructure.Models.Producto
+
+@{
+    ViewBag.Title = "Publica tu producto";
+}
+
+<div class="d-md-flex row justify-content-md-center mb-4">
+    <h2 class="border border-3 border-success w-auto text-center text-light fw-bold p-3 rounded-4">Publica tu producto</h2>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-5">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control textarea" } })
+                    @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                </div>
+
+
+            </div>
+            <div class="form-group">
+
+                @Html.LabelFor(model => model.Categoria, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+
+                    <select class="form-select col-md" id="categoria">
+                        <option value="-1" class="active filtercategoria">Seleccione Categoría</option>
+
+                        @*Cargar lista Categorías*@
+                        @foreach (var categoria in (List<Infraestructure.Models.Categoria>)ViewBag.listaCategoria)
+                        {
+                            <option class="filtercategoria" value="@categoria.IdCategoria">@categoria.Descripcion</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+
+                @Html.LabelFor(model => model.Precio, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">&cent;</span>
+                        @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Stock, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Stock, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Stock, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Estado, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FotoProducto, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="file" name="ImageFile" class="form-control" required />
+                </div>
+            </div>
+
+            <br />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <a href="@Url.Action("","")" class="btn btn-success"><i class="fa-solid fa-plus"></i> Publicar</a>
+                    <a href="@Url.Action("IndexVendedor","Producto")" class="btn btn-secondary"> Cancelar</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<style>
+</style>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

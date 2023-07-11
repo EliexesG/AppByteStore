@@ -30,7 +30,7 @@ namespace Web.Controllers
                 ViewBag.listaCategoria = _ServiceCategoria.GetCategoria();
                 ViewBag.Nombres = _ServiceProducto.GetProductoNombres();
                 return View(lista); //Retorno la vista con la lista ya cargada
-              
+
 
             }
             catch (Exception ex)
@@ -135,7 +135,7 @@ namespace Web.Controllers
             }
             else
             {
-                if(tipoUsuario == 1) {
+                if (tipoUsuario == 1) {
                     lista = _ServiceProducto.GetProductoPorNombre(filtro);
                     partialView = "_PaginacionYOrdenViewProducto";
                 }
@@ -199,14 +199,14 @@ namespace Web.Controllers
         }
 
         public PartialViewResult BuscarProductoxCategoria(int categoria) {
-        
+
             IEnumerable<Producto> lista = null;
 
             try {
 
                 IServiceProducto _ServiceProducto = new ServiceProducto();
 
-                if(categoria != -1) {
+                if (categoria != -1) {
                     lista = _ServiceProducto.GetProductoByCategoria(categoria);
                 }
                 else {
@@ -221,6 +221,29 @@ namespace Web.Controllers
 
             return PartialView("_PartialCatalogoProducto", lista);
         }
+
+        //Boton nuevo producto
+        public ActionResult Create()
+        {
+            //Para cargar la lista de categorías
+            IServiceCategoria _ServiceCategoria = new ServiceCategoria();
+            ViewBag.listaCategoria = _ServiceCategoria.GetCategoria();
+            return View();
+        }
+
+        //Accion crear, editar
+        // POST: Libro/Create-Update
+        [HttpPost]
+        public ActionResult Save(Producto Producto, HttpPostedFileBase ImageFile, string[] selectedCategoria)
+        {
+            return View("Create", Producto);
+
+
+
+        }
+
     }
+
+
 
 }
