@@ -79,6 +79,7 @@
     <Compile Include="Models\FotoProducto.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Login.cs" />
     <Compile Include="Models\MetaData.cs" />
     <Compile Include="Models\ByteStoreContext.cs" />
     <Compile Include="Models\MetodoPago.cs">
@@ -132,6 +133,7 @@
     <Compile Include="Repositories\RepositoryUsuario.cs" />
     <Compile Include="Repositories\RepositoryProducto.cs" />
     <Compile Include="Repositories\RepositoryPedido.cs" />
+    <Compile Include="Utils\Encrypter.cs" />
     <Compile Include="Utils\Log.cs" />
   </ItemGroup>
   <ItemGroup>

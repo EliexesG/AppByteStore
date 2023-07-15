@@ -33,18 +33,31 @@
                         @Html.ActionLink("Gestionar Pedidos", "IndexAdmin", "Pedido", null, new { @class = "dropdown-item fw-bold" })
                     </div>
                 </li>
-                <li class="nav-item dropdown me-3">
-                    <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-user"></i> Cuenta</a>
-                    <div class="dropdown-menu fs-5">
-                        @Html.ActionLink("Editar Cuenta", "Perfil", "Usuario", null, new { @class = "dropdown-item fw-bold" })
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                       href="#" role="button" aria-haspopup="true"
+                       aria-expanded="false"><i class="fa-solid fa-user"></i> Perfil</a>
+                    <div class="dropdown-menu">
+                        @if (Session["User"] != null)
+                        {
+                            <div class="dropdown-item">
+                                Usuario: @((Session["User"] as Infraestructure.Models.Usuario).Nombre)
+                            </div>
+                        }
+                        <div class="dropdown-divider"></div>
+                        @if (Session["User"] == null)
+                        {
+                            <a href="@Url.Action("Index","Login")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user"></i> Iniciar Sesión</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index","Login")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user"></i> Editar Cuenta</a>
+                            <a href="@Url.Action("Logout","Login")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user-minus"></i> Cerrar Sesión</a>
+                        }
                     </div>
                 </li>
             </ul>
-            <form class="d-flex">
-                <div class="nav-link my-2 my-sm-0">
-                    <a href="@Url.Action("Index","Login")" class="nav-item text-decoration-none"><i class="fa-solid fa-user"></i> Iniciar Sesión</a>
-                </div>
-            </form>
+            
         </div>
     </div>
 </nav>

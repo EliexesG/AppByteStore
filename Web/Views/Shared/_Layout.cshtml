@@ -34,5 +34,14 @@
     @*@Scripts.Render("~/bundles/bootstrap")*@
     <script src="~/Scripts/bootstrap.bundle.js"></script>
     @RenderSection("scripts", required: false)
+
+    @Scripts.Render("~/bundles/sweetalert")
+
+    @if (ViewBag.NotificationMessage != null)
+    {
+        <script>
+            @Html.Raw(ViewBag.NotificationMessage)
+        </script>
+    }
 </body>
 </html>
