@@ -24,6 +24,7 @@ namespace Web
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap_Solar.min.css", "~/Content/jquery-ui.css")); // Plantilla bootswatch Solar
+        
         }
     }
 }

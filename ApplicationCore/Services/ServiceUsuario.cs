@@ -1,4 +1,6 @@
-﻿using Infraestructure.Models;
+﻿using ApplicationCore.Utils;
+using Infraestructure.Models;
+using Infraestructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +11,26 @@ namespace ApplicationCore.Services
 {
     public class ServiceUsuario : IServiceUsuario
     {
+        private IRepositoryUsuario repository = new RepositoryUsuario();
+
         public Usuario GetUsuarioByID(int id)
         {
-            throw new NotImplementedException();
+            Usuario oUsuario = repository.GetUsuarioByID(id);
+
+            return oUsuario;
         }
 
-        public IEnumerable<Usuario> GetUsuarios()
+        public IEnumerable<Usuario> GetUsuarios(string Correo, string contrasenna)
         {
-            throw new NotImplementedException();
+            // Encriptar el password para poder compararlo
+
+            string crytpPasswd = Cryptography.EncrypthAES(contrasenna); //Criptography esta en carpeta utils de applicationCore
+            return repository.GetUsuarios(Correo, crytpPasswd);
         }
 
         public Usuario Guardar(Usuario usuario)
         {
-            throw new NotImplementedException();
+            return repository.Guardar(usuario);
         }
     }
 }
