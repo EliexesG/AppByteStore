@@ -29,14 +29,12 @@ namespace Infraestructure.Repositories
                 using (ByteStoreContext ctx = new ByteStoreContext())
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
-                    //Obtener todos los libros incluyendo el autor
                     lista = ctx.Producto.Include("Usuario").
                         Include("FotoProducto")
                         .Include("Categoria")
                         .Include(producto => producto.Pregunta)
                         .Include(producto => producto.Pregunta.Select(pregunta => pregunta.Respuesta))
                         .ToList();
-                    //lista = ctx.Libro.Include(x=>x.Autor).ToList();
 
                 }
                 return lista;
