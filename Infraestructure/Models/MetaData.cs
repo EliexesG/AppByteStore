@@ -8,6 +8,19 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.Models
 {
+
+    internal partial class LoginMetadata
+    {
+        [Required(ErrorMessage = "{0} es un dato requerido")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "{0} inserte un correo válido")]
+        [Display(Name = "Correo Electrónico")]
+        public string CorreoElectronico { get; set; }
+
+        [Required(ErrorMessage = "{0} es un dato requerido")]
+        [Display(Name = "Contraseña")]
+        public string Contrasenna { get; set; }
+    }
+
     internal partial class CategoriaMetadata
     {
         public int IdCategoria { get; set; }

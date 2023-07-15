@@ -19,10 +19,11 @@ namespace Infraestructure.Repositories
                 using (ByteStoreContext ctx = new ByteStoreContext())
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
+
                     usuario = ctx.Usuario.
-                     Include("Rol"). //obtiene el usuario incluyendo el rol
-                    Where(p => p.IdUsuario == id).
-                    FirstOrDefault<Usuario>();
+                              Include("Rol"). //obtiene el usuario incluyendo el rol
+                              Where(p => p.IdUsuario == id).
+                              FirstOrDefault<Usuario>();
                 }
                 return usuario;
             }
@@ -40,22 +41,84 @@ namespace Infraestructure.Repositories
             }
         }
 
-        public IEnumerable<Usuario> GetUsuarios(string Correo, string contrasenna)
+        public IEnumerable<Usuario> GetUsuario()
         {
-            IEnumerable<Usuario> usuarios = null;
+            IEnumerable<Usuario> lista = null;
+            try
+            {
+                using (ByteStoreContext ctx = new ByteStoreContext())
+                {
+                    ctx.Configuration.LazyLoadingEnabled = false;
+
+                    lista = ctx.Usuario.
+                            Include("Rol")
+                            .ToList();
+                }
+                return lista;
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+        }
+
+        public IEnumerable<Usuario> GetUsuarioByRol(int IdRol)
+        {
+            IEnumerable<Usuario> lista = null;
+            try
+            {
+                using (ByteStoreContext ctx = new ByteStoreContext())
+                {
+                    ctx.Configuration.LazyLoadingEnabled = false;
+
+                    lista = ctx.Usuario
+                            .Include("Rol")
+                            .Where(usuario => usuario.Rol.Any(rol => rol.IdRol == IdRol))
+                            .ToList();
+                }
+                return lista;
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+        }
+
+        public Usuario Login(string Correo, string contrasenna)
+        {
+            Usuario usuario = null;
 
             try
             {
                 using (ByteStoreContext ctx = new ByteStoreContext())
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
-                    usuarios = ctx.Usuario.Where
-                        (u => u.CorreoElectronico.Equals(Correo) && u.Contrasenna.Equals(contrasenna));
 
-
+                    usuario = ctx.Usuario
+                               .Include("Rol")
+                               .Where(u => u.CorreoElectronico.Equals(Correo))
+                               .ToList()
+                               .Where(u => Encrypter.Desencrypt(u.Contrasenna).Equals(contrasenna))
+                               .FirstOrDefault();
                 }
 
-                return usuarios;
+                return usuario;
             }
 
             catch (DbUpdateException dbEx)

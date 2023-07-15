@@ -13,24 +13,29 @@ namespace ApplicationCore.Services
     {
         private IRepositoryUsuario repository = new RepositoryUsuario();
 
-        public Usuario GetUsuarioByID(int id)
+        public IEnumerable<Usuario> GetUsuario()
         {
-            Usuario oUsuario = repository.GetUsuarioByID(id);
-
-            return oUsuario;
+            return repository.GetUsuario();
         }
 
-        public IEnumerable<Usuario> GetUsuarios(string Correo, string contrasenna)
+        public Usuario GetUsuarioByID(int id)
         {
-            // Encriptar el password para poder compararlo
+            return repository.GetUsuarioByID(id); ;
+        }
 
-            string crytpPasswd = Cryptography.EncrypthAES(contrasenna); //Criptography esta en carpeta utils de applicationCore
-            return repository.GetUsuarios(Correo, crytpPasswd);
+        public IEnumerable<Usuario> GetUsuarioByRol(int IdRol)
+        {
+            return repository.GetUsuarioByRol(IdRol);
         }
 
         public Usuario Guardar(Usuario usuario)
         {
             return repository.Guardar(usuario);
+        }
+
+        public Usuario Login(string Correo, string contrasenna)
+        {
+            return repository.Login(Correo, contrasenna);
         }
     }
 }
