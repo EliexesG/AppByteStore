@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ByteStoreBDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ByteStoreBDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Categoria">
           <Key>
             <PropertyRef Name="IdCategoria" />
@@ -57,7 +57,7 @@
           <Property Name="IdEvaluador" Type="int" />
           <Property Name="IdEvaluado" Type="int" />
           <Property Name="IdCompraEncabezado" Type="int" />
-          <Property Name="Escala" Type="int" />
+          <Property Name="Escala" Type="decimal" Precision="2" Scale="1" />
           <Property Name="Comentario" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="FotoProducto">
@@ -163,7 +163,7 @@
           <Property Name="SegundoApellido" Type="varchar" MaxLength="50" />
           <Property Name="CorreoElectronico" Type="varchar" MaxLength="100" />
           <Property Name="Contrasenna" Type="varbinary(max)" />
-          <Property Name="PromedioEvaluaciones" Type="int" />
+          <Property Name="PromedioEvaluaciones" Type="decimal" Precision="2" Scale="1" />
           <Property Name="Estado" Type="bit" />
         </EntityType>
         <Association Name="FK__CompraDet__IdCom__4CA06362">
@@ -536,8 +536,7 @@
             <End Role="Telefono" EntitySet="Telefono" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ByteStoreBDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">

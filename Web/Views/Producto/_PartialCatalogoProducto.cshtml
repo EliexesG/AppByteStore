@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Infraestructure.Models.Producto>
+
+@if (Model.Count() > 0)
+{
+    foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4 ">
+            <div class="card border-dark h-100" style="background-color: rgba(0, 43, 54, 0.4);">
+                @if (item.Stock > 0)
+                {
+                    <i class="rounded-5 fa-solid fa-cart-shopping fa-2xl m-3 shadow-lg text-dark position-absolute text-center carrito" style="box-shadow: 0px 5px 15px 2px rgba(0, 0, 0, 0.5) !important; top: -5px; left: -5px; cursor: pointer; padding: 25px 12px 25px 10px; background-color: rgba(255, 255, 255, 255)"></i>
+                }
+                <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.FotoProducto.FirstOrDefault().Foto)"
+                     alt="Imagen @Html.DisplayFor(modelItem => item.Nombre)" class="card-img" />
+                <div class="card-body">
+                    <div class="card-body">
+                        <h4 class="card-title text-white">@Html.DisplayFor(modelItem => item.Nombre)</h4>
+                        <p class="card-title text-white">
+                            @Html.DisplayNameFor(model => model.Stock):
+                            @if (@item.Stock > 0)
+                            {
+                                <span class="card-text" style="color: rgb(50,205,50);">Disponible</span>
+                            }
+                            else
+                            {
+                                <span class="card-text" style="color:red">Agotado</span>
+                            }
+                        </p>
+                        <p class="card-title text-white"> @Html.DisplayNameFor(model => model.Precio): @Html.DisplayFor(modelItem => item.Precio)</p>
+
+                        <hr class="mb-4" />
+                        @* Detalle Ajax Modal *@
+                        <a href="@Url.Action("Details", "Producto", new {id = item.IdProducto})" class="btn btn-info detalle w-100 position-absolute bottom-0 start-0 w-75" data-id="@item.IdProducto"><i class="fa-regular fa-note-sticky"></i> Ver más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    }
+}
+else
+{
+    <h3 class="text-white mb-4 text-center mt-4"><i class="fa-solid fa-warning text-warning"></i> No se encuentran productos con esas características</h3>
+}

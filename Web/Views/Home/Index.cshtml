@@ -1,33 +1,84 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "ByteStore - Todo en Gaming";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+<div class="d-md-flex justify-content-md-center mb-4">
+    <h2 class="w-auto text-center border border-primary border-3 text-light fw-bold p-3 rounded-4">Todo lo que necesites en tecnología y videojuegos en un solo lugar</h2>
+</div>
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
-    </div>
-</main>
+<div class="row">
+
+    <a href="@Url.Action("Index", "Producto")" class="col-md-6 text-decoration-none">
+        <div class="card text-white mb-3 p-3 rounded-4 bg-danger hover">
+            <i class="fa-solid fa-gamepad fa-2xl m-3 shadow-lg"></i>
+            <div class="card-body">
+                <h3 class="card-title">Variedad</h3>
+                <p class="card-text">Productos, juegos y otras cosas más de tecnología</p>
+            </div>
+
+        </div>
+    </a>
+
+    <a href="@Url.Action("Create", "Producto")" class="col-md-6 text-decoration-none">
+        <div class="card text-white mb-3 p-3 rounded-4 bg-info hover">
+            <i class="fa-solid fa-arrow-up-from-bracket fa-2xl m-3"></i>
+            <div class="card-body">
+                <h3 class="card-title">Publicar Producto</h3>
+                <p class="card-text">Puedes poner en venta un producto</p>
+            </div>
+
+        </div>
+    </a>
+
+</div>
+
+<h3 class="text-center text-light fw-bold mt-4">Categorías Disponibles Principales</h3>
+<hr class="fw-bold" />
+
+<div class="row">
+
+    <a href="@Url.Action("", "Producto")" class="col-sm-6 col-md-3 text-decoration-none">
+        <div class="card text-white mb-3 p-3 rounded-4 bg-warning hover">
+            <i class="fa-solid fa-gamepad fa-2xl m-3"></i>
+            <div class="card-body">
+                <h3 class="card-title">Juegos de Consola</h3>
+                <p class="card-text">Explicación categoría</p>
+            </div>
+
+        </div>
+    </a>
+
+    <a href="@Url.Action("", "Producto")" class="col-sm-6  col-md-3 text-decoration-none">
+        <div class="card text-white mb-3 p-3 rounded-4 bg-warning hover">
+            <i class="fa-solid fa-desktop fa-2xl m-3"></i>
+            <div class="card-body">
+                <h3 class="card-title">Juegos de PC</h3>
+                <p class="card-text">Explicación categoría</p>
+            </div>
+
+        </div>
+    </a>
+
+    <a href="@Url.Action("", "Producto")" class=" col-sm-6 col-md-3 text-decoration-none">
+        <div class="card text-white mb-3 p-3 rounded-4 bg-warning hover">
+            <i class="fa-solid fa-headset fa-2xl m-3"></i>
+            <div class="card-body">
+                <h3 class="card-title">Accesorios Consola</h3>
+                <p class="card-text">Explicación categoría</p>
+            </div>
+
+        </div>
+    </a>
+
+    <a href="@Url.Action("", "Producto")" class="col-sm-6 col-md-3 text-decoration-none">
+        <div class="card text-white mb-3 p-3 rounded-4 bg-warning hover">
+            <i class="fa-solid fa-keyboard fa-2xl m-3"></i>
+            <div class="card-body">
+                <h3 class="card-title">Accesorios PC</h3>
+                <p class="card-text">Explicación categoría</p>
+            </div>
+
+        </div>
+    </a>
+
+</div>

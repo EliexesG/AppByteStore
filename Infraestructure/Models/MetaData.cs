@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,6 +24,8 @@ namespace Infraestructure.Models
         public int IdCompraEncabezado { get; set; }
         public int IdProducto { get; set; }
         public Nullable<int> Cantidad { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public Nullable<double> Precio { get; set; }
 
         [Display(Name = "Estado de Entrega")]
@@ -35,17 +38,25 @@ namespace Infraestructure.Models
 
     internal partial class CompraEncabezadoMetadata
     {
+        [DisplayFormat(DataFormatString = "{0:000000}")]
+        [Display(Name = "Número de Factura")]
         public int IdCompraEncabezado { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd d 'de' MMMM yyyy, hh:mm tt}")]
         [Display(Name = "Fecha y Hora de Compra")]
         public Nullable<System.DateTime> FechaHora { get; set; }
 
+        [DisplayFormat(DataFormatString ="{0:C}")]
         [Display(Name = "Sub-total")]
-        public Nullable<double> SubTotal { get; set; }
+        public Nullable<double> SubTotal { get; set; } 
+
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public Nullable<double> Impuesto { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public Nullable<double> Total { get; set; }
 
-        [Display(Name = "Detalles de Factura")]
+        [Display(Name = "Detalles de Compra")]
         public virtual ICollection<CompraDetalle> CompraDetalle { get; set; }
 
         [Display(Name = "Dirección")]
@@ -109,6 +120,7 @@ namespace Infraestructure.Models
         [Display(Name = "Número de Tarjeta")]
         public byte[] NumeroTarjeta { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/yy}")]
         [Display(Name = "Fecha de Expiración")]
         public Nullable<System.DateTime> FechaExpiracion { get; set; }
 
@@ -129,6 +141,7 @@ namespace Infraestructure.Models
     {
         public int IdCompraEncabezado { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0}")]
         [Display(Name = "Estado de Entrega")]
         public Nullable<int> EstadoEntrega { get; set; }
 
@@ -140,6 +153,7 @@ namespace Infraestructure.Models
     {
         public int IdPregunta { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd d 'de' MMMM yyyy, hh:mm tt}")]
         [Display(Name = "Fecha y Hora de Pregunta")]
         public Nullable<System.DateTime> FechaHora { get; set; }
 
@@ -158,10 +172,12 @@ namespace Infraestructure.Models
 
         [Display(Name = "Descripción")]
         public string Descripcion { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public Nullable<double> Precio { get; set; }
         public Nullable<int> Stock { get; set; }
 
-        [Display(Name = "Estado de Uso")]
+        [Display(Name = "Estado")]
         public Nullable<int> Estado { get; set; }
 
         [Display(Name = "Categoría")]
@@ -184,6 +200,7 @@ namespace Infraestructure.Models
     {
         public int IdRespuesta { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd d 'de' MMMM yyyy, hh:mm tt}")]
         [Display(Name = "Fecha y Hora de Respuesta")]
         public Nullable<System.DateTime> FechaHora { get; set; }
 
@@ -251,7 +268,7 @@ namespace Infraestructure.Models
         [Display(Name = "Contraseña")]
         public byte[] Contrasenna { get; set; }
 
-        [Display(Name = "Promedio de Evaluaciones")]
+        [Display(Name = "Calificación del Proveedor")]
         public Nullable<int> PromedioEvaluaciones { get; set; }
         public Nullable<bool> Estado { get; set; }
 

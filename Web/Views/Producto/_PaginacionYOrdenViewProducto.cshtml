@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Infraestructure.Models.Producto>
+
+@foreach (var item in Model) //Itera la lista de los productos guardados en la BD
+{
+    <tr class="table-dark text-center">
+        <td class="p-3">
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td class="p-3">
+            @Html.DisplayFor(modelItem => item.Descripcion)
+        </td>
+        <td class="p-3">
+            @Html.DisplayFor(modelItem => item.Precio)
+        </td>
+        <td class="p-3">
+            @Html.DisplayFor(modelItem => item.Stock)
+        </td>
+        <td class="p-3">
+            <div class="d-flex">
+                <a class="btn r btn-primary" href="@Url.Action("Edit", "Producto", new {id = item.IdProducto})"><i class="fa-solid fa-pencil"></i></a>
+                <a class="btn r btn-info" href="@Url.Action("Details", "Producto", new {id = item.IdProducto})"><i class="fa-solid fa-circle-info"></i></a>
+                <a class="btn r btn-warning" href="@Url.Action("Delete", "Producto", new {id = item.IdProducto})"><i class="fa-solid fa-trash-can"></i></a>
+            </div>
+        </td>
+    </tr>
+}
+
+
+
+

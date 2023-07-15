@@ -1,0 +1,50 @@
+﻿
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+        @*Helper: Texto del usuario, Accion a llamar, Nombre controlador, parámetros, Atributos HTML*@
+        <a href="@Url.Action("Index","Home")" class="navbar-brand"><img alt="icon" src="~/img/Logo_completo.png" /></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse fs-5" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item me-3">
+                    <a href="@Url.Action("Index","Home")" class="nav-link active fw-bold"><i class="fa-solid fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item me-3">
+                    <a href="@Url.Action("Index","Producto")" class="nav-link fw-bold"><i class="fa-solid fa-gamepad"></i> Productos</a>
+                </li>
+                <li class="nav-item me-3">
+                    <a href="@Url.Action("IndexVendedor","Producto")" class="nav-link fw-bold"><i class="fa-solid fa-money-bill"></i><i class="fa-solid fa-gamepad"></i> Tus Productos</a>
+                </li>
+                <li class="nav-item me-3">
+                    <a href="@Url.Action("Index","Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-truck-fast"></i> Pedidos</a>
+                </li>
+                <li class="nav-item me-3">
+                    <a href="@Url.Action("IndexVendedor","Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-money-bill"></i><i class="fa-solid fa-truck-fast"></i> Tus Ventas</a>
+                </li>
+                <li class="nav-item me-3">
+                    <a href="@Url.Action("","")" class="nav-link fw-bold"><i class="fa-solid fa-cart-shopping"></i> Carrito</a>
+                </li>
+                <li class="nav-item dropdown me-3">
+                    <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-wrench"></i> Mantenimientos</a>
+                    <div class="dropdown-menu fs-5">
+                        @Html.ActionLink("Gestionar Productos", "IndexAdmin", "Producto", null, new { @class = "dropdown-item fw-bold" })
+                        @Html.ActionLink("Gestionar Pedidos", "IndexAdmin", "Pedido", null, new { @class = "dropdown-item fw-bold" })
+                    </div>
+                </li>
+                <li class="nav-item dropdown me-3">
+                    <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-user"></i> Cuenta</a>
+                    <div class="dropdown-menu fs-5">
+                        @Html.ActionLink("Editar Cuenta", "Perfil", "Usuario", null, new { @class = "dropdown-item fw-bold" })
+                    </div>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <div class="nav-link my-2 my-sm-0">
+                    <a href="@Url.Action("Index","Login")" class="nav-item text-decoration-none"><i class="fa-solid fa-user"></i> Iniciar Sesión</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
