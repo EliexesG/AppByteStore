@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using System.Web.ModelBinding;
 using System.Web.Mvc;
+using Web.Security;
 
 namespace Web.Controllers
 {
@@ -14,18 +16,18 @@ namespace Web.Controllers
     {
 
         private int numItemsPerPage = 6;
-        private int idCliente = 3;
-        private int idVendedor = 2;
 
         // GET: Pedido
+        [CustomAuthorize((int)Roles.Cliente)]
         public ActionResult Index()
         {
             IEnumerable<Pedido> lista = new List<Pedido>();
 
             try
             {
+                Usuario user = Session["User"] as Usuario;
                 IServicePedido _ServicePedido = new ServicePedido();
-                lista = _ServicePedido.GetPedidoByCliente(idCliente);
+                lista = _ServicePedido.GetPedidoByCliente(user.IdUsuario);
                 ViewBag.NumItemsPerPage = numItemsPerPage;
                 return View(lista);
             }
@@ -37,6 +39,7 @@ namespace Web.Controllers
             }
         }
 
+        [CustomAuthorize((int)Roles.Administrador)]
         public ActionResult IndexAdmin()
         {
             IEnumerable<Pedido> lista = new List<Pedido>();
@@ -55,15 +58,17 @@ namespace Web.Controllers
             }
         }
 
+        [CustomAuthorize((int)Roles.Vendedor)]
         public ActionResult IndexVendedor()
         {
             IEnumerable<Pedido> lista = new List<Pedido>();
 
             try
             {
+                Usuario user = Session["User"] as Usuario;
                 IServicePedido _ServicePedido = new ServicePedido();
-                lista = _ServicePedido.GetPedidoByVendedor(idVendedor);
-                ViewBag.Vendedor = idVendedor;
+                lista = _ServicePedido.GetPedidoByVendedor(user.IdUsuario);
+                ViewBag.Vendedor = user.IdUsuario;
                 return View(lista);
             }
             catch (Exception ex)
@@ -74,15 +79,30 @@ namespace Web.Controllers
             }
         }
 
+        [CustomAuthorize((int)Roles.Cliente)]
         // GET: Pedido/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
             Pedido pedido = null;
 
             try
             {
+                if(id == null)
+                {
+                    return RedirectToAction("Index");
+                }
+
                 IServicePedido _ServicePedido = new ServicePedido();
-                pedido = _ServicePedido.GetPedidoByID(id);
+                pedido = _ServicePedido.GetPedidoByID(Convert.ToInt32(id));
+
+                if (pedido == null)
+                {
+                    TempData["Message"] = "No existe el pedido solicitado";
+                    TempData["Redirect"] = "Pedido";
+                    TempData["Redirect-Action"] = "Index";
+                    return RedirectToAction("Default", "Error");
+                }
+
                 return View(pedido);
             }
             catch (Exception ex)
@@ -102,14 +122,15 @@ namespace Web.Controllers
             {
                 //Instancia 
                 IServicePedido _ServicePedido = new ServicePedido();
+                Usuario user = Session["User"] as Usuario;
 
-                if(tipoUsuario == 1)
+                if (tipoUsuario == 1)
                 {
                     lista = _ServicePedido.GetPedido();
                 }
                 else
                 {
-                    lista = _ServicePedido.GetPedidoByCliente(idCliente);
+                    lista = _ServicePedido.GetPedidoByCliente(user.IdUsuario);
                 }
                 
                 //
