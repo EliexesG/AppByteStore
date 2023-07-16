@@ -48,7 +48,7 @@
 
 <div class="d-flex mb-4">
     <a href="@Url.Action(ViewBag.GetBack, "Producto")" class="btn btn-info fs-4 me-4">Vover Atrás</a>
-    @if (Model.Stock > 0)
+    @if (Model.Stock > 0 && Web.Security.AutorizeView.IsUserInRole(new string[] {"Vendedor", "Cliente"}) && (Session["User"] as Infraestructure.Models.Usuario).IdUsuario != Model.Usuario.IdUsuario)
     {
         <a href="@Url.Action("","")" class="btn btn-primary fs-4"><i class="fa-solid fa-cart-shopping"></i> Agregar al Carrito</a>
     }
@@ -188,7 +188,10 @@
                         <span class="fs-5">@Html.DisplayFor(model => pregunta.FechaHora)</span>
                     </h3>
                     <h4 class="card-text text-white-50 mb-4">@pregunta.Pregunta1</h4>
-                    <button class="btn btn-info w-25" type="button"><i class="fa-solid fa-reply"></i> Responder</button>
+                    @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }) && (Session["User"] as Infraestructure.Models.Usuario).IdUsuario == Model.Usuario.IdUsuario)
+                    {
+                        <button class="btn btn-info w-25" type="button"><i class="fa-solid fa-reply"></i> Responder</button>
+                    }
                 </div>
 
                 {

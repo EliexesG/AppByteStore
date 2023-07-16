@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using Web.Security;
 
 namespace Web.Controllers
 {
@@ -14,7 +15,6 @@ namespace Web.Controllers
     {
 
         private int numItemsPerPage = 6;
-        private int idVendedor = 2;
 
         public ActionResult Index()
         {
@@ -41,6 +41,7 @@ namespace Web.Controllers
             }
         }
 
+        [CustomAuthorize((int)Roles.Administrador)]
         public ActionResult IndexAdmin()
         {
             IEnumerable<Producto> lista = null;
@@ -64,6 +65,7 @@ namespace Web.Controllers
 
         // GET: Producto
         //Para el mantenimiento de productos
+        [CustomAuthorize((int)Roles.Vendedor)]
         public ActionResult IndexVendedor()
         {
             //Creo una lista tipo Producto
@@ -71,11 +73,12 @@ namespace Web.Controllers
             try
             {
                 //Instancia 
+                Usuario user = Session["User"] as Usuario;
                 IServiceProducto _ServiceProducto = new ServiceProducto();
-                lista = _ServiceProducto.GetProductoPorVendedor(idVendedor); //Obtengo todos los datos de la BD y los agrego a la lista 
+                lista = _ServiceProducto.GetProductoPorVendedor(user.IdUsuario); //Obtengo todos los datos de la BD y los agrego a la lista 
                 TempData["GetBack"] = "IndexVendedor";
                 ViewBag.NumItemsPerPage = numItemsPerPage;
-                ViewBag.Nombres = _ServiceProducto.GetProductoNombres(idVendedor);
+                ViewBag.Nombres = _ServiceProducto.GetProductoNombres(user.IdUsuario);
             }
             catch (Exception ex)
             {
@@ -87,26 +90,30 @@ namespace Web.Controllers
         }
 
         // GET: Pedido/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
             Producto producto = null;
 
             try
             {
+                if(id == null)
+                {
+                    return RedirectToAction("Index");
+                }
+
                 IServiceProducto _ServiceProducto = new ServiceProducto();
                 producto = _ServiceProducto.GetProductoByID(Convert.ToInt32(id));
-                ViewBag.GetBack = TempData["GetBack"];
-                /*
-                if (producto == null || producto.Stock == 0)
+
+                if (producto == null)
                 {
-                    TempData["Message"] = "El producto que seleccionaste está agotado";
+                    TempData["Message"] = "No existe el producto solicitado";
                     TempData["Redirect"] = "Producto";
                     TempData["Redirect-Action"] = "Index";
-                    //Redireccion a la vista del error
                     return RedirectToAction("Default", "Error");
-
                 }
-                */
+
+                ViewBag.GetBack = TempData["GetBack"];
+
                 return View(producto);
             }
             catch (Exception ex)
@@ -120,6 +127,7 @@ namespace Web.Controllers
         //Filtro por Nombre
         public PartialViewResult buscarProductoxNombre(string filtro, int tipoUsuario)
         {
+            Usuario user = Session["User"] as Usuario;
             IEnumerable<Producto> lista = null;
             IServiceProducto _ServiceProducto = new ServiceProducto();
             string partialView = "";
@@ -140,7 +148,7 @@ namespace Web.Controllers
                     partialView = "_PaginacionYOrdenViewProducto";
                 }
                 else if (tipoUsuario == 2) {
-                    lista = _ServiceProducto.GetProductoPorNombre(filtro, idVendedor);
+                    lista = _ServiceProducto.GetProductoPorNombre(filtro, user.IdUsuario);
                     partialView = "_PaginacionYOrdenViewProducto";
                 }
                 else {
@@ -163,6 +171,7 @@ namespace Web.Controllers
             {
 
                 //Instancia 
+                Usuario user = Session["User"] as Usuario;
                 IServiceProducto _ServiceProducto = new ServiceProducto();
 
                 if (tipoUsuario == 1)
@@ -172,7 +181,7 @@ namespace Web.Controllers
                 }
                 else
                 {
-                    lista = _ServiceProducto.GetProductoPorVendedor(idVendedor);
+                    lista = _ServiceProducto.GetProductoPorVendedor(user.IdUsuario);
                 }
 
                 int startIndex = (pag * numItemsPerPage) - numItemsPerPage;
