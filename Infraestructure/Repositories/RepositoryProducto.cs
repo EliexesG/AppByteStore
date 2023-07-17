@@ -32,8 +32,6 @@ namespace Infraestructure.Repositories
                     lista = ctx.Producto.Include("Usuario").
                         Include("FotoProducto")
                         .Include("Categoria")
-                        .Include(producto => producto.Pregunta)
-                        .Include(producto => producto.Pregunta.Select(pregunta => pregunta.Respuesta))
                         .ToList();
 
                 }
@@ -102,10 +100,6 @@ namespace Infraestructure.Repositories
                             .Include("Usuario")
                             .Include("Categoria")
                             .Include("FotoProducto")
-                            .Include(producto => producto.Pregunta)
-                            .Include(producto => producto.Pregunta.Select(pregunta => pregunta.Respuesta))
-                            .Include(producto => producto.Pregunta.Select(pregunta => pregunta.Usuario))
-                            .Include(producto => producto.Pregunta.Select(pregunta => pregunta.Respuesta.Select(respuesta => respuesta.Usuario)))
                             .Where(l => l.IdProducto == id)
                             .FirstOrDefault();
 

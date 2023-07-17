@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Infraestructure.Models.Pregunta>
+
+@{
+    bool first = true;
+    int IdUsuarioProducto = ViewBag.IdUsuarioProducto;
+    int idRespuestaActual = 1;
+}
+
+@if (Model.Count() > 0)
+{
+    foreach (Infraestructure.Models.Pregunta pregunta in Model)
+    {
+        <div class="w-75 p-3 rounded-4 bg-body card mb-4 @(first ? "bg-gradient" : "")">
+            <h3 class="card-title text-white mb-3">
+                <i class="fa-solid fa-user m-3 shadow-lg"></i>
+                @pregunta.Usuario.Nombre @pregunta.Usuario.PrimerApellido @pregunta.Usuario.SegundoApellido •
+                <span class="fs-5">@Html.DisplayFor(model => pregunta.FechaHora)</span>
+            </h3>
+            <h4 class="card-text text-white-50 mb-4">@pregunta.Pregunta1</h4>
+            <div class="d-flex">
+                <button data-idRespuestaactual="@idRespuestaActual" data-idpregunta="@pregunta.IdPregunta" class="btn btn-info w-25 me-4 verRespuestas" type="button"><i class="fa-solid fa-reply"></i> Ver Respuestas</button>
+                @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }) && (Session["User"] as Infraestructure.Models.Usuario).IdUsuario == IdUsuarioProducto)
+                {
+                    <button class="btn btn-info w-25" type="button"><i class="fa-solid fa-reply"></i> Responder</button>
+                }
+            </div>
+        </div>
+        <div id="@idRespuestaActual"></div>
+        {
+            if (first)
+            {
+                first = false;
+            }
+            idRespuestaActual++;
+        }
+        <hr />
+    }
+}
+else
+{
+    <h3 class="text-white mb-4 text-center mt-4"><i class="fa-solid fa-warning text-warning"></i> No hay preguntas realizadas</h3>
+}

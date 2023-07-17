@@ -231,6 +231,78 @@ namespace Web.Controllers
             return PartialView("_PartialCatalogoProducto", lista);
         }
 
+        public PartialViewResult PreguntasProducto (int IdProducto, int IdUsuarioProducto) {
+            
+            IEnumerable<Pregunta> lista = null;
+            
+            try
+            {
+                IServicePregunta _ServicePregunta = new ServicePregunta();
+                lista = _ServicePregunta.GetPreguntaByProducto(IdProducto);
+                ViewBag.IdUsuarioProducto = IdUsuarioProducto;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+
+            return PartialView("_PreguntasProducto", lista);
+        }
+
+        [HttpPost]
+        public JsonResult SavePregunta (string stringPregunta, int IdProducto)
+        {
+            IServicePregunta _ServicePregunta = new ServicePregunta();
+            bool respuesta = false;
+
+            try
+            {
+
+                Pregunta pregunta = new Pregunta()
+                {
+                    FechaHora = DateTime.Now,
+                    Pregunta1 = stringPregunta
+                };
+
+                pregunta = _ServicePregunta.SavePregunta(pregunta, (Session["User"] as Usuario).IdUsuario, IdProducto);
+
+                if (pregunta != null)
+                {
+                    respuesta = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+
+            return Json(new
+            {
+                success = respuesta
+            });
+        }
+
+        public PartialViewResult RespuestasPregunta(int IdPregunta)
+        {
+
+            IEnumerable<Respuesta> lista = null;
+
+            try
+            {
+                IServicePregunta _ServicePregunta = new ServicePregunta();
+                lista = _ServicePregunta.GetRespuestaByPregunta(IdPregunta);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+
+            return PartialView("_RespuestasPregunta", lista);
+        }
+
         //Boton nuevo producto
         public ActionResult Create()
         {
