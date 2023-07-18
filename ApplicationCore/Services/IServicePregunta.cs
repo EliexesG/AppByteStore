@@ -14,6 +14,6 @@ namespace ApplicationCore.Services
         Respuesta GetRespuestaById(int IdRespuesta);
         IEnumerable<Respuesta> GetRespuestaByPregunta(int IdPregunta);
         Pregunta SavePregunta(Pregunta pregunta, int idUsuario, int idProducto);
-        Respuesta SaveRespuesta(Respuesta respuesta, Pregunta pregunta);
+        Respuesta SaveRespuesta(Respuesta respuesta, int idUsuario, int idPregunta);
     }
 }

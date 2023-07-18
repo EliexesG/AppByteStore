@@ -166,6 +166,7 @@ namespace Infraestructure.Repositories
                     usuario = _RepositoryUsuario.GetUsuarioByID(idUsuario);
                     producto = _RepositoryProducto.GetProductoByID(idProducto);
                     producto.Usuario = null;
+                    
 
                     ctx.Usuario.Attach(usuario);
                     ctx.Producto.Attach(producto);
@@ -197,17 +198,30 @@ namespace Infraestructure.Repositories
             }
         }
 
-        public Respuesta SaveRespuesta(Respuesta respuesta, Pregunta pregunta)
+        public Respuesta SaveRespuesta(Respuesta respuesta, int idUsuario, int idPregunta)
         {
             int retorno = 0;
             Respuesta oRespuesta = null;
+            Usuario usuario = null;
+            Pregunta pregunta = null;
+            IRepositoryUsuario _repositoryUsuario = new RepositoryUsuario();
 
             try
             {
                 using (ByteStoreContext ctx = new ByteStoreContext())
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
+
+                    usuario = _repositoryUsuario.GetUsuarioByID(idUsuario);
+                    pregunta = this.GetPreguntaById(idPregunta);
+                    pregunta.Usuario = null;
+
+                    ctx.Usuario.Attach(usuario);
+                    ctx.Pregunta.Attach(pregunta);
+
+                    respuesta.Usuario = usuario;
                     respuesta.Pregunta = pregunta;
+
                     ctx.Respuesta.Add(respuesta);
                     retorno = ctx.SaveChanges();
                 }

@@ -18,10 +18,10 @@
             </h3>
             <h4 class="card-text text-white-50 mb-4">@pregunta.Pregunta1</h4>
             <div class="d-flex">
-                <button data-idRespuestaactual="@idRespuestaActual" data-idpregunta="@pregunta.IdPregunta" class="btn btn-info w-25 me-4 verRespuestas" type="button"><i class="fa-solid fa-reply"></i> Ver Respuestas</button>
+                <button data-idRespuestaactual="@idRespuestaActual" data-idpregunta="@pregunta.IdPregunta" class="shadow-lg text-white bg-body btn fw-bold w-25 me-4 verRespuestas" type="button"><i class="fa-solid fa-caret-down"></i> Ver Respuestas</button>
                 @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }) && (Session["User"] as Infraestructure.Models.Usuario).IdUsuario == IdUsuarioProducto)
                 {
-                    <button class="btn btn-info w-25" type="button"><i class="fa-solid fa-reply"></i> Responder</button>
+                    <button class="text-white btn shadow-lg fw-bold w-25 bg-body" type="button"><i class="fa-solid fa-reply"></i> Responder</button>
                 }
             </div>
         </div>
@@ -33,10 +33,10 @@
             }
             idRespuestaActual++;
         }
-        <hr />
+        <hr class="text-black"/>
     }
 }
 else
 {
-    <h3 class="text-white mb-4 text-center mt-4"><i class="fa-solid fa-warning text-warning"></i> No hay preguntas realizadas</h3>
+    <h3 class="text-black mb-4 text-center mt-4"><i class="fa-solid fa-warning text-warning"></i> No hay preguntas realizadas</h3>
 }

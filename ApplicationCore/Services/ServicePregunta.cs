@@ -37,9 +37,9 @@ namespace ApplicationCore.Services
             return repository.SavePregunta(pregunta, idUsuario, idProducto);
         }
 
-        public Respuesta SaveRespuesta(Respuesta respuesta, Pregunta pregunta)
+        public Respuesta SaveRespuesta(Respuesta respuesta, int idUsuario, int idPregunta)
         {
-            return repository.SaveRespuesta(respuesta, pregunta);
+            return repository.SaveRespuesta(respuesta, idUsuario, idPregunta);
         }
     }
 }
