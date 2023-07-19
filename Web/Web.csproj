@@ -236,6 +236,8 @@
     <Content Include="Views\Usuario\Login.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Login\UnAuthorized.cshtml" />
+    <Content Include="Views\Producto\_PreguntasProducto.cshtml" />
+    <Content Include="Views\Producto\_RespuestasPregunta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
