@@ -1,42 +1,58 @@
 ﻿@model Infraestructure.Models.Login
 
 @{
-    ViewBag.Title = "ByteStore - Login";
+    ViewBag.Title = "Iniciar Sesión";
 }
-
-<h2>Login</h2>
 
 
 @using (Html.BeginForm("Login", "Login"))
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Usuario</h4>
-        <hr />
+<div class="row justify-content-center">
+    <div class="form-horizontal p-3 col-md-5 rounded-3 border border-2 border-success" style="background-color: rgba(0, 43, 54, 0.4);">
+
+        <div class="text text-center">
+            <h3>Iniciar sesión</h3>
+        </div>
+
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group mb-3">
-            @Html.LabelFor(model => model.CorreoElectronico, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.CorreoElectronico, htmlAttributes: new { @class = "text control-label col-md-6" })
+            <div class="col-md-12">
                 @Html.EditorFor(model => model.CorreoElectronico, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.CorreoElectronico, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group mb-3">
-            @Html.LabelFor(model => model.Contrasenna, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.Contrasenna, htmlAttributes: new { @class = "text control-label col-md-6" })
+            <div class="col-md-12">
                 @Html.PasswordFor(model => model.Contrasenna, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Contrasenna, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group mb-3">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Login" class="btn btn-primary" />
+            <div class="col-md-offset-2 col-md-12 text-center">
+                <input type="submit" value="Ingresar" class="btn btn-primary" />
             </div>
         </div>
+
+        <hr />
+        <div class="col-md-12 text-center">
+            <a class="text-info" href="#">¿No tienes una cuenta? Regístrate</a>
+        </div>
     </div>
+
+
+</div>
+
+<style>
+    .text{
+        color: white;
+    }
+</style>
 }
 
 @section Scripts {
