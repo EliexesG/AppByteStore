@@ -254,7 +254,7 @@ namespace Web.Controllers
         public JsonResult SavePregunta (string stringPregunta, int IdProducto)
         {
             IServicePregunta _ServicePregunta = new ServicePregunta();
-            bool respuesta = false;
+            bool resultado = false;
 
             try
             {
@@ -269,7 +269,7 @@ namespace Web.Controllers
 
                 if (pregunta != null)
                 {
-                    respuesta = true;
+                    resultado = true;
                 }
             }
             catch (Exception ex)
@@ -280,7 +280,7 @@ namespace Web.Controllers
 
             return Json(new
             {
-                success = respuesta
+                success = resultado
             });
         }
 
@@ -301,6 +301,39 @@ namespace Web.Controllers
             }
 
             return PartialView("_RespuestasPregunta", lista);
+        }
+
+        public JsonResult SaveRespuesta(string stringRespuesta, int IdPregunta)
+        {
+            IServicePregunta _ServicePregunta = new ServicePregunta();
+            bool resultado = false;
+
+            try
+            {
+
+                Respuesta respuesta = new Respuesta()
+                {
+                    FechaHora = DateTime.Now,
+                    Respuesta1 = stringRespuesta
+                };
+
+                respuesta = _ServicePregunta.SaveRespuesta(respuesta, (Session["User"] as Usuario).IdUsuario, IdPregunta);
+
+                if (respuesta != null)
+                {
+                    resultado = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+
+            return Json(new
+            {
+                success = resultado
+            });
         }
 
         //Boton nuevo producto

@@ -2,7 +2,7 @@
 
 
 @{
-    bool desabilitarAgregarPregunta = !Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" });
+    bool desabilitarAgregarPregunta = !Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }) || (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }) && (Session["User"] as Infraestructure.Models.Usuario).IdUsuario == Model.Usuario.IdUsuario);
     ViewBag.Title = "ByteStore - " + @Html.DisplayFor(modelItem => modelItem.Nombre);
 }
 
@@ -172,18 +172,18 @@
 
 <h2 class="w-auto text-center border border-primary border-3 text-light rounded-4 mb-5 p-3">Preguntas</h2>
 
-<div class="p-4 bg-white rounded-4">
+<div class="p-4 bg-light rounded-4">
 
     @if (desabilitarAgregarPregunta)
     {
         <div class="bg-danger mb-4 rounded-4">
-            <h3 class="text-white text-center" style="margin:15px !important;"><i class="fa-solid fa-warning text-white"></i> Debe ser un cliente registrado para realizar preguntas</h3>
+            <h3 class="text-white text-center" style="margin:15px !important;"><i class="fa-solid fa-warning text-white"></i> @((Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }) && (Session["User"] as Infraestructure.Models.Usuario).IdUsuario == Model.Usuario.IdUsuario) ? "No puedes registrar preguntas a tu producto" : "Debe ser un cliente registrado para realizar preguntas")</h3>
         </div>
 
     }
     <form class="d-flex mb-4" style="height:60px;" id="formPregunta">
         @Html.TextBox("agregarPregunta", "", new { @class = "form-control me-sm-2 text-black fw-bold", @placeholder = "Escribir Pregunta", @id = "formPreguntaTexto" })
-        <button id="btnPregunta" class="btn btn-info my-2 my-sm-0" type="submit" form="formPregunta" )>Subir</button>
+        <button id="btnPregunta" class="btn btn-info my-2 my-sm-0" type="submit" form="formPregunta" )>Preguntar</button>
     </form>
 
     <hr class="mb-4 text-black" />
@@ -197,7 +197,7 @@
 
     @Scripts.Render("~/bundles/jqueryval")
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         $(document).ready(function () {
 
@@ -216,7 +216,7 @@
                 messages: {
                     agregarPregunta: 'Debes escribir la pregunta'
                 },
-                submitHandler: function (form) {
+                submitHandler: function (form, event) {
 
                     var IdProducto = @Html.Raw(Json.Encode(Model.IdProducto));
                     var IdUsuario = @Html.Raw(Json.Encode(Model.Usuario.IdUsuario));
@@ -227,7 +227,7 @@
                     $.ajax({
                         method: "POST",
                         url: "/Producto/SavePregunta",
-                        data: { stringPregunta, IdProducto, IdUsuario },
+                        data: { stringPregunta, IdProducto },
                         success: function (response) {
                             $('#btnPreguntas').hide();
                             $("#formPreguntaTexto").val("");
@@ -277,7 +277,7 @@
             function () {
                 var idPregunta = $(this).data('idpregunta');
                 var idRespuestaActual = $(this).data('idrespuestaactual');
-                var id = "#" + idRespuestaActual;
+                var id = "#respuestas" + idRespuestaActual;
 
                 $.ajax({
                     method: "GET",
@@ -292,5 +292,71 @@
                     }
                 })
             });
-    </script>
+
+        $(document).on('click', '.verFormularioRespuesta',
+            function () {
+                var IdPregunta = $(this).data('idpregunta');
+                var idFormRespuestaActual = $(this).data('idformrespuestaactual');
+                var idRespuestaActual = $(this).data('idrespuestaactual');
+                var id = "#formularioRespuesta" + idFormRespuestaActual;
+
+                var html = '<div class="row mb-1">' +
+                                
+                                '<div class="w-100 p-3 col-5">' +
+                                    '<form class="d-flex mb-4 w-75" style="height:60px;" id="formRespuesta' + idFormRespuestaActual + '">' +
+                                        '<input type="text" class="form-control me-sm-2 text-black fw-bold" placeholder="Escribir Respuesta" name="agregarRespuesta" id="formRespuestaTexto' + idFormRespuestaActual + '" />' +
+                                        '<button id="btnRespuesta' + idFormRespuestaActual + '" class="btn btn-info my-2 my-sm-0" type="submit" form="formRespuesta' + idFormRespuestaActual + '" )>Responder</button>' +
+                                    '</form>' +
+                                '</div>' +
+                          '</div>';
+
+                $(id).html("");
+                $(id).html(html);
+
+                var idForm = "#formRespuesta" + idFormRespuestaActual;
+                
+                $(idForm).validate({
+                    rules: {
+                        agregarRespuesta: 'required'
+                    },
+                    messages: {
+                        agregarRespuesta: 'Debes escribir la respuesta'
+                    },
+                    submitHandler: function (form, event) {
+                        event.preventDefault();
+                        var stringRespuesta = $(form).find('[name="agregarRespuesta"]').val();
+
+                        $.ajax({
+                            method: "POST",
+                            url: "/Producto/SaveRespuesta",
+                            data: { stringRespuesta, IdPregunta },
+                            success: function (response) {
+                                $('#btnPreguntas').hide();
+                                $("#formPreguntaTexto").val("");
+                                $.ajax({
+                                    method: "GET",
+                                    url: "/Producto/RespuestasPregunta",
+                                    data: { "IdPregunta": IdPregunta },
+                                    success: function (result) {
+
+                                        var idLlenado = "#respuestas" + idRespuestaActual;
+
+                                        $(idLlenado).html("");
+                                        $(idLlenado).html(result);
+
+                                        $(id).html("");
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.log("error" + error, "no Error: " + xhr.status)
+                                    }
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("error" + error, "no Error: " + xhr.status)
+                            }
+                        })
+                    }
+                });
+            });
+</script>
 }
