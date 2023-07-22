@@ -96,7 +96,7 @@ namespace Infraestructure.Repositories
                             .Include(r => r.Usuario)
                             .Where(r => r.Pregunta.IdPregunta == IdPregunta)
                             .ToList()
-                            .OrderByDescending(p => p.FechaHora);
+                            .OrderBy(p => p.FechaHora);
                 }
                 return lista;
             }

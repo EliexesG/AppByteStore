@@ -172,7 +172,7 @@
 
 <h2 class="w-auto text-center border border-primary border-3 text-light rounded-4 mb-5 p-3">Preguntas</h2>
 
-<div class="p-4 bg-light rounded-4">
+<div class="p-4 bg-gradient bg-white rounded-4">
 
     @if (desabilitarAgregarPregunta)
     {
@@ -182,8 +182,8 @@
 
     }
     <form class="d-flex mb-4" style="height:60px;" id="formPregunta">
-        @Html.TextBox("agregarPregunta", "", new { @class = "form-control me-sm-2 text-black fw-bold", @placeholder = "Escribir Pregunta", @id = "formPreguntaTexto" })
-        <button id="btnPregunta" class="btn btn-info my-2 my-sm-0" type="submit" form="formPregunta" )>Preguntar</button>
+        @Html.TextBox("agregarPregunta", "", new { @class = "form-control me-sm-2 text-black fw-bold shadow-lg", @placeholder = "Escribir Pregunta", @id = "formPreguntaTexto" })
+        <button id="btnPregunta" class="btn btn-info my-2 my-sm-0 shadow-lg" type="submit" form="formPregunta" )>Preguntar</button>
     </form>
 
     <hr class="mb-4 text-black" />
@@ -300,12 +300,14 @@
                 var idRespuestaActual = $(this).data('idrespuestaactual');
                 var id = "#formularioRespuesta" + idFormRespuestaActual;
 
-                var html = '<div class="row mb-1">' +
-                                
-                                '<div class="w-100 p-3 col-5">' +
-                                    '<form class="d-flex mb-4 w-75" style="height:60px;" id="formRespuesta' + idFormRespuestaActual + '">' +
-                                        '<input type="text" class="form-control me-sm-2 text-black fw-bold" placeholder="Escribir Respuesta" name="agregarRespuesta" id="formRespuestaTexto' + idFormRespuestaActual + '" />' +
-                                        '<button id="btnRespuesta' + idFormRespuestaActual + '" class="btn btn-info my-2 my-sm-0" type="submit" form="formRespuesta' + idFormRespuestaActual + '" )>Responder</button>' +
+                var html = '<div class="row mb-3 ps-3">' +
+                                '<div class="col-1">' +
+                                     '<div class="vr h-100 text-black"></div>' +
+                                '</div>' +
+                                '<div class="pe-3 ps-0 col-11">' +
+                                    '<form class="d-flex mb-4" style="height:60px;" id="formRespuesta' + idFormRespuestaActual + '">' +
+                                        '<input type="text" class="shadow-lg form-control me-sm-2 text-black fw-bold" placeholder="Escribir Respuesta" name="agregarRespuesta" id="formRespuestaTexto' + idFormRespuestaActual + '" />' +
+                                        '<button id="btnRespuesta' + idFormRespuestaActual + '" class="shadow-lg btn btn-info my-2 my-sm-0" type="submit" form="formRespuesta' + idFormRespuestaActual + '" )>Responder</button>' +
                                     '</form>' +
                                 '</div>' +
                           '</div>';
