@@ -4,24 +4,24 @@
 {
     foreach (Infraestructure.Models.Respuesta respuesta in Model)
     {
-        <div class="row mb-4">
+        <div class="row mb-3 pe-3 ps-3">
             <div class="col-1">
                 <div class="vr h-100 text-black"></div>
             </div>
-            <div class="p-3 rounded-4 bg-body card col-8 shadow-lg">
-                <h3 class="card-title text-white mb-3">
+            <div class="p-3 rounded-4 bg-body card col-11 shadow-lg">
+                <h3 class="card-title text-white-50 mb-3 fs-4">
                     <i class="fa-solid fa-user m-3 shadow-lg"></i>
                     @respuesta.Usuario.Nombre @respuesta.Usuario.PrimerApellido @respuesta.Usuario.SegundoApellido (@respuesta.Usuario.NombreProveedor) •
                     <span class="fs-5">@Html.DisplayFor(model => respuesta.FechaHora)</span>
                 </h3>
-                <h4 class="card-text text-white-50">@respuesta.Respuesta1</h4>
+                <h4 class="card-text text-white fs-5 ps-3 pb-3">@respuesta.Respuesta1</h4>
             </div>
         </div>
     }
 }
 else
 {
-    <div class="row mb-4">
+    <div class="row mb-4 pe-3 ps-3">
         <div class="col-1">
             <div class="vr h-100 text-black"></div>
         </div>
