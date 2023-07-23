@@ -121,7 +121,7 @@ namespace Infraestructure.Repositories
             }
         }
 
-            public IEnumerable<Producto> GetProductoPorNombre(string nombre)
+        public IEnumerable<Producto> GetProductoPorNombre(string nombre)
         {
             try
             {
@@ -195,9 +195,53 @@ namespace Infraestructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Producto Save(Producto producto)
+        public Producto Save(Producto producto, int idUsuario)
         {
-            throw new NotImplementedException();
+            Producto oProducto = null;
+            Usuario oUsuario = null;
+            int retorno = 0;
+
+            IRepositoryUsuario _RepositoryUsuario = new RepositoryUsuario();
+
+
+
+            using (ByteStoreContext ctx = new ByteStoreContext())
+            {
+                ctx.Configuration.LazyLoadingEnabled = false;
+
+                oUsuario = _RepositoryUsuario.GetUsuarioByID(idUsuario);
+                oProducto = GetProductoByID(producto.IdProducto);
+                IRepositoryCategoria _RepositoryCategoria = new RepositoryCategoria();
+                producto.Usuario = null;
+
+
+                //Para Insertar 
+                if (oProducto == null)
+                {
+                    ctx.Usuario.Attach(oUsuario);
+                   
+
+                    producto.Usuario = oUsuario;
+
+                    ctx.Producto.Add(producto);
+                    retorno = ctx.SaveChanges();
+
+                }
+
+                else
+                {
+                    //Para Modificar
+                    ctx.Producto.Add(producto);
+                    ctx.Entry(producto).State = EntityState.Modified;
+                    retorno = ctx.SaveChanges();
+
+                }
+            }
+
+            if (retorno >= 0)
+                oProducto = GetProductoByID((int)producto.IdProducto);
+
+            return oProducto;
         }
     }
 }

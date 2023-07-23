@@ -16,6 +16,6 @@ namespace Infraestructure.Repositories
         IEnumerable<Producto> GetProductoPorVendedor(int idVendedor);
         IEnumerable<Producto> GetProductoByCategoria(int idCategoria);
         void DeleteProducto(int id);
-        Producto Save(Producto producto);
+        Producto Save(Producto producto, int idUsuario);
     }
 }
