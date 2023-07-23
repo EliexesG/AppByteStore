@@ -21,18 +21,24 @@
                     </div>
                     <!-- Grid column -->
                     <!-- Grid column -->
-                    <div class="col-md-2">
-                        <h6 class="text-uppercase font-weight-bold">
-                            <a href="@Url.Action("Index","Pedido")" class="text-decoration-none text-white"><i class="fa-solid fa-truck-fast"></i> Pedidos</a>
-                        </h6>
-                    </div>
+                    @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
+                    {
+                        <div class="col-md-2">
+                            <h6 class="text-uppercase font-weight-bold">
+                                <a href="@Url.Action("Index","Pedido")" class="text-decoration-none text-white"><i class="fa-solid fa-truck-fast"></i> Pedidos</a>
+                            </h6>
+                        </div>
+                    }
                     <!-- Grid column -->
                     <!-- Grid column -->
-                    <div class="col-md-2">
-                        <h6 class="text-uppercase font-weight-bold">
-                            <a href="@Url.Action("","")" class="text-decoration-none text-white"><i class="fa-solid fa-cart-shopping"></i> Carrito</a>
-                        </h6>
-                    </div>
+                    @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
+                    {
+                        <div class="col-md-2">
+                            <h6 class="text-uppercase font-weight-bold">
+                                <a href="@Url.Action("Carrito","Pedido")" class="text-decoration-none text-white"><i class="fa-solid fa-cart-shopping cantCarrito"></i> Carrito (<span class="fw-bold text-white">0</span>)</a>
+                            </h6>
+                        </div>
+                    }
                     <!-- Grid column -->
                     <!-- Grid column -->
                     <div class="col-md-2">

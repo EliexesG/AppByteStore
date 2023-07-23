@@ -157,5 +157,18 @@ namespace Web.Controllers
             return PartialView("_PaginacionYOrdenViewPedido", lista);
         }
 
+        [CustomAuthorize((int)Roles.Cliente)]
+        public ActionResult Carrito ()
+        {
+            if(TempData.ContainsKey("NotificationMessage"))
+            {
+                ViewBag.NotificationMessage = TempData["NotificationMessage"];
+            }
+
+            ViewBag.Carrito = Web.Utils.Carrito.Instancia.Items;
+
+            return View();
+        }
+
     }
 }

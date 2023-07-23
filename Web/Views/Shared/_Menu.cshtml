@@ -35,7 +35,7 @@
                 @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
                 {
                     <li class="nav-item me-3">
-                        <a href="@Url.Action("","")" class="nav-link fw-bold"><i class="fa-solid fa-cart-shopping"></i> Carrito</a>
+                        <a href="@Url.Action("Carrito","Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-cart-shopping"></i> Carrito (<span class="fw-bold text-white cantCarrito">0</span>)</a>
                     </li>
                 }
                 @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Administrador" }))

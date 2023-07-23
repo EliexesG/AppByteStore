@@ -145,12 +145,12 @@
         </div>
         <div class="carousel-inner h-100 rounded-4">
             <div class="carousel-item active mb-5">
-                <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(Model.FotoProducto.First().Foto)" class="d-block bg-white" alt="...">
+                <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(Model.FotoProducto.First().Foto)" class="d-block bg-white" alt="Img Producto">
             </div>
             @for (int i = 1; i < Model.FotoProducto.Count(); i++)
             {
                 <div class="carousel-item mb-5">
-                    <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(Model.FotoProducto.ElementAt(i).Foto)" class="d-block bg-white" alt="...">
+                    <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(Model.FotoProducto.ElementAt(i).Foto)" class="d-block bg-white" alt="Img Producto">
                 </div>
             }
         </div>
