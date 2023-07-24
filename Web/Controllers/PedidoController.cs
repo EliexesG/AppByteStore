@@ -167,8 +167,74 @@ namespace Web.Controllers
 
             ViewBag.Carrito = Web.Utils.Carrito.Instancia.Items;
 
+            Usuario usuario =  Session["User"] as Usuario;
+            ViewBag.ListaPago = new SelectList(usuario.MetodoPago
+                                               .Select(m => new
+                                               {
+                                                   IdMetodoPago = m.IdMetodoPago,
+                                                   CustomDescripcion = $"{m.Proveedor} ({m.TipoPago.Descripcion}) | {m.FechaExpiracion}"
+                                               }).ToList(),
+                                "IdMetodoPago", "CustomDescripcion");
+
+            ViewBag.ListaDireccion = new SelectList(usuario.Direccion, "IdDireccion", "Sennas");
+
             return View();
         }
 
+        [HttpPost]
+        public JsonResult IngresarProductoCarrito(int idProducto)
+        {
+            string mensaje = "";
+            var carrito = Web.Utils.Carrito.Instancia;
+
+            try
+            {
+                mensaje = carrito.AgregarItem(idProducto);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+            return Json(new { mensaje, cantCarrito = carrito.GetCountItems() } );
+        }
+
+        [HttpPost]
+        public JsonResult ActualizarCantidad (int idProducto, int cantidad)
+        {
+            string mensaje = "";
+            var carrito = Web.Utils.Carrito.Instancia;
+
+            try
+            {
+                mensaje = carrito.SetItemCantidad(idProducto, cantidad);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+            return Json(new { mensaje, cantCarrito = carrito.GetCountItems() });
+        }
+
+        [HttpPost]
+        public JsonResult EliminarProducto (int idProducto)
+        {
+            string mensaje = "";
+            var carrito = Web.Utils.Carrito.Instancia;
+
+            try
+            {
+                mensaje = carrito.EliminarItem(idProducto);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+            return Json(new { mensaje, cantCarrito = carrito.GetCountItems() });
+        }
+
+        
     }
 }

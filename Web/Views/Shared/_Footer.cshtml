@@ -35,7 +35,7 @@
                     {
                         <div class="col-md-2">
                             <h6 class="text-uppercase font-weight-bold">
-                                <a href="@Url.Action("Carrito","Pedido")" class="text-decoration-none text-white"><i class="fa-solid fa-cart-shopping cantCarrito"></i> Carrito (<span class="fw-bold text-white">0</span>)</a>
+                                <a href="@Url.Action("Carrito","Pedido")" class="text-decoration-none text-white"><i class="fa-solid fa-cart-shopping"></i> Carrito (<span class="fw-bold text-white cantCarrito">@Web.Utils.Carrito.Instancia.GetCountItems()</span>)</a>
                             </h6>
                         </div>
                     }

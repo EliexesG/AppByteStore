@@ -42,6 +42,7 @@ namespace Web.Utils
             CompraDetalle nuevoItem = new CompraDetalle()
             {
                 IdProducto = IdProducto,
+                Producto = producto,
             };
 
             if (nuevoItem != null)

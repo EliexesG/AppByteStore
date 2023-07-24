@@ -303,6 +303,7 @@ namespace Web.Controllers
             return PartialView("_RespuestasPregunta", lista);
         }
 
+        [HttpPost]
         public JsonResult SaveRespuesta(string stringRespuesta, int IdPregunta)
         {
             IServicePregunta _ServicePregunta = new ServicePregunta();
