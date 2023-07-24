@@ -35,7 +35,7 @@
                 @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
                 {
                     <li class="nav-item me-3">
-                        <a href="@Url.Action("","")" class="nav-link fw-bold"><i class="fa-solid fa-cart-shopping"></i> Carrito</a>
+                        <a href="@Url.Action("Carrito","Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-cart-shopping"></i> Carrito (<span class="fw-bold text-white cantCarrito">@Web.Utils.Carrito.Instancia.GetCountItems()</span>)</a>
                     </li>
                 }
                 @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Administrador" }))
@@ -72,6 +72,15 @@
                         }
                     </div>
                 </li>
+                @if (!Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
+                {
+                    <li class="nav-item ms-md-5 d-flex align-items-center justify-content-center">
+                        <div class="bg-danger rounded-4 p-1 pe-3 ps-3">
+                            <h5 class="text-white text-center"><i class="fa-solid fa-warning text-white"></i> No puede ordenar si no es un cliente registrado</h5>
+                        </div>
+                    </li>
+                }
+
             </ul>
             
         </div>

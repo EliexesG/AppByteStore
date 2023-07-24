@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace Infraestructure.Repositories
 {
@@ -112,6 +113,9 @@ namespace Infraestructure.Repositories
 
                     usuario = ctx.Usuario
                                .Include("Rol")
+                               .Include(u => u.MetodoPago)
+                               .Include(u => u.MetodoPago.Select(m => m.TipoPago))
+                               .Include(u => u.Direccion)
                                .Where(u => u.CorreoElectronico.Equals(Correo))
                                .ToList()
                                .Where(u => Encrypter.Desencrypt(u.Contrasenna).Equals(contrasenna))

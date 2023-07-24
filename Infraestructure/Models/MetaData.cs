@@ -55,6 +55,7 @@ namespace Infraestructure.Models
         [Display(Name = "Número de Factura")]
         public int IdCompraEncabezado { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dddd d 'de' MMMM yyyy, hh:mm tt}")]
         [Display(Name = "Fecha y Hora de Compra")]
         public Nullable<System.DateTime> FechaHora { get; set; }
@@ -69,12 +70,15 @@ namespace Infraestructure.Models
         [DisplayFormat(DataFormatString = "{0:C}")]
         public Nullable<double> Total { get; set; }
 
+        [Required(ErrorMessage = "{0} son datos requeridos")]
         [Display(Name = "Detalles de Compra")]
         public virtual ICollection<CompraDetalle> CompraDetalle { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Dirección")]
         public virtual Direccion Direccion { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Método de Pago")]
         public virtual MetodoPago MetodoPago { get; set; }
 

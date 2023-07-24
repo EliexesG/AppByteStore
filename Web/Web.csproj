@@ -144,6 +144,7 @@
     <Compile Include="Security\CustomAuthenticationFilter.cs" />
     <Compile Include="Security\CustomAuthorizeAttribute.cs" />
     <Compile Include="Security\Roles.cs" />
+    <Compile Include="Utils\Carrito.cs" />
     <Compile Include="Utils\Log.cs" />
     <Compile Include="Utils\SweetAlertHelper.cs" />
     <Compile Include="Utils\Util.cs" />
@@ -238,6 +239,8 @@
     <Content Include="Views\Login\UnAuthorized.cshtml" />
     <Content Include="Views\Producto\_PreguntasProducto.cshtml" />
     <Content Include="Views\Producto\_RespuestasPregunta.cshtml" />
+    <Content Include="Views\Pedido\Carrito.cshtml" />
+    <Content Include="Views\Pedido\_DetalleCarrito.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
