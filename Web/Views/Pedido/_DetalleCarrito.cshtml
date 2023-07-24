@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Infraestructure.Models.CompraDetalle>
+
+<div class="table-responsive-sm">
+    <table class="table table-info rounded rounded-4 overflow-hidden fs-5 shadow mb-4 overflow-hidden">
+        <thead>
+            <tr class="text-center">
+                <th scope="col" class="text-white">Producto</th>
+                <th scope="col" class="text-white">Cantidad</th>
+                <th scope="col" class="text-white">Precio</th>
+                <th scope="col" class="text-white">SubTotal</th>
+                <th scope="col" class="text-white"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var carritoItem in (ICollection<Infraestructure.Models.CompraDetalle>)Model)
+            {
+                <tr class="table-dark text-center">
+                    <th scope="row" class="p-3">
+                        @Html.HiddenFor(modelItem => carritoItem.IdProducto)
+                        @Html.DisplayFor(modelItem => carritoItem.Producto.Nombre)
+                    </th>
+                    <td class="center" style="width:1.5em">
+                        @Html.EditorFor(modelItem => carritoItem.Cantidad, new { htmlAttributes = new { @class = "form-control changeCantidad", data_idproducto = carritoItem.IdProducto } })
+                    </td>
+                    <td class="right">
+
+                        @Html.DisplayFor(modelItem => carritoItem.Producto.Precio)
+                    </td>
+                    <td class="right">
+
+                        @Html.DisplayFor(modelItem => carritoItem.Precio)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary eliminar" data-idproducto=@carritoItem.IdProducto> <i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <table class="table rounded rounded-4 overflow-hidden p-3">
+            <tbody>
+                <tr>
+                    <td class="p-3">
+                        <strong class="fw-bold text-white">SubTotal</strong>
+                    </td>
+                    <td class="p-3">
+                        <strong class="text-white fw-light">@(Web.Utils.Carrito.Instancia.GetTotal().ToString("C2"))</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="p-3">
+                        <strong class="fw-bold text-white">Impuesto</strong>
+                    </td>
+                    <td class="p-3">
+                        <strong class="text-white fw-light">@((Web.Utils.Carrito.Instancia.GetTotal() * 0.13).ToString("C2"))</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="p-3">
+                        <strong class="fw-bold text-white">Total</strong>
+                    </td>
+                    <td class="p-3">
+                        <strong class="text-white fw-light">@((Web.Utils.Carrito.Instancia.GetTotal() * 1.13).ToString("C2"))</strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

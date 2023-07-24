@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.ModelBinding;
 using System.Web.Mvc;
 using Web.Security;
+using Web.Util;
 
 namespace Web.Controllers
 {
@@ -172,7 +173,7 @@ namespace Web.Controllers
                                                .Select(m => new
                                                {
                                                    IdMetodoPago = m.IdMetodoPago,
-                                                   CustomDescripcion = $"{m.Proveedor} ({m.TipoPago.Descripcion}) | {m.FechaExpiracion}"
+                                                   CustomDescripcion = $"{m.Proveedor} ({m.TipoPago.Descripcion}) | {m.FechaExpiracion.Value.ToString("MM/yy")}"
                                                }).ToList(),
                                 "IdMetodoPago", "CustomDescripcion");
 
@@ -235,6 +236,64 @@ namespace Web.Controllers
             return Json(new { mensaje, cantCarrito = carrito.GetCountItems() });
         }
 
-        
+        public PartialViewResult DetalleCarrito()
+        {
+            return PartialView("_DetalleCarrito", (IEnumerable<CompraDetalle>)Web.Utils.Carrito.Instancia.Items);
+        }
+
+        [HttpPost]
+        public ActionResult Save (CompraEncabezado compraEncabezado)
+        {
+            try
+            {
+                if(Web.Utils.Carrito.Instancia.Items.Count() <= 0)
+                {
+                    TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Carrito", "Seleccione los productos a ordenar", SweetAlertMessageType.warning);
+                    return RedirectToAction("Carrito");
+                }
+                else
+                {
+                    if (ModelState.IsValid)
+                    {
+                        Usuario usuario = Session["User"] as Usuario;
+                        compraEncabezado.Usuario = new Usuario() { IdUsuario = usuario.IdUsuario };
+
+                        var detalle = new List<CompraDetalle>();
+                        foreach (var compraDetalle in Utils.Carrito.Instancia.Items)
+                        {
+                            compraDetalle.EstadoEntrega = (bool)false;
+                            detalle.Add(compraDetalle);
+                        }
+                        compraEncabezado.CompraDetalle = detalle;
+                        compraEncabezado.SubTotal = (double)Utils.Carrito.Instancia.GetTotal();
+                        compraEncabezado.Impuesto = (double)compraEncabezado.SubTotal * 0.13;
+                        compraEncabezado.Total = (double)compraEncabezado.SubTotal + (double)compraEncabezado.Impuesto;
+
+                        Pedido pedido = new Pedido() 
+                        { 
+                            EstadoEntrega = 0,
+                            CompraEncabezado = compraEncabezado,
+                        };
+
+                        IServicePedido _ServicePedido = new ServicePedido();
+                        _ServicePedido.Save(pedido);
+                    }
+
+                    Utils.Carrito.Instancia.EliminarCarrito();
+                    TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Pedido", "Pedido guardado satisfactoriamente!", SweetAlertMessageType.success);
+                    return RedirectToAction("Carrito");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Salvar el error  
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos! " + ex.Message;
+                TempData["Redirect"] = "Pedido";
+                TempData["Redirect-Action"] = "Index";
+                // Redireccion a la captura del Error
+                return RedirectToAction("Default", "Error");
+            }
+        }
     }
 }

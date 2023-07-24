@@ -15,86 +15,117 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <div class="form-group">
-                @Html.LabelFor(model => model.FechaHora, htmlAttributes: new { @class = "col-form-label " })
-                <div class="col-md-12">
-                    @Html.TextBoxFor(model => model.FechaHora, htmlAttributes: new { @class = "form-control me-sm-2 text-black fw-bold", @Value = DateTime.Now.ToString("yyyy-MM-dd"), @readonly = "readonly" })
-                    @Html.ValidationMessageFor(model => model.FechaHora, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FechaHora, htmlAttributes: new { @class = "col-form-label " })
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.FechaHora, htmlAttributes: new { @class = "form-control me-sm-2 text-black fw-bold", @Value = DateTime.Now.ToString("yyyy-MM-d HH:mm:ss"), @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.FechaHora, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MetodoPago, htmlAttributes: new { @class = "col-form-label " })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.MetodoPago.IdMetodoPago, (SelectList)ViewBag.ListaPago, " Seleccione un Metodo de Pago ", htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black fw-bold" })
+                        @Html.ValidationMessageFor(model => model.MetodoPago.IdMetodoPago, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Direccion, htmlAttributes: new { @class = "col-form-label " })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.Direccion.IdDireccion, (SelectList)ViewBag.ListaDireccion, " Seleccione una Dirección ", htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black fw-bold" })
+                        @Html.ValidationMessageFor(model => model.Direccion.IdDireccion, "", new { @class = "text-danger" })
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 mb-4">
-            <div class="form-group">
-                @Html.LabelFor(model => model.MetodoPago, htmlAttributes: new { @class = "col-form-label " })
-                <div class="col-md-12">
-                    @Html.DropDownListFor(model => model.MetodoPago.IdMetodoPago, (SelectList)ViewBag.ListaPago, " Seleccione un Metodo de Pago ", htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black fw-bold" })
-                    @Html.ValidationMessageFor(model => model.MetodoPago.IdMetodoPago, "", new { @class = "text-danger" })
+
+        <hr class="mb-4" />
+        <div>
+            @if (Web.Utils.Carrito.Instancia.Items.Count() > 0)
+            {
+                <div id="detalleCarrito">
+                    @Html.Partial("~/Views/Pedido/_DetalleCarrito.cshtml",
+                    (IEnumerable<Infraestructure.Models.CompraDetalle>)ViewBag.Carrito)
                 </div>
-            </div>
+                
+            }
+            else
+            {
+                <h3 class="text-white mb-4 text-center mt-4"><i class="fa-solid fa-warning text-warning"></i> No hay productos en el carrito</h3>
+            }
         </div>
-        <div class="col-md-6 mb-4">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Direccion, htmlAttributes: new { @class = "col-form-label " })
-                <div class="col-md-12">
-                    @Html.DropDownListFor(model => model.Direccion.IdDireccion, (SelectList)ViewBag.ListaDireccion, " Seleccione una Dirección ", htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black fw-bold" })
-                    @Html.ValidationMessageFor(model => model.Direccion.IdDireccion, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
+        <hr class="mb-4" />
+        <button type="submit" class="btn btn-primary fs-4" id="btnComprar">
+            <i class="fa-solid fa-cart-shopping"></i>
+             Comprar
+        </button>
     </div>
+}
 
-    <hr /><span class="glyphicons glyphicons-hand-left"></span>
-    <div>
-        @if (Web.Utils.Carrito.Instancia.Items.Count() > 0)
-        {
-            <div class="table-responsive-sm">
-               <table class="table table-info rounded rounded-4 overflow-hidden fs-5 shadow mb-4 overflow-hidden">
-                   <thead>
-                       <tr class="text-center">
-                           <th scope="col" class="text-white">Producto</th>
-                           <th scope="col" class="text-white">Cantidad</th>
-                           <th scope="col" class="text-white">Precio</th>
-                           <th scope="col" class="text-white">SubTotal</th>
-                           <th scope="col" class="text-white"></th>
-                       </tr>
-                   </thead>
-                   <tbody>
-                       @foreach (var carritoItem in (ICollection<Infraestructure.Models.CompraDetalle>)Web.Utils.Carrito.Instancia.Items)
-                       {
-                           <tr class="table-dark text-center">
-                               <th scope="row" class="p-3">
-                                   @Html.HiddenFor(modelItem => carritoItem.IdProducto)
-                                   @Html.DisplayFor(modelItem => carritoItem.Producto.Nombre)
-                               </th>
-                               <td class="center" style="width:1.5em">
-                                   @Html.EditorFor(modelItem => carritoItem.Cantidad, new { htmlAttributes = new { @class = "form-control changeCantidad", data_libroid = carritoItem.IdProducto } })
-                               </td>
-                               <td class="right">
+@section Scripts {
+    
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
 
-                                   @Html.DisplayFor(modelItem => carritoItem.Producto.Precio)
-                               </td>
-                               <td class="right">
-
-                                   @Html.DisplayFor(modelItem => carritoItem.Precio)
-                               </td>
-                               <td>
-                                   <button type="button" class="btn btn-primary eliminar" data-id=@carritoItem.IdProducto> <i class="fa-solid fa-trash"></i></button>
-                               </td>
-                           </tr>
-                       }
-                   </tbody>
-               </table>
-            </div>
+        function actualizarDetalleCarrito() {
+            $.ajax({
+                type: "GET",
+                dataType: "text",
+                url: "/Pedido/DetalleCarrito",
+                data: {},
+                success: function (result) {
+                    $('#detalleCarrito').html("");
+                    $('#detalleCarrito').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error: " + error + ", No Error: " + xhr.status);
+                }
+            });
         }
-        else
-        {
-            <h3 class="text-white mb-4 text-center mt-4"><i class="fa-solid fa-warning text-warning"></i> No hay productos en el carrito</h3>
-        }
-    </div>
 
+        $(document).on("change", ".changeCantidad", function() {
+            var txtCantidad = $(this);
+            var cantidad = txtCantidad.val();
+            var idProducto = txtCantidad.data("idproducto");
+            $.ajax({
+                type: "POST",
+                dataType: "text",
+                url: "/Pedido/ActualizarCantidad",
+                data: { idProducto, cantidad },
+                success: function (result) {
+                    eval(result.mensaje);
+                    actualizarDetalleCarrito();
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error: " + error + ", No Error: " + xhr.status);
+                },
+            });
+        });
 
-</div>
+        $(document).on('click', '.eliminar', function () {
+            var btnEliminar = $(this);
+            var idProducto = btnEliminar.data('idproducto');
+            $.ajax({
+                type: "POST",
+                dataType: "text",
+                url: '/Pedido/EliminarProducto',
+                data: { idProducto },
+                success: function (result) {
+                    eval(result.mensaje);
+                    actualizarDetalleCarrito();
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error: " + error + ", No Error: " + xhr.status);
+                },
+            })
+        });
+    </script>
+    
 }
