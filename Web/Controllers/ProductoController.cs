@@ -3,6 +3,7 @@ using Infraestructure.Models;
 using Infraestructure.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -347,18 +348,60 @@ namespace Web.Controllers
         }
 
         //Accion crear, editar
-        // POST: Libro/Create-Update
+        // POST: Producto/Create-Update
         [HttpPost]
-        public ActionResult Save(Producto Producto, HttpPostedFileBase ImageFile, string[] selectedCategoria)
+        public ActionResult Save(Producto producto, HttpPostedFileBase ImageFile)
         {
-            return View("Create", Producto);
+            MemoryStream target = new MemoryStream();
+            IServiceProducto _ServiceProducto = new ServiceProducto();
 
+            FotoProducto oFoto = null;
 
+            try
+            {
+                // Cuando es Insert Image viene en null porque se pasa diferente
+                if (producto.FotoProducto == null)
+                {
+                    if (ImageFile != null)
+                    {
+                        ImageFile.InputStream.CopyTo(target);
+                        oFoto.Foto = target.ToArray();
+                        ModelState.Remove("FotoProducto");
 
+                       
+                    }
+
+                }
+                if (ModelState.IsValid)
+                {
+                    Producto oProducto = _ServiceProducto.Save(producto, (Session["User"] as Usuario).IdUsuario);
+                }
+                else
+                {
+                    // Valida Errores si Javascript está deshabilitado
+                    Utils.Util.ValidateErrors(this);
+                    //Recurso a cargar en la vista
+
+                    //Debe funcionar para crear y modificar
+                    ViewBag.IdCategoria = producto.Categoria.IdCategoria;
+                    return View("Create", producto);
+                }
+
+                return RedirectToAction("IndexVendedor");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos! " + ex.Message;
+                TempData["Redirect"] = "Producto";
+                TempData["Redirect-Action"] = "IndexVendedor";
+                // Redireccion a la captura del Error
+                return RedirectToAction("Default", "Error");
+            }
         }
 
     }
 
+    }
 
 
-}

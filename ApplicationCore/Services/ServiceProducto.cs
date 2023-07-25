@@ -74,9 +74,9 @@ namespace ApplicationCore.Services
             throw new NotImplementedException();
         }
 
-        public Producto Save(Producto producto)
+        public Producto Save(Producto producto, int idUsuario)
         {
-            throw new NotImplementedException();
+            return repository.Save(producto, idUsuario);
         }
     }
 }
