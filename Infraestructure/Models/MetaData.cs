@@ -185,24 +185,33 @@ namespace Infraestructure.Models
     internal partial class ProductoMetadata
     {
         public int IdProducto { get; set; }
+
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         public string Nombre { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Descripción")]
         public string Descripcion { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [DisplayFormat(DataFormatString = "{0:C}")]
         public Nullable<double> Precio { get; set; }
+
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         public Nullable<int> Stock { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Estado")]
         public Nullable<int> Estado { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Categoría")]
         public virtual Categoria Categoria { get; set; }
 
         [Display(Name = "Detalles de Compra")]
         public virtual ICollection<CompraDetalle> CompraDetalle { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Fotos del Producto")]
         public virtual ICollection<FotoProducto> FotoProducto { get; set; }
 

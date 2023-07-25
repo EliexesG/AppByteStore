@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using Web.Security;
 
 namespace Web.Controllers
@@ -338,43 +339,79 @@ namespace Web.Controllers
             });
         }
 
-        //Boton nuevo producto
+
+        [CustomAuthorize((int)Roles.Vendedor, (int)Roles.Administrador)]
         public ActionResult Create()
         {
             //Para cargar la lista de categorías
             IServiceCategoria _ServiceCategoria = new ServiceCategoria();
-            ViewBag.listaCategoria = _ServiceCategoria.GetCategoria();
+            ViewBag.listaCategoria = new SelectList(_ServiceCategoria.GetCategoria(), "IdCategoria", "Descripcion");
+
+            var listaEstados = new object[] { 
+                                   new { Estado = 0, Descripcion = "Nuevo" },
+                                   new { Estado = 1, Descripcion = "Usado (Como Nuevo)" },
+                                   new { Estado = 2, Descripcion = "Usado (Buen Estado)" },
+                                   new { Estado = 3, Descripcion = "Usado (Aceptable)" } };
+
+            ViewBag.listaEstados = new SelectList(listaEstados, "Estado", "Descripcion");
+
             return View();
+        }
+
+        [CustomAuthorize((int)Roles.Vendedor, (int)Roles.Administrador)]
+        public ActionResult Update(int? id)
+        {
+
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            //Para cargar la lista de categorías
+            IServiceCategoria _ServiceCategoria = new ServiceCategoria();
+            ViewBag.listaCategoria = new SelectList(_ServiceCategoria.GetCategoria(), "IdCategoria", "Descripcion");
+
+            var listaEstados = new object[] {
+                                   new { Estado = 0, Descripcion = "Nuevo" },
+                                   new { Estado = 1, Descripcion = "Usado (Como Nuevo)" },
+                                   new { Estado = 2, Descripcion = "Usado (Buen Estado)" },
+                                   new { Estado = 3, Descripcion = "Usado (Aceptable)" } };
+
+            ViewBag.listaEstados = new SelectList(listaEstados, "Estado", "Descripcion");
+
+            IServiceProducto _ServiceProducto = new ServiceProducto();
+            Producto producto = _ServiceProducto.GetProductoByID((int) id);
+
+            return View(producto);
         }
 
         //Accion crear, editar
         // POST: Producto/Create-Update
         [HttpPost]
-        public ActionResult Save(Producto producto, HttpPostedFileBase ImageFile)
+        public ActionResult Save(Producto producto, IEnumerable<HttpPostedFileBase> ImageFiles)
         {
             MemoryStream target = new MemoryStream();
             IServiceProducto _ServiceProducto = new ServiceProducto();
 
-            FotoProducto oFoto = null;
-
             try
             {
                 // Cuando es Insert Image viene en null porque se pasa diferente
-                if (producto.FotoProducto == null)
+                if (producto.FotoProducto.Count() <= 0)
                 {
-                    if (ImageFile != null)
+                    if (ImageFiles != null && ImageFiles.Count() >= 1)
                     {
-                        ImageFile.InputStream.CopyTo(target);
-                        oFoto.Foto = target.ToArray();
-                        ModelState.Remove("FotoProducto");
-
-                       
+                        foreach(var imagen in ImageFiles)
+                        {
+                            imagen.InputStream.CopyTo(target);
+                            producto.FotoProducto.Add(new FotoProducto() { Foto = target.ToArray() });
+                        }
                     }
 
                 }
                 if (ModelState.IsValid)
                 {
-                    Producto oProducto = _ServiceProducto.Save(producto, (Session["User"] as Usuario).IdUsuario);
+                    producto.Usuario = new Usuario() { IdUsuario = (Session["User"] as Usuario).IdUsuario };
+                    Producto oProducto = _ServiceProducto.Save(producto);
                 }
                 else
                 {

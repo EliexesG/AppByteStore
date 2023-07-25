@@ -238,9 +238,10 @@
     <Content Include="Views\Login\UnAuthorized.cshtml" />
     <Content Include="Views\Producto\_PreguntasProducto.cshtml" />
     <Content Include="Views\Producto\_RespuestasPregunta.cshtml" />
-	<Content Include="Views\Pedido\Carrito.cshtml" />
-	<Content Include="Views\Pedido\_DetalleCarrito.cshtml" />
-	<Content Include="Views\Producto\Create.cshtml" />
+    <Content Include="Views\Pedido\Carrito.cshtml" />
+    <Content Include="Views\Pedido\_DetalleCarrito.cshtml" />
+    <Content Include="Views\Producto\Create.cshtml" />
+    <Content Include="Views\Producto\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

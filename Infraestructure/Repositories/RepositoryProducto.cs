@@ -195,42 +195,35 @@ namespace Infraestructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Producto Save(Producto producto, int idUsuario)
+        public Producto Save(Producto producto)
         {
             Producto oProducto = null;
-            Usuario oUsuario = null;
             int retorno = 0;
-
-            IRepositoryUsuario _RepositoryUsuario = new RepositoryUsuario();
-
-
 
             using (ByteStoreContext ctx = new ByteStoreContext())
             {
                 ctx.Configuration.LazyLoadingEnabled = false;
 
-                oUsuario = _RepositoryUsuario.GetUsuarioByID(idUsuario);
                 oProducto = GetProductoByID(producto.IdProducto);
-                IRepositoryCategoria _RepositoryCategoria = new RepositoryCategoria();
-                producto.Usuario = null;
-
 
                 //Para Insertar 
                 if (oProducto == null)
                 {
-                    ctx.Usuario.Attach(oUsuario);
-                   
+                    ctx.Usuario.Attach(producto.Usuario);
 
-                    producto.Usuario = oUsuario;
+                    ctx.Categoria.Attach(producto.Categoria);
 
                     ctx.Producto.Add(producto);
                     retorno = ctx.SaveChanges();
-
                 }
 
                 else
                 {
                     //Para Modificar
+                    ctx.Usuario.Attach(producto.Usuario);
+
+                    ctx.Categoria.Attach(producto.Categoria);
+
                     ctx.Producto.Add(producto);
                     ctx.Entry(producto).State = EntityState.Modified;
                     retorno = ctx.SaveChanges();
