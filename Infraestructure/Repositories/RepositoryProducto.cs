@@ -121,7 +121,7 @@ namespace Infraestructure.Repositories
             }
         }
 
-            public IEnumerable<Producto> GetProductoPorNombre(string nombre)
+        public IEnumerable<Producto> GetProductoPorNombre(string nombre)
         {
             try
             {
@@ -197,7 +197,44 @@ namespace Infraestructure.Repositories
 
         public Producto Save(Producto producto)
         {
-            throw new NotImplementedException();
+            Producto oProducto = null;
+            int retorno = 0;
+
+            using (ByteStoreContext ctx = new ByteStoreContext())
+            {
+                ctx.Configuration.LazyLoadingEnabled = false;
+
+                oProducto = GetProductoByID(producto.IdProducto);
+
+                //Para Insertar 
+                if (oProducto == null)
+                {
+                    ctx.Usuario.Attach(producto.Usuario);
+
+                    ctx.Categoria.Attach(producto.Categoria);
+
+                    ctx.Producto.Add(producto);
+                    retorno = ctx.SaveChanges();
+                }
+
+                else
+                {
+                    //Para Modificar
+                    ctx.Usuario.Attach(producto.Usuario);
+
+                    ctx.Categoria.Attach(producto.Categoria);
+
+                    ctx.Producto.Add(producto);
+                    ctx.Entry(producto).State = EntityState.Modified;
+                    retorno = ctx.SaveChanges();
+
+                }
+            }
+
+            if (retorno >= 0)
+                oProducto = GetProductoByID((int)producto.IdProducto);
+
+            return oProducto;
         }
     }
 }

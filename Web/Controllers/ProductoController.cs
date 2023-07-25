@@ -3,10 +3,12 @@ using Infraestructure.Models;
 using Infraestructure.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using Web.Security;
 
 namespace Web.Controllers
@@ -337,28 +339,106 @@ namespace Web.Controllers
             });
         }
 
-        //Boton nuevo producto
+
+        [CustomAuthorize((int)Roles.Vendedor, (int)Roles.Administrador)]
         public ActionResult Create()
         {
             //Para cargar la lista de categorías
             IServiceCategoria _ServiceCategoria = new ServiceCategoria();
-            ViewBag.listaCategoria = _ServiceCategoria.GetCategoria();
+            ViewBag.listaCategoria = new SelectList(_ServiceCategoria.GetCategoria(), "IdCategoria", "Descripcion");
+
+            var listaEstados = new object[] { 
+                                   new { Estado = 0, Descripcion = "Nuevo" },
+                                   new { Estado = 1, Descripcion = "Usado (Como Nuevo)" },
+                                   new { Estado = 2, Descripcion = "Usado (Buen Estado)" },
+                                   new { Estado = 3, Descripcion = "Usado (Aceptable)" } };
+
+            ViewBag.listaEstados = new SelectList(listaEstados, "Estado", "Descripcion");
+
             return View();
         }
 
-        //Accion crear, editar
-        // POST: Libro/Create-Update
-        [HttpPost]
-        public ActionResult Save(Producto Producto, HttpPostedFileBase ImageFile, string[] selectedCategoria)
+        [CustomAuthorize((int)Roles.Vendedor, (int)Roles.Administrador)]
+        public ActionResult Update(int? id)
         {
-            return View("Create", Producto);
 
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
 
+            //Para cargar la lista de categorías
+            IServiceCategoria _ServiceCategoria = new ServiceCategoria();
+            ViewBag.listaCategoria = new SelectList(_ServiceCategoria.GetCategoria(), "IdCategoria", "Descripcion");
 
+            var listaEstados = new object[] {
+                                   new { Estado = 0, Descripcion = "Nuevo" },
+                                   new { Estado = 1, Descripcion = "Usado (Como Nuevo)" },
+                                   new { Estado = 2, Descripcion = "Usado (Buen Estado)" },
+                                   new { Estado = 3, Descripcion = "Usado (Aceptable)" } };
+
+            ViewBag.listaEstados = new SelectList(listaEstados, "Estado", "Descripcion");
+
+            IServiceProducto _ServiceProducto = new ServiceProducto();
+            Producto producto = _ServiceProducto.GetProductoByID((int) id);
+
+            return View(producto);
+        }
+
+        //Accion crear, editar
+        // POST: Producto/Create-Update
+        [HttpPost]
+        public ActionResult Save(Producto producto, IEnumerable<HttpPostedFileBase> ImageFiles)
+        {
+            MemoryStream target = new MemoryStream();
+            IServiceProducto _ServiceProducto = new ServiceProducto();
+
+            try
+            {
+                // Cuando es Insert Image viene en null porque se pasa diferente
+                if (producto.FotoProducto.Count() <= 0)
+                {
+                    if (ImageFiles != null && ImageFiles.Count() >= 1)
+                    {
+                        foreach(var imagen in ImageFiles)
+                        {
+                            imagen.InputStream.CopyTo(target);
+                            producto.FotoProducto.Add(new FotoProducto() { Foto = target.ToArray() });
+                        }
+                    }
+
+                }
+                if (ModelState.IsValid)
+                {
+                    producto.Usuario = new Usuario() { IdUsuario = (Session["User"] as Usuario).IdUsuario };
+                    Producto oProducto = _ServiceProducto.Save(producto);
+                }
+                else
+                {
+                    // Valida Errores si Javascript está deshabilitado
+                    Utils.Util.ValidateErrors(this);
+                    //Recurso a cargar en la vista
+
+                    //Debe funcionar para crear y modificar
+                    ViewBag.IdCategoria = producto.Categoria.IdCategoria;
+                    return View("Create", producto);
+                }
+
+                return RedirectToAction("IndexVendedor");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos! " + ex.Message;
+                TempData["Redirect"] = "Producto";
+                TempData["Redirect-Action"] = "IndexVendedor";
+                // Redireccion a la captura del Error
+                return RedirectToAction("Default", "Error");
+            }
         }
 
     }
 
+    }
 
 
-}
