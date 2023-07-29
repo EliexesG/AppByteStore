@@ -17,6 +17,8 @@ namespace ApplicationCore.Services
             throw new NotImplementedException();
         }
 
+      
+
         public IEnumerable<Producto> GetProducto()
         {
             return repository.GetProducto();

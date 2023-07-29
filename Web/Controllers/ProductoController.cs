@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using Web.Security;
 
+
 namespace Web.Controllers
 {
     public class ProductoController : Controller
@@ -379,6 +380,7 @@ namespace Web.Controllers
 
             ViewBag.listaEstados = new SelectList(listaEstados, "Estado", "Descripcion");
 
+
             IServiceProducto _ServiceProducto = new ServiceProducto();
             Producto producto = _ServiceProducto.GetProductoByID((int) id);
 
@@ -411,6 +413,8 @@ namespace Web.Controllers
                 if (ModelState.IsValid)
                 {
                     producto.Usuario = new Usuario() { IdUsuario = (Session["User"] as Usuario).IdUsuario };
+                    
+                   
                     Producto oProducto = _ServiceProducto.Save(producto);
                 }
                 else
@@ -437,8 +441,12 @@ namespace Web.Controllers
             }
         }
 
-    }
+      
+
+        }
 
     }
+
+ 
 
 
