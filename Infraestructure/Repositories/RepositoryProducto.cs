@@ -190,10 +190,42 @@ namespace Infraestructure.Repositories
             }
         }
 
+        public IEnumerable<Producto> GetFotosPorProducto(int idProducto)
+        {
+            IEnumerable<Producto> oFotoProducto = null;
+            try
+            {
+                using (ByteStoreContext ctx = new ByteStoreContext())
+                {
+                    ctx.Configuration.LazyLoadingEnabled = false;
+                    //Obtener Productos por Vendedor (Usuario) y su información
+                    oFotoProducto = ctx.Producto
+                        .Include("FotoProducto")
+                        .Where(l => l.IdProducto == idProducto)
+                        .ToList();
+
+                }
+                return oFotoProducto;
+            }
+
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+        }
         public Producto GuardarProducto(Producto producto)
         {
             throw new NotImplementedException();
         }
+
 
         public Producto Save(Producto producto)
         {
@@ -224,6 +256,7 @@ namespace Infraestructure.Repositories
 
                     ctx.Categoria.Attach(producto.Categoria);
 
+
                     ctx.Producto.Add(producto);
                     ctx.Entry(producto).State = EntityState.Modified;
                     retorno = ctx.SaveChanges();
@@ -233,6 +266,7 @@ namespace Infraestructure.Repositories
 
             if (retorno >= 0)
                 oProducto = GetProductoByID((int)producto.IdProducto);
+            oProducto = GetProductoByCategoria((int)producto.IdProducto);
 
             return oProducto;
         }

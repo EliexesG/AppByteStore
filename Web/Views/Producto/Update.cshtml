@@ -5,8 +5,9 @@
     int numImagen = 1;
 }
 
-<div class="d-md-flex row justify-content-md-center mb-4">
-    <h2 class="border border-3 border-success w-auto text-center text-light fw-bold p-3 rounded-4">Actualiza tu Producto</h2>
+<div class="row justify-content-md-center mb-4">
+    <h2 class="border border-3 border-primary w-auto text-center text-light fw-bold p-3 rounded-4">Actualiza tu producto</h2>
+
 </div>
 
 @using (Html.BeginForm("Save", "Producto", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -14,10 +15,11 @@
     @Html.AntiForgeryToken()
 
     <div class="row justify-content-center">
-        <div class="col-md-5">
+
+        <div class="row g-3 p-3 col-md-5 rounded-3 border border-2 border-primary" style="background-color: rgba(74, 46, 17, 0.9); ">
             <div class="form-group">
                 @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-12">
                     @Html.HiddenFor(model => model.IdProducto);
                     @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
@@ -26,7 +28,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-12">
                     @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control textarea" } })
                     @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
                 </div>
@@ -34,7 +36,7 @@
             <div class="form-group">
 
                 @Html.LabelFor(model => model.Categoria, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-6">
                     @Html.DropDownListFor(model => model.Categoria.IdCategoria, (SelectList)ViewBag.listaCategoria, "Seleccione una Categoría", htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black" })
                     @Html.ValidationMessageFor(model => model.Categoria, "", new { @class = "text-danger" })
                 </div>
@@ -42,7 +44,7 @@
             <div class="form-group">
 
                 @Html.LabelFor(model => model.Precio, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-6">
                     <div class="input-group mb-3">
                         <span class="input-group-text">&cent;</span>
                         @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control" } })
@@ -53,7 +55,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Stock, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-3">
                     @Html.EditorFor(model => model.Stock, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Stock, "", new { @class = "text-danger" })
                 </div>
@@ -61,7 +63,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-6">
                     @Html.DropDownListFor(model => model.Estado, (SelectList)ViewBag.listaEstados, "Seleccione un Estado", htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black" })
                     @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
                 </div>
@@ -70,26 +72,47 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.FotoProducto, htmlAttributes: new { @class = "control-label cokimvarher@bytestore.coml-md-2" })
                 <div class="col-md-10">
+         
+
+
                     <input id="imagenInput" type="file" name="ImageFiles" class="form-control" required multiple />
                     @Html.ValidationMessageFor(model => model.FotoProducto, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <br />
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-success" value="Publicar" />
-                    <a href="@Url.Action("IndexVendedor","Producto")" class="btn btn-secondary"> Cancelar</a>
+              <label class = "control-label">Lista de fotos</label>
+              <div class="col-md-10">
+                  @foreach (var foto in @Model.FotoProducto)
+                  {
+
+                      <input type="image"
+                             src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(foto.Foto)"
+                             id="imagenInput"
+                             style="height:75px;width:75px" />
+                      @Html.HiddenFor(model => model.FotoProducto)
+
+                  }
+
+
+              </div>
+            </div>
+            <br />
+            <div class="form-group  col-md-12 ">
+                <div class="col-md-offset-2 text-center  ">
+                    <input type="submit" class="btn btn-primary" value="Confirmar edición" />
+                    <a href="@Url.Action("IndexVendedor","Producto")" class="btn btn-secondary m-3"> Cancelar</a>
                 </div>
             </div>
         </div>
     </div>
 }
 
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<style>
+    .control-label {
+        color: white;
+    }
+</style>
 
 
 @section Scripts {
@@ -109,7 +132,7 @@
             return new File([u8arr], filename, { type: mime });
         }
 
-        $(document).ready(function () {
+        @*$(document).ready(function () {
 
             var imagenes = @Html.Raw(Json.Encode(Model.FotoProducto.Select(imagen => new { IdFotoProducto = imagen.IdFotoProducto, Foto = "data:image/jpeg;charset=utf-8;base64," + Convert.ToBase64String(imagen.Foto), nombre = imagen.Producto.Nombre }).ToList()));
             console.log(imagenes);
@@ -123,6 +146,6 @@
 
             var inputImagenes = $("#imagenInput");
             inputImagenes.files = formData.getAll('imagenes');
-        });
+        });*@
     </script>
 }
