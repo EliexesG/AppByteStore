@@ -53,7 +53,7 @@
                 <div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">&cent;</span>
-                        @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control", @placeholder="2500" } })
+                        @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control", @placeholder = "2500" } })
                     </div>
                     @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
                 </div>
@@ -80,8 +80,15 @@
             <div class="form-group col-md-12">
                 @Html.LabelFor(model => model.FotoProducto, htmlAttributes: new { @class = "control-label mb-2" })
                 <div>
-                    <input type="file" name="ImageFiles" class="form-control" required multiple />
+                    <input type="file" name="ImageFiles" class="form-control" required multiple id="inputImagenes" />
                     @Html.ValidationMessageFor(model => model.FotoProducto, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group justify-content-center">
+                <label class="control-label mb-2 mt-3">Lista de Fotos a Guardar</label>
+                <div class="me-2 row justify-content-center p-2" id="listaFotos">
+                    <h4 class="ms-3">Vacia</h4>
                 </div>
             </div>
 
@@ -107,5 +114,31 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $('#inputImagenes').on('change', function () {
+
+            var html = "";
+            var input = $(this)[0];
+
+            for (var i = 0; i < input.files.length; i++) {
+                let reader = new FileReader();
+
+                reader.onload = function (event) {
+
+                    var url = event.target.result;
+                    html += `<div class="col-2 p-2 m-2 rounded bg-white"><img class="img-fluid" src="${url}" alt="foto${i}" /></div>`;
+
+                    if (i === input.files.length) {
+                        $("#listaFotos").html("")
+                        $("#listaFotos").html(html)
+                    }
+                };
+
+                reader.readAsDataURL(input.files[i]);
+            }
+
+        });
+    </script>
 }
 
