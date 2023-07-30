@@ -266,7 +266,6 @@ namespace Infraestructure.Repositories
 
             if (retorno >= 0)
                 oProducto = GetProductoByID((int)producto.IdProducto);
-            oProducto = GetProductoByCategoria((int)producto.IdProducto);
 
             return oProducto;
         }

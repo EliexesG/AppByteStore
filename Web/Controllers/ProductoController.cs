@@ -26,7 +26,9 @@ namespace Web.Controllers
             {
                 //Instancia 
                 IServiceProducto _ServiceProducto = new ServiceProducto();
-                lista = _ServiceProducto.GetProducto(); //Obtengo todos los datos de la BD y los agrego a la lista 
+                lista = _ServiceProducto.GetProducto();
+
+                //Obtengo todos los datos de la BD y los agrego a la lista 
                 TempData["GetBack"] = "Index";
                 //Para cargar la lista de categorías
                 IServiceCategoria _ServiceCategoria = new ServiceCategoria();
