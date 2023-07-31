@@ -394,24 +394,32 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult Save(Producto producto, IEnumerable<HttpPostedFileBase> ImageFiles)
         {
-            MemoryStream target = new MemoryStream();
             IServiceProducto _ServiceProducto = new ServiceProducto();
 
             try
             {
                 // Cuando es Insert Image viene en null porque se pasa diferente
-                if (producto.FotoProducto.Count() <= 0)
+                if (producto.FotoProducto.Count() <= 0 && ImageFiles.ElementAt(0) != null)
                 {
                     if (ImageFiles != null && ImageFiles.Count() >= 1)
                     {
                         foreach(var imagen in ImageFiles)
                         {
-                            imagen.InputStream.CopyTo(target);
-                            producto.FotoProducto.Add(new FotoProducto() { Foto = target.ToArray() });
+                            using (var memoryStream = new MemoryStream())
+                            {
+
+                                imagen.InputStream.CopyTo(memoryStream);
+                                producto.FotoProducto.Add(new FotoProducto() { Foto = memoryStream.ToArray() });
+                            }
                         }
                     }
 
                 }
+                else if (producto.IdProducto != 0)
+                {
+                    producto.FotoProducto = _ServiceProducto.GetFotosPorProducto(producto.IdProducto).Select(foto => new FotoProducto() { Foto = foto.Foto }).ToList();
+                }
+
                 if (ModelState.IsValid)
                 {
                     producto.Usuario = new Usuario() { IdUsuario = (Session["User"] as Usuario).IdUsuario };
