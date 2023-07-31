@@ -76,6 +76,12 @@ namespace ApplicationCore.Services
             throw new NotImplementedException();
         }
 
+        public IEnumerable<FotoProducto> GetFotosPorProducto(int idProducto)
+        {
+            return repository.GetFotosPorProducto(idProducto);  
+        }
+
+
         public Producto Save(Producto producto)
         {
             return repository.Save(producto);

@@ -190,19 +190,19 @@ namespace Infraestructure.Repositories
             }
         }
 
-        public IEnumerable<Producto> GetFotosPorProducto(int idProducto)
+        public IEnumerable<FotoProducto> GetFotosPorProducto(int idProducto)
         {
-            IEnumerable<Producto> oFotoProducto = null;
+            IEnumerable<FotoProducto> oFotoProducto = null;
             try
             {
                 using (ByteStoreContext ctx = new ByteStoreContext())
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
                     //Obtener Productos por Vendedor (Usuario) y su información
-                    oFotoProducto = ctx.Producto
-                        .Include("FotoProducto")
-                        .Where(l => l.IdProducto == idProducto)
-                        .ToList();
+                    oFotoProducto = ctx.FotoProducto
+                                    .Include("Producto")
+                                    .Where(foto => foto.Producto.IdProducto == idProducto)
+                                    .ToList();
 
                 }
                 return oFotoProducto;
@@ -242,25 +242,48 @@ namespace Infraestructure.Repositories
                 if (oProducto == null)
                 {
                     ctx.Usuario.Attach(producto.Usuario);
-
                     ctx.Categoria.Attach(producto.Categoria);
-
                     ctx.Producto.Add(producto);
                     retorno = ctx.SaveChanges();
                 }
 
                 else
                 {
-                    //Para Modificar
-                    ctx.Usuario.Attach(producto.Usuario);
+                    try
+                    {
+                        // Crear una lista de entidades "FotoProducto" a eliminar
+                        List<FotoProducto> imagenesEliminar = this.GetFotosPorProducto(producto.IdProducto)
+                            .Select(foto => new FotoProducto() { IdFotoProducto = foto.IdFotoProducto })
+                            .ToList();
 
-                    ctx.Categoria.Attach(producto.Categoria);
+                        // Eliminar las entidades "FotoProducto" de la base de datos
+                        foreach (var imagen in imagenesEliminar)
+                        {
+                            ctx.Entry(imagen).State = EntityState.Deleted;
+                        }
 
+                        // Agregar las nuevas entidades "FotoProducto" a la entidad "Producto"
+                        foreach (var imagen in producto.FotoProducto)
+                        {
+                            ctx.Entry(imagen).State = EntityState.Added;
+                        }
 
-                    ctx.Producto.Add(producto);
-                    ctx.Entry(producto).State = EntityState.Modified;
-                    retorno = ctx.SaveChanges();
+                        // Para modificar
+                        ctx.Entry(producto).State = EntityState.Modified;
+                        retorno = ctx.SaveChanges();
+                    }
+                    catch (DbUpdateConcurrencyException ex)
+                    {
+                        // Recargar la entidad "Producto" desde la base de datos
+                        foreach (var entry in ex.Entries)
+                        {
+                            entry.Reload();
+                        }
 
+                        // Volver a intentar guardar los cambios en la base de datos
+                        ctx.Entry(producto).State = EntityState.Modified;
+                        retorno = ctx.SaveChanges();
+                    }
                 }
             }
 

@@ -101,7 +101,7 @@ namespace Web.Controllers
 
             try
             {
-                if(id == null)
+                if (id == null)
                 {
                     return RedirectToAction("Index");
                 }
@@ -142,21 +142,25 @@ namespace Web.Controllers
             {
                 return PaginacionYOrden(1, tipoUsuario, 0);
             }
-            else if (string.IsNullOrEmpty(filtro.Trim()) && (tipoUsuario == 3)) {
+            else if (string.IsNullOrEmpty(filtro.Trim()) && (tipoUsuario == 3))
+            {
                 lista = _ServiceProducto.GetProducto();
                 partialView = "_PartialCatalogoProducto";
             }
             else
             {
-                if (tipoUsuario == 1) {
+                if (tipoUsuario == 1)
+                {
                     lista = _ServiceProducto.GetProductoPorNombre(filtro);
                     partialView = "_PaginacionYOrdenViewProducto";
                 }
-                else if (tipoUsuario == 2) {
+                else if (tipoUsuario == 2)
+                {
                     lista = _ServiceProducto.GetProductoPorNombre(filtro, user.IdUsuario);
                     partialView = "_PaginacionYOrdenViewProducto";
                 }
-                else {
+                else
+                {
                     lista = _ServiceProducto.GetProductoPorNombre(filtro);
                     partialView = "_PartialCatalogoProducto";
                 }
@@ -212,18 +216,22 @@ namespace Web.Controllers
             return PartialView("_PaginacionYOrdenViewProducto", lista);
         }
 
-        public PartialViewResult BuscarProductoxCategoria(int categoria) {
+        public PartialViewResult BuscarProductoxCategoria(int categoria)
+        {
 
             IEnumerable<Producto> lista = null;
 
-            try {
+            try
+            {
 
                 IServiceProducto _ServiceProducto = new ServiceProducto();
 
-                if (categoria != -1) {
+                if (categoria != -1)
+                {
                     lista = _ServiceProducto.GetProductoByCategoria(categoria);
                 }
-                else {
+                else
+                {
                     lista = _ServiceProducto.GetProducto();
                 }
             }
@@ -236,10 +244,11 @@ namespace Web.Controllers
             return PartialView("_PartialCatalogoProducto", lista);
         }
 
-        public PartialViewResult PreguntasProducto (int IdProducto, int IdUsuarioProducto) {
-            
+        public PartialViewResult PreguntasProducto(int IdProducto, int IdUsuarioProducto)
+        {
+
             IEnumerable<Pregunta> lista = null;
-            
+
             try
             {
                 IServicePregunta _ServicePregunta = new ServicePregunta();
@@ -256,7 +265,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult SavePregunta (string stringPregunta, int IdProducto)
+        public JsonResult SavePregunta(string stringPregunta, int IdProducto)
         {
             IServicePregunta _ServicePregunta = new ServicePregunta();
             bool resultado = false;
@@ -350,7 +359,7 @@ namespace Web.Controllers
             IServiceCategoria _ServiceCategoria = new ServiceCategoria();
             ViewBag.listaCategoria = new SelectList(_ServiceCategoria.GetCategoria(), "IdCategoria", "Descripcion");
 
-            var listaEstados = new object[] { 
+            var listaEstados = new object[] {
                                    new { Estado = 0, Descripcion = "Nuevo" },
                                    new { Estado = 1, Descripcion = "Usado (Como Nuevo)" },
                                    new { Estado = 2, Descripcion = "Usado (Buen Estado)" },
@@ -384,7 +393,7 @@ namespace Web.Controllers
 
 
             IServiceProducto _ServiceProducto = new ServiceProducto();
-            Producto producto = _ServiceProducto.GetProductoByID((int) id);
+            Producto producto = _ServiceProducto.GetProductoByID((int)id);
 
             return View(producto);
         }
@@ -394,30 +403,59 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult Save(Producto producto, IEnumerable<HttpPostedFileBase> ImageFiles)
         {
-            MemoryStream target = new MemoryStream();
             IServiceProducto _ServiceProducto = new ServiceProducto();
+            Producto oProducto = null;
 
             try
             {
                 // Cuando es Insert Image viene en null porque se pasa diferente
-                if (producto.FotoProducto.Count() <= 0)
+                if (producto.FotoProducto.Count() <= 0 && ImageFiles.ElementAt(0) != null)
                 {
                     if (ImageFiles != null && ImageFiles.Count() >= 1)
                     {
-                        foreach(var imagen in ImageFiles)
+                        foreach (var imagen in ImageFiles)
                         {
-                            imagen.InputStream.CopyTo(target);
-                            producto.FotoProducto.Add(new FotoProducto() { Foto = target.ToArray() });
+                            using (var memoryStream = new MemoryStream())
+                            {
+
+                                imagen.InputStream.CopyTo(memoryStream);
+                                producto.FotoProducto.Add(new FotoProducto() { Foto = memoryStream.ToArray() });
+                            }
                         }
                     }
 
                 }
+                else if (producto.IdProducto != 0)
+                {
+                    producto.FotoProducto = _ServiceProducto.GetFotosPorProducto(producto.IdProducto).Select(foto => new FotoProducto() { Foto = foto.Foto }).ToList();
+                }
+
                 if (ModelState.IsValid)
                 {
                     producto.Usuario = new Usuario() { IdUsuario = (Session["User"] as Usuario).IdUsuario };
-                    
-                   
-                    Producto oProducto = _ServiceProducto.Save(producto);
+
+
+                    oProducto = _ServiceProducto.Save(producto);
+
+                    if (oProducto != null)
+                    {
+                        if (producto.IdProducto != 0)
+                        {
+                            ViewBag.NotificationMessage = Util.SweetAlertHelper.Mensaje("Actualizado",
+                            "Producto Actualizado Correctamente", Util.SweetAlertMessageType.success);
+                        }
+                        else
+                        {
+                            ViewBag.NotificationMessage = Util.SweetAlertHelper.Mensaje("Creado",
+                            "Producto Creado Correctamente", Util.SweetAlertMessageType.success);
+                        }
+
+                    }
+                    else
+                    {
+                        ViewBag.NotificationMessage = Util.SweetAlertHelper.Mensaje("Error",
+                           "Verifique de Nuevo", Util.SweetAlertMessageType.error);
+                    }
                 }
                 else
                 {
@@ -430,7 +468,8 @@ namespace Web.Controllers
                     return View("Create", producto);
                 }
 
-                return RedirectToAction("IndexVendedor");
+                return RedirectToAction("Details/" + oProducto.IdProducto, "Producto");
+
             }
             catch (Exception ex)
             {
@@ -442,13 +481,9 @@ namespace Web.Controllers
                 return RedirectToAction("Default", "Error");
             }
         }
-
-      
-
-        }
-
     }
+}
 
- 
+
 
 
