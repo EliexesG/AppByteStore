@@ -242,6 +242,7 @@
     <Content Include="Views\Producto\Create.cshtml" />
     <Content Include="Views\Producto\Update.cshtml" />
     <Content Include="Views\Producto\IndexVendedor.cshtml" />
+    <Content Include="Views\Usuario\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

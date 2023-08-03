@@ -41,17 +41,17 @@ namespace Infraestructure.Repositories
 
         public Categoria GetCategoriaByID(int id)
         {
-            Categoria autor = null;
+            Categoria oCategoria = null;
             try
             {
 
                 using (ByteStoreBDEntities ctx = new ByteStoreBDEntities())
                 {
                     ctx.Configuration.LazyLoadingEnabled = false;
-                    autor = ctx.Categoria.Find(id);
+                    oCategoria = ctx.Categoria.Find(id);
                 }
 
-                return autor;
+                return oCategoria;
             }
             catch (DbUpdateException dbEx)
             {
