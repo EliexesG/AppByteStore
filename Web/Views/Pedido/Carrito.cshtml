@@ -49,18 +49,10 @@
     </div>
 
     <div>
-        @if (Web.Utils.Carrito.Instancia.Items.Count() > 0)
-        {
-            <div id="detalleCarrito">
-                @Html.Partial("~/Views/Pedido/_DetalleCarrito.cshtml",
-                (IEnumerable<Infraestructure.Models.CompraDetalle>)ViewBag.Carrito)
-            </div>
-
-        }
-        else
-        {
-            <h3 class="text-white mb-4 text-center mt-4"><i class="fa-solid fa-warning text-warning"></i> No hay productos en el carrito</h3>
-        }
+        <div id="detalleCarrito">
+            @Html.Partial("~/Views/Pedido/_DetalleCarrito.cshtml",
+            (IEnumerable<Infraestructure.Models.CompraDetalle>)ViewBag.Carrito)
+        </div>
     </div>
     <hr class="mb-4" />
 
@@ -132,7 +124,8 @@
             var stockActual = txtCantidad.data("stockactual");
 
             if (cantidad > stockActual) {
-                var mensaje = @Html.Raw(Json.Encode(Web.Util.SweetAlertHelper.Mensaje("Cuidado", "No se puede ingresar una cantidad mayor al Stock del producto", Web.Util.SweetAlertMessageType.warning)));
+                var mensaje = @Html.Raw(Json.Encode(Web.Util.SweetAlertHelper.Mensaje("Cuidado", "No se puede ingresar una cantidad mayor al Stock del producto {stockactual}", Web.Util.SweetAlertMessageType.warning)));
+                mensaje = mensaje.replace('{stockactual}', `(${stockActual} en inventario)`)
                 eval(mensaje);
                 cantidad = 1;
             }
@@ -143,7 +136,16 @@
                 url: "/Pedido/ActualizarCantidad",
                 data: { idProducto, cantidad },
                 success: function (result) {
-                    eval(result.mensaje);
+
+                    result = JSON.parse(result);
+
+                    var { cantCarrito } = result;
+
+                    if (cantCarrito <= 0) {
+                        $('#btnProcederComprar').hide();
+                    }
+
+                    $('.cantCarrito').html(cantCarrito);
                     actualizarDetalleCarrito();
                 },
                 error: function (xhr, status, error) {
@@ -161,7 +163,16 @@
                 url: '/Pedido/EliminarProducto',
                 data: { idProducto },
                 success: function (result) {
-                    eval(result.mensaje);
+
+                    result = JSON.parse(result);
+
+                    var { cantCarrito } = result;
+
+                    if (cantCarrito <= 0) {
+                        $('#btnProcederComprar').hide();
+                    }
+
+                    $('.cantCarrito').html(cantCarrito);
                     actualizarDetalleCarrito();
                 },
                 error: function (xhr, status, error) {

@@ -122,6 +122,20 @@ namespace Web.Utils
             return total;
         }
 
+        public int getCountProducto (int idProducto)
+        {
+            int total = 0;
+
+            CompraDetalle detalle = Items.Where(x => x.IdProducto == idProducto).FirstOrDefault();
+
+            if(detalle != null)
+            {
+                total = (int)detalle.Cantidad;
+            }
+
+            return total;
+        }
+
         public void EliminarCarrito()
         {
             Items.Clear();

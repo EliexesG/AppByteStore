@@ -197,7 +197,7 @@ namespace Web.Controllers
                 Log.Error(ex, MethodBase.GetCurrentMethod());
                 TempData["Message"] = "Error al procesar los datos!" + ex.Message;
             }
-            return Json(new { mensaje, cantCarrito = carrito.GetCountItems() } );
+            return Json(new { mensaje, cantCarrito = carrito.GetCountItems(), cantProducto = carrito.getCountProducto(idProducto) } );
         }
 
         [HttpPost]
