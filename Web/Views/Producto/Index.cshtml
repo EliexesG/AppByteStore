@@ -12,13 +12,13 @@
 <hr class="mb-4" />
 
 <div class="row mb-4">
-    <div class="col mb-4">
+    <div class="col-md-4 mb-4">
         <form class="d-flex">
             @Html.TextBox("filtro", "", new { @class = "form-control me-sm-2", @placeholder = "Buscar Producto" })
             <button id="btnBuscar" class="btn btn-info my-2 my-sm-0" type="button">Buscar</button>
         </form>
     </div>
-    <div class="col">
+    <div class="col-md-4 mb-4">
         <select class="form-select col-md" id="categoria">
             <option value="-1" class="active filtercategoria">Seleccione Categoría</option>
 
@@ -28,6 +28,17 @@
                 <option class="filtercategoria" value="@categoria.IdCategoria">@categoria.Descripcion</option>
             }
         </select>
+    </div>
+    <div class="col-md-4">
+        <div class="form-check form-switch mb-4 d-flex justify-content-center align-items-center mt-auto">
+            <input class="form-check-input me-2"
+                   type="checkbox"
+                   id="preciofilter">
+            <label class="form-check-label fw-bold text-white"
+                   for="preciofilter">
+                Ordenar x Precio (Mayor a Menor)
+            </label>
+        </div>
     </div>
 </div>
 <hr class="mb-4" />
@@ -106,6 +117,8 @@
         $("#btnBuscar").click(function () {
 
             var filtro = $("#filtro").val();
+            $('.form-check-label').html("Ordenar x Precio (Mayor a Menor)")
+            $("#preciofilter").prop("checked", false);
 
             $.ajax({
                 method: "GET",
@@ -129,6 +142,9 @@
 
             var categoria = $("#categoria").val();
             $("#filtro").val('');
+            $('.form-check-label').html("Ordenar x Precio (Mayor a Menor)")
+            $("#preciofilter").prop("checked", false);
+
             //    Llamar al ajax
             $.ajax({
                 method: "GET",
@@ -144,6 +160,28 @@
                 }
             })
         });
+
+        $("#preciofilter").change(function () {
+
+            var valor = $(this).is(":checked");
+            $('#filtro').val('');
+            $('#categoria').val(-1);
+            $('.form-check-label').html(valor == true ? "Ordenar x Precio (Menor a Mayor)" : "Ordenar x Precio (Mayor a Menor)")
+
+            $.ajax({
+                method: "GET",
+                url: "/Producto/OrdenarxPrecio",
+                data: { "tipoOrden": valor == true ? 1 : 0 },
+                success: function (result) {
+                    $("#resultado").html("");
+                    $("#resultado").html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+
+                }
+            })
+        })
 
         $(document).on('click', '.ordenarProducto', function () {
 
