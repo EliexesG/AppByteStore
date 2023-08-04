@@ -11,7 +11,6 @@ namespace ApplicationCore.Services
     {
         IEnumerable<Producto> GetProducto();
         Producto GetProductoByID(int id);
-        Producto GuardarProducto(Producto producto);
         IEnumerable<Producto> GetProductoPorNombre(String nombre, int idVendedor = -1);
         IEnumerable<string> GetProductoNombres(int idVendedor = -1);
         IEnumerable<Producto> GetProductoPorVendedor(int idVendedor);
@@ -19,5 +18,6 @@ namespace ApplicationCore.Services
         void DeleteProducto(int id);
         IEnumerable<FotoProducto> GetFotosPorProducto(int idProducto);
         Producto Save(Producto producto);
+        Producto ActualizarStock(int idProducto, int cantRebajada);
     }
 }

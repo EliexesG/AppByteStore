@@ -20,7 +20,7 @@
                         @Html.DisplayFor(modelItem => carritoItem.Producto.Nombre)
                     </th>
                     <td class="center" style="width:1.5em">
-                        @Html.EditorFor(modelItem => carritoItem.Cantidad, new { htmlAttributes = new { @class = "form-control changeCantidad", data_idproducto = carritoItem.IdProducto } })
+                        @Html.EditorFor(modelItem => carritoItem.Cantidad, new { htmlAttributes = new { @class = "form-control changeCantidad", data_idproducto = carritoItem.IdProducto, data_stockactual = carritoItem.Producto.Stock } })
                     </td>
                     <td class="right">
 

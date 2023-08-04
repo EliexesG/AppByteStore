@@ -9,70 +9,104 @@
     <h2 class="border border-3 border-warning w-auto text-center text-light fw-bold p-3 rounded-4">Carrito</h2>
 </div>
 <h3 class="text-white mb-4 text-center">En este apartado podrás encontrar la información de tu carrito</h3>
-<hr class="mb-4" />
 
 @using (Html.BeginForm("Save", "Pedido", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.FechaHora, htmlAttributes: new { @class = "col-form-label " })
-                    <div class="col-md-12">
-                        @Html.TextBoxFor(model => model.FechaHora, htmlAttributes: new { @class = "form-control me-sm-2 text-black fw-bold", @Value = DateTime.Now.ToString("yyyy-MM-d HH:mm:ss"), @readonly = "readonly" })
-                        @Html.ValidationMessageFor(model => model.FechaHora, "", new { @class = "text-danger" })
-                    </div>
+<div class="form-horizontal">
+    <hr class="mb-4" />
+    <div class="row" id="divDatos">
+        <div class="col-md-4 mb-4">
+            <div class="form-group">
+                @Html.LabelFor(model => model.FechaHora, htmlAttributes: new { @class = "col-form-label " })
+                <div class="col-md-12">
+                    @Html.TextBoxFor(model => model.FechaHora, htmlAttributes: new { @class = "form-control me-sm-2 text-black fw-bold", @Value = DateTime.Now.ToString("yyyy-MM-d HH:mm:ss"), @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.FechaHora, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.MetodoPago, htmlAttributes: new { @class = "col-form-label " })
-                    <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.MetodoPago.IdMetodoPago, (SelectList)ViewBag.ListaPago, " Seleccione un Metodo de Pago ", htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black fw-bold" })
-                        @Html.ValidationMessageFor(model => model.MetodoPago.IdMetodoPago, "", new { @class = "text-danger" })
-                    </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="form-group">
+                @Html.LabelFor(model => model.MetodoPago, htmlAttributes: new { @class = "col-form-label " })
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.MetodoPago.IdMetodoPago, (SelectList)ViewBag.ListaPago, " Seleccione un Metodo de Pago ", htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black fw-bold" })
+                    @Html.ValidationMessageFor(model => model.MetodoPago.IdMetodoPago, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Direccion, htmlAttributes: new { @class = "col-form-label " })
-                    <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.Direccion.IdDireccion, (SelectList)ViewBag.ListaDireccion, " Seleccione una Dirección ", htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black fw-bold" })
-                        @Html.ValidationMessageFor(model => model.Direccion.IdDireccion, "", new { @class = "text-danger" })
-                    </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Direccion, htmlAttributes: new { @class = "col-form-label " })
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.Direccion.IdDireccion, (SelectList)ViewBag.ListaDireccion, " Seleccione una Dirección ", htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black fw-bold" })
+                    @Html.ValidationMessageFor(model => model.Direccion.IdDireccion, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
 
         <hr class="mb-4" />
-        <div>
-            @if (Web.Utils.Carrito.Instancia.Items.Count() > 0)
-            {
-                <div id="detalleCarrito">
-                    @Html.Partial("~/Views/Pedido/_DetalleCarrito.cshtml",
-                    (IEnumerable<Infraestructure.Models.CompraDetalle>)ViewBag.Carrito)
-                </div>
-                
-            }
-            else
-            {
-                <h3 class="text-white mb-4 text-center mt-4"><i class="fa-solid fa-warning text-warning"></i> No hay productos en el carrito</h3>
-            }
-        </div>
-        <hr class="mb-4" />
-        <button type="submit" class="btn btn-primary fs-4" id="btnComprar">
-            <i class="fa-solid fa-cart-shopping"></i>
-             Comprar
-        </button>
     </div>
+
+    <div>
+        @if (Web.Utils.Carrito.Instancia.Items.Count() > 0)
+        {
+            <div id="detalleCarrito">
+                @Html.Partial("~/Views/Pedido/_DetalleCarrito.cshtml",
+                (IEnumerable<Infraestructure.Models.CompraDetalle>)ViewBag.Carrito)
+            </div>
+
+        }
+        else
+        {
+            <h3 class="text-white mb-4 text-center mt-4"><i class="fa-solid fa-warning text-warning"></i> No hay productos en el carrito</h3>
+        }
+    </div>
+    <hr class="mb-4" />
+
+    @if (Web.Utils.Carrito.Instancia.Items.Count() > 0)
+    {
+        <button type="button" class="btn btn-primary fs-4" id="btnProcederComprar">
+            <i class="fa-solid fa-cart-shopping"></i>
+            Proceder a Comprar
+        </button>
+    }
+    <button type="submit" class="btn btn-primary fs-4" id="btnComprar">
+        <i class="fa-solid fa-cart-shopping"></i>
+        Comprar
+    </button>
+</div>
 }
 
 @section Scripts {
     
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#divDatos").hide();
+            $("#btnComprar").hide();
+        });
+
+        $("#btnProcederComprar").click(function () {
+            $("#divDatos").show();
+            $("#btnComprar").show();
+            $(this).hide();
+
+            $.ajax({
+                type: "GET",
+                dataType: "text",
+                url: "/Pedido/DetalleCarritoNoEditable",
+                data: {},
+                success: function (result) {
+                    $('#detalleCarrito').html("");
+                    $('#detalleCarrito').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error: " + error + ", No Error: " + xhr.status);
+                }
+            });
+        })
 
         function actualizarDetalleCarrito() {
             $.ajax({
@@ -90,10 +124,19 @@
             });
         }
 
-        $(document).on("change", ".changeCantidad", function() {
+        $(document).on("change", ".changeCantidad", function () {
+
             var txtCantidad = $(this);
             var cantidad = txtCantidad.val();
             var idProducto = txtCantidad.data("idproducto");
+            var stockActual = txtCantidad.data("stockactual");
+
+            if (cantidad > stockActual) {
+                var mensaje = @Html.Raw(Json.Encode(Web.Util.SweetAlertHelper.Mensaje("Cuidado", "No se puede ingresar una cantidad mayor al Stock del producto", Web.Util.SweetAlertMessageType.warning)));
+                eval(mensaje);
+                cantidad = 1;
+            }
+
             $.ajax({
                 type: "POST",
                 dataType: "text",

@@ -221,11 +221,6 @@ namespace Infraestructure.Repositories
                 throw;
             }
         }
-        public Producto GuardarProducto(Producto producto)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public Producto Save(Producto producto)
         {
@@ -289,6 +284,52 @@ namespace Infraestructure.Repositories
 
             if (retorno >= 0)
                 oProducto = GetProductoByID((int)producto.IdProducto);
+
+            return oProducto;
+        }
+
+        public Producto ActualizarStock (int idProducto, int cantRebajada)
+        {
+            Producto oProducto = null;
+            int retorno = 0;
+
+            try
+            {
+
+                oProducto = this.GetProductoByID((int)idProducto);
+
+                if(oProducto != null)
+                {
+                    oProducto.Stock -= cantRebajada;
+
+                    using (ByteStoreContext ctx = new ByteStoreContext())
+                    {
+
+                        ctx.Producto.Attach(oProducto);
+                        ctx.Entry(oProducto).Property("Stock").IsModified = true;   
+
+                        retorno = ctx.SaveChanges();
+
+                        if (retorno <= 0)
+                        {
+                            oProducto = null;
+                        }
+                    }
+                }
+
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
 
             return oProducto;
         }

@@ -57,6 +57,7 @@ namespace Web.Utils
                 {
                     nuevoItem.Cantidad = 1;
                     nuevoItem.Precio = producto.Precio;
+                    nuevoItem.EstadoEntrega = false;
                     Items.Add(nuevoItem);
                 }
                 mensaje = SweetAlertHelper.Mensaje("Orden Productos", "Producto agregado a la orden", SweetAlertMessageType.success);

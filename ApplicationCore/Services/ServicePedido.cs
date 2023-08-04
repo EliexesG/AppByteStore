@@ -30,7 +30,7 @@ namespace ApplicationCore.Services
 
         public IEnumerable<Pedido> GetPedidoByCliente(int idCliente)
         {
-            return _repositoryPedido.GetPedidoByCliente(idCliente);
+            return _repositoryPedido.GetPedidoByCliente(idCliente).OrderByDescending(p => p.CompraEncabezado.FechaHora).ToList();
         }
 
         public Pedido GetPedidoByID(int id)

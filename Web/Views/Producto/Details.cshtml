@@ -61,7 +61,7 @@
 
 <div class="d-flex mb-4">
     <a href="@Url.Action(ViewBag.GetBack, "Producto")" class="btn btn-info fs-4 me-4">Vover Atrás</a>
-    @if (Model.Stock > 0 && Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor", "Cliente" }) && (Session["User"] as Infraestructure.Models.Usuario).IdUsuario != Model.Usuario.IdUsuario)
+    @if (Model.Stock > 0 && Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }) && (Session["User"] as Infraestructure.Models.Usuario).IdUsuario != Model.Usuario.IdUsuario)
     {
         <a href="#" id="ordenarProducto" data-idproducto="@Model.IdProducto" class="btn btn-primary fs-4"><i class="fa-solid fa-cart-shopping"></i> Agregar al Carrito</a>
     }

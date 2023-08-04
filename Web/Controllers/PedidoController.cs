@@ -241,6 +241,18 @@ namespace Web.Controllers
             return PartialView("_DetalleCarrito", (IEnumerable<CompraDetalle>)Web.Utils.Carrito.Instancia.Items);
         }
 
+        public PartialViewResult DetalleCarritoNoEditable()
+        {
+
+            CompraEncabezado compraEncabezado = new CompraEncabezado();
+            compraEncabezado.CompraDetalle = Web.Utils.Carrito.Instancia.Items;
+            compraEncabezado.SubTotal = (double)Utils.Carrito.Instancia.GetTotal(); 
+            compraEncabezado.Impuesto = (double)compraEncabezado.SubTotal * 0.13;
+            compraEncabezado.Total = (double)compraEncabezado.SubTotal + (double)compraEncabezado.Impuesto;
+
+            return PartialView("_DetalleCarritoNoEditable", compraEncabezado);
+        }
+
         [HttpPost]
         public ActionResult Save (CompraEncabezado compraEncabezado)
         {
