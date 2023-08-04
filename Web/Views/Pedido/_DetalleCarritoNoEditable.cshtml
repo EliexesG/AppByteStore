@@ -1,0 +1,54 @@
+﻿
+@model Infraestructure.Models.CompraEncabezado
+
+<div class="rounded-4 p-4 bg-white">
+    <i class="fa-solid fa-money-bill fa-2xl m-3 shadow-lg mb-4"></i>
+    <table class="table rounded rounded-4 overflow-hidden fs-5 shadow mb-4">
+        <thead class="bg-black">
+            <tr class="p-4">
+                <th scope="col" class="text-white">Producto</th>
+                <th scope="col" class="text-white">Sub-Total</th>
+                <th scope="col" class="text-white">Cantidad</th>
+                <th scope="col" class="text-white">Estado</th>
+            </tr>
+        </thead>
+        <tbody class="table-light">
+            @foreach (var detalle in (ICollection<Infraestructure.Models.CompraDetalle>)Model.CompraDetalle)
+            {
+                <tr>
+                    <th scope="row" class="p-3">@detalle.Producto.Nombre</th>
+                    <td>@Html.DisplayFor(model => detalle.Precio)</td>
+                    <th>@detalle.Cantidad</th>
+                    @if (detalle.EstadoEntrega == false)
+                    {
+                        <td>Sin Entregar</td>
+                    }
+                    else
+                    {
+                        <td>Entregado</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    <hr class="mb-4 text-black" />
+    <h3 class="text-center mb-4 fw-bold card-title">Desglose</h3>
+    <h3 class="card-title fw-bold mb-4">
+        @Html.DisplayNameFor(model => model.SubTotal):
+        <span class="fw-normal">
+            @Html.DisplayFor(model => model.SubTotal)
+        </span>
+    </h3>
+    <h3 class="card-title fw-bold mb-4">
+        @Html.DisplayNameFor(model => model.Impuesto):
+        <span class="fw-normal">
+            @Html.DisplayFor(model => model.Impuesto)
+        </span>
+    </h3>
+    <h3 class="card-title fw-bold mb-4">
+        @Html.DisplayNameFor(model => model.Total):
+        <span class="fw-normal">
+            @Html.DisplayFor(model => model.Total)
+        </span>
+    </h3>
+</div>

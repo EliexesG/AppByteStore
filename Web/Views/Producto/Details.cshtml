@@ -4,6 +4,7 @@
 @{
     bool desabilitarAgregarPregunta = !Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }) || (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }) && (Session["User"] as Infraestructure.Models.Usuario).IdUsuario == Model.Usuario.IdUsuario);
     ViewBag.Title = "ByteStore - " + @Html.DisplayFor(modelItem => modelItem.Nombre);
+    int cantProductoActualCarrito = Web.Utils.Carrito.Instancia.getCountProducto(Model.IdProducto);
 }
 
 <style type="text/css">
@@ -61,9 +62,9 @@
 
 <div class="d-flex mb-4">
     <a href="@Url.Action(ViewBag.GetBack, "Producto")" class="btn btn-info fs-4 me-4">Vover Atrás</a>
-    @if (Model.Stock > 0 && Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor", "Cliente" }) && (Session["User"] as Infraestructure.Models.Usuario).IdUsuario != Model.Usuario.IdUsuario)
+    @if (Model.Stock > 0 && Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }) && (Session["User"] as Infraestructure.Models.Usuario).IdUsuario != Model.Usuario.IdUsuario)
     {
-        <a href="#" id="ordenarProducto" data-idproducto="@Model.IdProducto" class="btn btn-primary fs-4"><i class="fa-solid fa-cart-shopping"></i> Agregar al Carrito</a>
+        <a href="#" id="ordenarProducto" data-idproducto="@Model.IdProducto" data-stockactual="@Model.Stock" class="btn btn-primary fs-4"><i class="fa-solid fa-cart-shopping"></i> Agregar al Carrito</a>
     }
 </div>
 
@@ -210,6 +211,14 @@
 
         $(document).ready(function () {
 
+            var cantProducto = @Html.Raw(Json.Encode(cantProductoActualCarrito));
+            var stockActual = @Html.Raw(Json.Encode(Model.Stock));
+
+            if (stockActual <= cantProducto) {
+                $("#ordenarProducto").prop("disabled", true);
+                $("#ordenarProducto").addClass("disabled")
+            }
+
             var desabilitarAgregarPregunta = @Html.Raw(Json.Encode(desabilitarAgregarPregunta));
             console.log(desabilitarAgregarPregunta)
 
@@ -340,7 +349,7 @@
                 $(id).html(html);
 
                 var idForm = "#formRespuesta" + idFormRespuestaActual;
-                
+
                 $(idForm).validate({
                     rules: {
                         agregarRespuesta: 'required'
@@ -387,7 +396,9 @@
             });
 
     $(document).on('click', '#ordenarProducto', function () {
+
         var idProducto = $(this).data('idproducto');
+        var stockAtual = $(this).data('stockactual');
 
         $.ajax({
             method: "POST",
@@ -396,11 +407,16 @@
             success: function (result) {
                 $('.cantCarrito').html(result.cantCarrito);
                 eval(result.mensaje);
+                if (result.cantProducto + 1 > stockAtual) {
+                    $("#ordenarProducto").prop("disabled", true);
+                    $("#ordenarProducto").addClass("disabled")
+                }
             },
             error: function (xhr, status, error) {
                 console.log("error" + error, "no Error: " + xhr.status)
             }
         })
     });
+
 </script>
 }

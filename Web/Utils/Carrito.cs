@@ -57,6 +57,7 @@ namespace Web.Utils
                 {
                     nuevoItem.Cantidad = 1;
                     nuevoItem.Precio = producto.Precio;
+                    nuevoItem.EstadoEntrega = false;
                     Items.Add(nuevoItem);
                 }
                 mensaje = SweetAlertHelper.Mensaje("Orden Productos", "Producto agregado a la orden", SweetAlertMessageType.success);
@@ -117,6 +118,20 @@ namespace Web.Utils
         {
             int total = 0;
             total = Items.Sum(x => (int)x.Cantidad);
+
+            return total;
+        }
+
+        public int getCountProducto (int idProducto)
+        {
+            int total = 0;
+
+            CompraDetalle detalle = Items.Where(x => x.IdProducto == idProducto).FirstOrDefault();
+
+            if(detalle != null)
+            {
+                total = (int)detalle.Cantidad;
+            }
 
             return total;
         }

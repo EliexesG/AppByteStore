@@ -6,7 +6,7 @@
         <td class="p-3">
             @Html.DisplayFor(modelItem => item.Nombre)
         </td>
-        <td class="p-3">
+        <td class="p-3 descripcion">
             @Html.DisplayFor(modelItem => item.Descripcion)
         </td>
         <td class="p-3">
@@ -24,6 +24,15 @@
         </td>
     </tr>
 }
+
+<style type="text/css">
+    .descripcion {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 250px;
+    }
+</style>
 
 
 

@@ -26,7 +26,7 @@ namespace Web.Controllers
             {
                 //Instancia 
                 IServiceProducto _ServiceProducto = new ServiceProducto();
-                lista = _ServiceProducto.GetProducto();
+                lista = _ServiceProducto.GetProducto().OrderByDescending(p => p.Precio).ToList();
 
                 //Obtengo todos los datos de la BD y los agrego a la lista 
                 TempData["GetBack"] = "Index";
@@ -144,7 +144,7 @@ namespace Web.Controllers
             }
             else if (string.IsNullOrEmpty(filtro.Trim()) && (tipoUsuario == 3))
             {
-                lista = _ServiceProducto.GetProducto();
+                lista = _ServiceProducto.GetProducto().OrderByDescending(p => p.Precio).ToList(); ;
                 partialView = "_PartialCatalogoProducto";
             }
             else
@@ -161,7 +161,7 @@ namespace Web.Controllers
                 }
                 else
                 {
-                    lista = _ServiceProducto.GetProductoPorNombre(filtro);
+                    lista = _ServiceProducto.GetProductoPorNombre(filtro).OrderByDescending(p => p.Precio).ToList();
                     partialView = "_PartialCatalogoProducto";
                 }
             }
@@ -228,11 +228,38 @@ namespace Web.Controllers
 
                 if (categoria != -1)
                 {
-                    lista = _ServiceProducto.GetProductoByCategoria(categoria);
+                    lista = _ServiceProducto.GetProductoByCategoria(categoria).OrderByDescending(p => p.Precio).ToList();
                 }
                 else
                 {
-                    lista = _ServiceProducto.GetProducto();
+                    lista = _ServiceProducto.GetProducto().OrderByDescending(p => p.Precio).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+
+            return PartialView("_PartialCatalogoProducto", lista);
+        }
+
+        public PartialViewResult OrdenarxPrecio (int tipoOrden)
+        {
+            IEnumerable<Producto> lista = null;
+
+            try
+            {
+
+                IServiceProducto _ServiceProducto = new ServiceProducto();
+
+                if (tipoOrden == 0)
+                {
+                    lista = _ServiceProducto.GetProducto().OrderByDescending(p => p.Precio).ToList();
+                }
+                else
+                {
+                    lista = _ServiceProducto.GetProducto().OrderBy(p => p.Precio).ToList();
                 }
             }
             catch (Exception ex)

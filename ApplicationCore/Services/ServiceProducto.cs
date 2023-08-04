@@ -17,8 +17,6 @@ namespace ApplicationCore.Services
             throw new NotImplementedException();
         }
 
-      
-
         public IEnumerable<Producto> GetProducto()
         {
             return repository.GetProducto();
@@ -71,20 +69,19 @@ namespace ApplicationCore.Services
            return repository.GetProductoPorVendedor(idVendedor);
         }
 
-        public Producto GuardarProducto(Producto producto)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<FotoProducto> GetFotosPorProducto(int idProducto)
         {
             return repository.GetFotosPorProducto(idProducto);  
         }
 
-
         public Producto Save(Producto producto)
         {
             return repository.Save(producto);
+        }
+
+        public Producto ActualizarStock(int idProducto, int cantRebajada)
+        {
+            return repository.ActualizarStock(idProducto, cantRebajada);
         }
     }
 }

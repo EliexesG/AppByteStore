@@ -197,7 +197,7 @@ namespace Web.Controllers
                 Log.Error(ex, MethodBase.GetCurrentMethod());
                 TempData["Message"] = "Error al procesar los datos!" + ex.Message;
             }
-            return Json(new { mensaje, cantCarrito = carrito.GetCountItems() } );
+            return Json(new { mensaje, cantCarrito = carrito.GetCountItems(), cantProducto = carrito.getCountProducto(idProducto) } );
         }
 
         [HttpPost]
@@ -239,6 +239,18 @@ namespace Web.Controllers
         public PartialViewResult DetalleCarrito()
         {
             return PartialView("_DetalleCarrito", (IEnumerable<CompraDetalle>)Web.Utils.Carrito.Instancia.Items);
+        }
+
+        public PartialViewResult DetalleCarritoNoEditable()
+        {
+
+            CompraEncabezado compraEncabezado = new CompraEncabezado();
+            compraEncabezado.CompraDetalle = Web.Utils.Carrito.Instancia.Items;
+            compraEncabezado.SubTotal = (double)Utils.Carrito.Instancia.GetTotal(); 
+            compraEncabezado.Impuesto = (double)compraEncabezado.SubTotal * 0.13;
+            compraEncabezado.Total = (double)compraEncabezado.SubTotal + (double)compraEncabezado.Impuesto;
+
+            return PartialView("_DetalleCarritoNoEditable", compraEncabezado);
         }
 
         [HttpPost]

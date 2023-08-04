@@ -184,6 +184,7 @@ namespace Infraestructure.Repositories
         {
             int resultado = 0;
             Pedido _Pedido = null;
+            IRepositoryProducto repositoryProducto = new RepositoryProducto();
 
             try
             {
@@ -215,6 +216,12 @@ namespace Infraestructure.Repositories
                 if(resultado >= 0)
                 {
                     _Pedido = GetPedidoByID(pedido.IdCompraEncabezado);
+
+                    foreach (var detalle in pedido.CompraEncabezado.CompraDetalle)
+                    {
+                        repositoryProducto.ActualizarStock(detalle.Producto.IdProducto, (int)detalle.Cantidad);
+                    }
+
                 }
 
                 return _Pedido;
