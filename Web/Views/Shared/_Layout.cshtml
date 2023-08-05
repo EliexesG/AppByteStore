@@ -24,10 +24,14 @@
     @* Para llamar a la vista parcial del navbar *@
     @Html.Partial("_Menu");
     <div class="container body-content pt-5 pb-5">
-        <main class="container">
+        <div id="loaderSpinner" class="spinner-border text-primary d-flex position-fixed z-3 m-auto display-1 d-none" role="status" style="top: 50%; left: 50%;">
+            <span class="sr-only object-fit-scale">Loading...</span>
+        </div>
+        <main class="container mt-5">
             @RenderBody()
         </main>
     </div>
+    
     @Html.Partial("_Footer")
 
     @Scripts.Render("~/bundles/jquery")
