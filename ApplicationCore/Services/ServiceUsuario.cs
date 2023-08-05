@@ -38,6 +38,31 @@ namespace ApplicationCore.Services
             return repository.Guardar(usuario);
         }
 
+        public IEnumerable<Rol> GetRol()
+        {
+            return repository.GetRol();
+        }
+
+        public IEnumerable<Usuario> GetUsuarioByEstado(bool estado)
+        {
+            return repository.GetUsuarioByEstado(estado);
+        }
+
+        public IEnumerable<MetodoPago> GetMetodoPagoByUsuario(int idUsuario)
+        {
+            return repository.GetMetodoPagoByUsuario(idUsuario);   
+        }
+
+        public IEnumerable<Direccion> GetDireccionByUsuario(int idUsuario)
+        {
+            return repository.GetDireccionByUsuario(idUsuario);
+        }
+
+        public IEnumerable<Telefono> GetTelefonoByUsuario(int idUsuario)
+        {
+            return repository.GetTelefonoByUsuario(idUsuario);
+        }
+
         public Usuario Login(string Correo, string contrasenna)
         {
             return repository.Login(Correo, contrasenna);
