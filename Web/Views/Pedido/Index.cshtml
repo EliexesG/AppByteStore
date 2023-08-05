@@ -62,6 +62,7 @@
         $(function () {
 
             $(".first").addClass("active");
+            $("#loaderSpinner").removeClass("d-none");
 
             $.ajax({
                 method: "GET",
@@ -70,6 +71,7 @@
                 success: function (result) {
                     $("#tabla").html("");
                     $("#tabla").html(result);
+                    $("#loaderSpinner").addClass("d-none");
                 },
                 error: function (xhr, status, error) {
                     console.log("error" + error, "no Error: " + xhr.status)
@@ -85,6 +87,7 @@
                 $(".page-link").removeClass("active");
                 $(this).addClass("active");
                 $(".orden").removeClass("fa-arrow-down").addClass("fa-arrow-up");
+                $("#loaderSpinner").removeClass("d-none");
 
                 $.ajax({
                     method: "GET",
@@ -93,6 +96,7 @@
                     success: function (result) {
                         $("#tabla").html("");
                         $("#tabla").html(result);
+                        $("#loaderSpinner").addClass("d-none");
                     },
                     error: function (xhr, status, error) {
                         console.log("error" + error, "no Error: " + xhr.status)
@@ -115,6 +119,7 @@
                 $(".orden").removeClass("fa-arrow-down").addClass("fa-arrow-up");
 
             }
+            $("#loaderSpinner").removeClass("d-none");
 
             $.ajax({
                 method: "GET",
@@ -123,6 +128,7 @@
                 success: function (result) {
                     $("#tabla").html("");
                     $("#tabla").html(result);
+                    $("#loaderSpinner").addClass("d-none");
                 },
                 error: function (xhr, status, error) {
                     console.log("error" + error, "no Error: " + xhr.status)

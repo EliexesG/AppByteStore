@@ -119,6 +119,7 @@
             var filtro = $("#filtro").val();
             $('.form-check-label').html("Ordenar x Precio (Mayor a Menor)")
             $("#preciofilter").prop("checked", false);
+            $("#loaderSpinner").removeClass("d-none");
 
             $.ajax({
                 method: "GET",
@@ -128,6 +129,7 @@
                     $("#categoria").val('-1');
                     $("#resultado").html("");
                     $("#resultado").html(result);
+                    $("#loaderSpinner").addClass("d-none");
                 },
                 error: function (xhr, status, error) {
                     console.log("error" + error, "no Error: " + xhr.status)
@@ -144,6 +146,7 @@
             $("#filtro").val('');
             $('.form-check-label').html("Ordenar x Precio (Mayor a Menor)")
             $("#preciofilter").prop("checked", false);
+            $("#loaderSpinner").removeClass("d-none");
 
             //    Llamar al ajax
             $.ajax({
@@ -153,6 +156,7 @@
                 success: function (result) {
                     $("#resultado").html("");
                     $("#resultado").html(result);
+                    $("#loaderSpinner").addClass("d-none");
                 },
                 error: function (xhr, status, error) {
                     console.log("error" + error, "no Error: " + xhr.status)
@@ -166,7 +170,7 @@
             var valor = $(this).is(":checked");
             $('#filtro').val('');
             $('#categoria').val(-1);
-            $('.form-check-label').html(valor == true ? "Ordenar x Precio (Menor a Mayor)" : "Ordenar x Precio (Mayor a Menor)")
+            $("#loaderSpinner").removeClass("d-none");
 
             $.ajax({
                 method: "GET",
@@ -175,6 +179,8 @@
                 success: function (result) {
                     $("#resultado").html("");
                     $("#resultado").html(result);
+                    $("#loaderSpinner").addClass("d-none");
+                    $('.form-check-label').html(valor == true ? "Ordenar x Precio (Menor a Mayor)" : "Ordenar x Precio (Mayor a Menor)")
                 },
                 error: function (xhr, status, error) {
                     console.log("error" + error, "no Error: " + xhr.status)
