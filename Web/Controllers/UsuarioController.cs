@@ -30,13 +30,11 @@ namespace Web.Controllers
         public ActionResult Create()
         {
 
+            IServiceUsuario serviceUsuario = new ServiceUsuario();
 
-            var listaRoles = new object[] {
-                                   new { IdRol = 2, Descripcion = "Vendedor" },
-                                   new { IdRol = 3, Descripcion = "Cliente" } };
+            var listaRoles = serviceUsuario.GetRol();
 
             ViewBag.listaRoles = new SelectList(listaRoles, "IdRol", "Descripcion");
-
 
             var listatipoTelefono = new object[] {
                                    new { IdTel = 1, Descripcion = "Casa" },

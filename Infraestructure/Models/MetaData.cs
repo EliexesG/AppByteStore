@@ -275,25 +275,35 @@ namespace Infraestructure.Models
     {
         public int IdUsuario { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Nombre del Proveedor")]
         public string NombreProveedor { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
+        [RegularExpression("^\\d{8,10}$", ErrorMessage = "Debe ingresar un mínimo de 8 y un máximo de 10 números")]
         [Display(Name = "Identificación")]
         public string Identificacion { get; set; }
+
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         public string Nombre { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Primer Apellido")]
         public string PrimerApellido { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Segundo Apellido")]
         public string SegundoApellido { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Correo Electrónico")]
         public string CorreoElectronico { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Contraseña")]
         public byte[] Contrasenna { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Calificación del Proveedor")]
         public Nullable<int> PromedioEvaluaciones { get; set; }
         public Nullable<bool> Estado { get; set; }
