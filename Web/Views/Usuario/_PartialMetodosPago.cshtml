@@ -1,0 +1,105 @@
+﻿@model Infraestructure.Models.MetodoPago
+
+
+<div class="col-md-12">
+    <h3>Métodos de pago</h3>
+    <p>Puedes poner tu tarjeta de crédito o débito para realizar alguna compra</p>
+
+
+    <div class="row g-3">
+
+        <div class="col-md-3">
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Proveedor, htmlAttributes: new { @class = "control-label " })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Proveedor, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Proveedor, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.LabelFor(model => model.NumeroTarjeta, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+                    @Html.TextBoxFor(model => model.NumeroTarjeta, new { @class = "form-control", @style = "min-height: 30px;", placeholder = "xxxx-xxxx-xxxx" })
+                    @Html.ValidationMessageFor(model => model.NumeroTarjeta, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                @Html.LabelFor(model => model.FechaExpiracion, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.FechaExpiracion, "{0:MM-yyyy}", new { htmlAttributes = new { @class = "form-control", placeholder = "01/2000" } })
+                    @Html.ValidationMessageFor(model => model.FechaExpiracion, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Codigo, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Codigo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Codigo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-2 mb-4">
+
+            @Html.LabelFor(model => model.TipoPago, htmlAttributes: new { @class = "control-label" })
+
+            <div class="col-md-12">
+                <select class="form-select col-md" id="tipo">
+                    <option value="-1" class="active tipo">Seleccione</option>
+
+                    @*Cargar lista Categorías*@
+                    @foreach (var listatipoTarjeta in (List<Infraestructure.Models.TipoPago>)ViewBag.listaMetodoPago)
+                    {
+                        <option class="tipo" value="@listatipoTarjeta.IdTipoPago">@listatipoTarjeta.Descripcion</option>
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.TipoPago, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row col-md-12">
+
+
+
+    <div class="col-md-2">
+        <input type="submit" data-id="AgregarPago" class="btn btn-primary" value="Agregar" />
+    </div>
+
+
+
+    <div class="col-md-10">
+        <table class="table table-hover text-center">
+            <thead>
+                <tr>
+                    <th scope="col">Proveedor</th>
+                    <th scope="col">Número de Tarjeta</th>
+                    <th scope="col">Fecha de expiración</th>
+                    <th scope="col">Código</th>
+                    <th scope="col">Tipo de pago</th>
+                    <th scope="col">Acción</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+</div>

@@ -13,6 +13,9 @@ namespace ApplicationCore.Services
         IEnumerable<Usuario> GetUsuario();
         IEnumerable<Usuario> GetUsuarioByRol(int IdRol);
         Usuario Login(string Correo, string contrasenna);
+
+        IEnumerable<TipoPago> GetTipoPago();
+
         Usuario Guardar(Usuario usuario);
 
     }

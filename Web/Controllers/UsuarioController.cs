@@ -1,7 +1,9 @@
-﻿using Infraestructure.Models;
+﻿using ApplicationCore.Services;
+using Infraestructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -25,15 +27,14 @@ namespace Web.Controllers
         // GET: Usuario/Create
         public ActionResult Create()
         {
-            IEnumerable<Telefono> lista = null;
 
 
             var listaRoles = new object[] {
-                                   new { IdRol = 1, Descripcion = "Administrador" },
                                    new { IdRol = 2, Descripcion = "Vendedor" },
                                    new { IdRol = 3, Descripcion = "Cliente" } };
 
             ViewBag.listaRoles = new SelectList(listaRoles, "IdRol", "Descripcion");
+
 
             var listatipoTelefono = new object[] {
                                    new { IdTel = 1, Descripcion = "Casa" },
@@ -43,8 +44,37 @@ namespace Web.Controllers
             ViewBag.listatipoTelefono = new SelectList(listatipoTelefono, "IdTel", "Descripcion");
 
 
+            //Para cargar la lista de MetodoPago
+            IServiceUsuario _ServiceUsuario = new ServiceUsuario();
+            ViewBag.listaMetodoPago = _ServiceUsuario.GetTipoPago();
+
+
             return View();
         }
+
+        //vista parcial de telefonos, direccion y metodos de pago
+        public PartialViewResult PartialTelefonos()
+        {
+
+            return PartialView("_PartialTelefonos");
+        }
+
+        public PartialViewResult PartialMetodosPago()
+        {
+
+            //Para cargar la lista de MetodoPago
+            IServiceUsuario _ServiceUsuario = new ServiceUsuario();
+            ViewBag.listaMetodoPago = _ServiceUsuario.GetTipoPago();
+
+            return PartialView("_PartialMetodosPago");
+        }
+
+        public PartialViewResult PartialDireccion()
+        {
+
+            return PartialView("_PartialDireccion");
+        }
+
 
         // POST: Usuario/Create
         [HttpPost]

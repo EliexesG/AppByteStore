@@ -232,7 +232,6 @@
     <Content Include="Views\Pedido\_PaginacionYOrdenViewPedido.cshtml" />
     <Content Include="Views\Producto\_PartialCatalogoProducto.cshtml" />
     <Content Include="Views\Producto\Details.cshtml" />
-    <Content Include="Views\Usuario\Login.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Login\UnAuthorized.cshtml" />
     <Content Include="Views\Producto\_PreguntasProducto.cshtml" />
@@ -244,6 +243,10 @@
     <Content Include="Views\Producto\IndexVendedor.cshtml" />
     <Content Include="Views\Pedido\_DetalleCarritoNoEditable.cshtml" />
     <Content Include="Views\Usuario\Create.cshtml" />
+    <Content Include="Views\Usuario\_PartialTelefonos.cshtml" />
+    <Content Include="Views\Usuario\_PartialMetodosPago.cshtml" />
+    <Content Include="Views\Usuario\View.cshtml" />
+    <Content Include="Views\Usuario\_PartialDireccion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

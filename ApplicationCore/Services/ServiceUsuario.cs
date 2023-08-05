@@ -13,6 +13,11 @@ namespace ApplicationCore.Services
     {
         private IRepositoryUsuario repository = new RepositoryUsuario();
 
+        public IEnumerable<TipoPago> GetTipoPago()
+        {
+            return repository.GetTipoPago();
+        }
+
         public IEnumerable<Usuario> GetUsuario()
         {
             return repository.GetUsuario();
