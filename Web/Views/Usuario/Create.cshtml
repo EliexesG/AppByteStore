@@ -182,5 +182,104 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
+<script type="text/javascript">
 
+    var idProvincia = -1;
+
+        $(document).ready(function () {
+            $.ajax({
+                method: "GET",
+                url: "/Usuario/ObtenerProvincias",
+                data: { },
+                success: function (result) {
+
+                    var html = '<option value="-1" class="active provincia">Provincia</option>'
+
+                    var data = (result.Result.replace('{', "").replace('}', "").split(","));
+
+                    data.forEach(provincia => {
+
+                        provincia = provincia.split(":")
+                        html += `<option value=${provincia[0]} class="active provincia">${provincia[1].replace(/\"+/g, "")}</option >`
+                    })
+
+                    $("#Provincia").html("");
+                    $("#Provincia").html(html);
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+
+                }
+            })
+        });
+
+    $("#Provincia").on("change", function () {
+
+        idProvincia = $(this).val();
+        
+        $.ajax({
+            method: "GET",
+            url: "/Usuario/ObtenerCantonesxProvincia",
+            data: { idProvincia },
+            success: function (result) {
+
+                var html = '<option value="-1" class="active canton">Cantón</option>'
+
+                var data = (result.Result.replace('{', "").replace('}', "").split(","));
+
+                data.forEach(canton => {
+
+                    canton = canton.split(":")
+                    html += `<option value=${canton[0]} class="active canton">${canton[1].replace(/\"+/g, "")}</option >`
+                })
+
+                $("#Canton").html("");
+                $("#Canton").html(html);
+                $("#Distrito").html("");
+                $("#Distrito").html('<option value="-1" class="active distrito">Distrito</option>');
+            },
+            error: function (xhr, status, error) {
+                console.log("error" + error, "no Error: " + xhr.status)
+                $("#Canton").html("");
+                $("#Canton").html('<option value="-1" class="active canton">Cantón</option>');
+                $("#Distrito").html("");
+                $("#Distrito").html('<option value="-1" class="active distrito">Distrito</option>');
+            }
+        })
+    });
+
+    $("#Canton").on("change", function () {
+
+        var idCanton = $(this).val();
+
+        $.ajax({
+            method: "GET",
+            url: "/Usuario/ObtenerDistritosxCanton",
+            data: { idProvincia, idCanton },
+            success: function (result) {
+
+                var html = '<option value="-1" class="active distrito">Distrito</option>'
+
+                var data = (result.Result.replace('{', "").replace('}', "").split(","));
+
+                data.forEach(distrito => {
+
+                    distrito = distrito.split(":")
+                    html += `<option value=${distrito[0]} class="active distrito">${distrito[1].replace(/\"+/g, "")}</option >`
+                })
+
+                console.log(html)
+
+                $("#Distrito").html("");
+                $("#Distrito").html(html);
+            },
+            error: function (xhr, status, error) {
+                console.log("error" + error, "no Error: " + xhr.status)
+                $("#Distrito").html("");
+                $("#Distrito").html('<option value="-1" class="active distrito">Distrito</option>');
+            }
+        })
+    });
+
+</script>
 }

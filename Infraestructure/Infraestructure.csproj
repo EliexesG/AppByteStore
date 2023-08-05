@@ -125,6 +125,8 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IRepositoryUbicacion.cs" />
+    <Compile Include="Repositories\RepositoryUbicacion.cs" />
     <Compile Include="Repositories\IRepositoryCategoria.cs" />
     <Compile Include="Repositories\IRepositoryPregunta.cs" />
     <Compile Include="Repositories\IRepositoryProducto.cs" />
@@ -135,6 +137,7 @@
     <Compile Include="Repositories\RepositoryUsuario.cs" />
     <Compile Include="Repositories\RepositoryProducto.cs" />
     <Compile Include="Repositories\RepositoryPedido.cs" />
+    <Compile Include="Utils\ApiResult.cs" />
     <Compile Include="Utils\Encrypter.cs" />
     <Compile Include="Utils\Log.cs" />
   </ItemGroup>
