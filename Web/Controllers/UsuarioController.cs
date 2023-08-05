@@ -1,9 +1,11 @@
 ﻿using ApplicationCore.Services;
 using Infraestructure.Models;
+using Infraestructure.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -75,65 +77,64 @@ namespace Web.Controllers
             return PartialView("_PartialDireccion");
         }
 
-
-        // POST: Usuario/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public async Task<JsonResult> ObtenerProvincias()
         {
+
+            IServiceUbicacion serviceUbicacion = new ServiceUbicacion();
+            ApiResult resultado = null;
+
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                resultado = await serviceUbicacion.ObtenerProvincia();
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
             }
+
+            return Json(resultado, JsonRequestBehavior.AllowGet);
+
         }
 
-        // GET: Usuario/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<JsonResult> ObtenerCantonesxProvincia(int idProvincia)
         {
-            return View();
-        }
 
-        // POST: Usuario/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
+            IServiceUbicacion serviceUbicacion = new ServiceUbicacion();
+            ApiResult resultado = null;
+
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                resultado = await serviceUbicacion.ObtenerCantonxProvincia(idProvincia);
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
             }
+
+            return Json(resultado, JsonRequestBehavior.AllowGet);
+
         }
 
-        // GET: Usuario/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<JsonResult> ObtenerDistritosxCanton(int idProvincia, int idCanton)
         {
-            return View();
-        }
 
-        // POST: Usuario/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
+            IServiceUbicacion serviceUbicacion = new ServiceUbicacion();
+            ApiResult resultado = null;
+
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                resultado = await serviceUbicacion.ObtenerDistritoxCanton(idProvincia, idCanton);
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
             }
+
+            return Json(resultado, JsonRequestBehavior.AllowGet);
+
         }
     }
 }
