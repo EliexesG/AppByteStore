@@ -243,6 +243,7 @@
     <Content Include="Views\Producto\Update.cshtml" />
     <Content Include="Views\Producto\IndexVendedor.cshtml" />
     <Content Include="Views\Pedido\_DetalleCarritoNoEditable.cshtml" />
+    <Content Include="Views\Usuario\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
