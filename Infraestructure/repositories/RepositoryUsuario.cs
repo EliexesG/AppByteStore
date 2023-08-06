@@ -42,6 +42,32 @@ namespace Infraestructure.Repositories
             }
         }
 
+        public Rol GetRolByID(int id)
+        {
+            Rol oRol = null;
+            try
+            {
+                using (ByteStoreContext ctx = new ByteStoreContext())
+                {
+                    ctx.Configuration.LazyLoadingEnabled = false;
+                    oRol = ctx.Rol.Find(id);
+                }
+                return oRol;
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+        }
+
         public IEnumerable<Usuario> GetUsuario()
         {
             IEnumerable<Usuario> lista = null;
@@ -225,7 +251,7 @@ namespace Infraestructure.Repositories
             }
         }
 
-        public IEnumerable<MetodoPago> GetMetodoPagoByUsuario (int idUsuario)
+        public IEnumerable<MetodoPago> GetMetodoPagoByUsuario(int idUsuario)
         {
             IEnumerable<MetodoPago> lista = null;
             try
@@ -315,9 +341,49 @@ namespace Infraestructure.Repositories
             }
         }
 
-        public Usuario Guardar(Usuario usuario)
+        public Usuario Guardar(Usuario pUsuario, string[] selectedRol)
         {
-            throw new NotImplementedException();
+            IRepositoryUsuario _RepositoryUsuario = new RepositoryUsuario();
+
+            Usuario oUsuario = null;
+            int retorno = 0;
+
+            using (ByteStoreContext ctx = new ByteStoreContext())
+            {
+                ctx.Configuration.LazyLoadingEnabled = false;
+
+                //Para Insertar 
+                if (oUsuario == null)
+                {
+
+
+                    //Insertar
+                    //Logica para agregar los roles al usuario
+                    if (selectedRol != null)
+                    {
+
+                        pUsuario.Rol = new List<Rol>();
+                        foreach (var rol in selectedRol)
+                        {
+                            var AddRol = _RepositoryUsuario.GetRolByID(int.Parse(rol));
+                            ctx.Rol.Attach(AddRol);
+                            pUsuario.Rol.Add(AddRol);
+
+
+                        }
+                    }
+                    ctx.Usuario.Attach(pUsuario);
+
+                    ctx.Usuario.Add(pUsuario);
+                    retorno = ctx.SaveChanges();
+                }
+            
+            }
+            if (retorno >= 0)
+                oUsuario = GetUsuarioByID((int)pUsuario.IdUsuario);
+
+            return oUsuario;
+
         }
     }
 }

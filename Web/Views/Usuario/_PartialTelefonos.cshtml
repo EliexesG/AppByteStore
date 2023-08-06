@@ -1,7 +1,10 @@
 ﻿@model Infraestructure.Models.Telefono
 
 
+@{ 
+    int IdUsuarioTelefono = ViewBag.IdUsuarioTelefono;
 
+}
 <div class=" row col-md-12">
     <h3>Teléfonos</h3>
     <p>Para comunicarnos contigo por cualquier incoveniente</p>
@@ -44,8 +47,22 @@
                     </tr>
                 </thead>
 
-                <tbody>
-                </tbody>
+                <tbody id="TablaTel">
+                    @foreach (Infraestructure.Models.Telefono tel in @Model.Usuario.Telefono)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => tel.Numero)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => tel.Tipo)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Delete", "Usuario", new { id = tel.IdTelefono })" class="btn btn-warning"></a>
+                            </td>
+                            </tr>
+                            }
+                    </tbody>
             </table>
 
         </div>
