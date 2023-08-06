@@ -19,7 +19,9 @@ namespace ApplicationCore.Services
         IEnumerable<MetodoPago> GetMetodoPagoByUsuario(int idUsuario);
         IEnumerable<Direccion> GetDireccionByUsuario(int idUsuario);
         IEnumerable<Telefono> GetTelefonoByUsuario(int idUsuario);
-        Usuario Guardar(Usuario usuario);
+        Rol GetRolByID(int id);
+
+        Usuario Guardar(Usuario usuario, string[] selectedRol);
 
     }
 }

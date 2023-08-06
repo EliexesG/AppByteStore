@@ -34,7 +34,7 @@ namespace Web.Controllers
 
             var listaRoles = serviceUsuario.GetRol();
 
-            ViewBag.listaRoles = new SelectList(listaRoles, "IdRol", "Descripcion");
+            ViewBag.listaRoles = ListaRoles();
 
             var listatipoTelefono = new object[] {
                                    new { IdTel = 1, Descripcion = "Casa" },
@@ -134,5 +134,66 @@ namespace Web.Controllers
             return Json(resultado, JsonRequestBehavior.AllowGet);
 
         }
+
+
+        [HttpPost]
+        public ActionResult SaveUsuario(Usuario pUsuario, string[] selectedRol)
+        {
+            IEnumerable<Rol> listaRol = pUsuario.Rol;
+
+            IServiceUsuario _ServiceProducto = new ServiceUsuario();
+            Usuario oUsuario = null;
+
+            try
+            {
+            
+
+                    if (ModelState.IsValid)
+                    {
+
+                        oUsuario = _ServiceProducto.Guardar(pUsuario, selectedRol) ;
+
+                    }
+
+                else
+                {
+                    // Valida Errores si Javascript está deshabilitado
+                    Utils.Util.ValidateErrors(this);
+                    //Recurso a cargar en la vista
+                    ViewBag.listaRoles = ListaRoles();
+
+                    //Debe funcionar para crear y modificar
+                    return View("Create", pUsuario);
+                }
+
+                return RedirectToAction("Create", pUsuario);
+            }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, MethodBase.GetCurrentMethod());
+                    TempData["Message"] = "Error al procesar los datos! " + ex.Message;
+                    TempData["Redirect"] = "Producto";
+                    TempData["Redirect-Action"] = "IndexVendedor";
+                    // Redireccion a la captura del Error
+                    return RedirectToAction("Default", "Error");
+            }    
+        }
+
+        public MultiSelectList ListaRoles(ICollection<Rol> Roles = null)
+        {
+            IServiceUsuario _ServiceUsuario = new ServiceUsuario();
+            IEnumerable<Rol> lista = _ServiceUsuario.GetRol();
+            //Seleccionar los Roles para modificar
+            int[] SelectRol = null;
+            if (Roles != null)
+            {
+                SelectRol = Roles.Select(r => r.IdRol).ToArray();
+            }
+
+            return new MultiSelectList(lista, "IdRol", "Descripcion", SelectRol);
+        }
     }
+
+   
+
 }

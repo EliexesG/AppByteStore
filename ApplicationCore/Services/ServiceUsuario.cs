@@ -33,9 +33,9 @@ namespace ApplicationCore.Services
             return repository.GetUsuarioByRol(IdRol);
         }
 
-        public Usuario Guardar(Usuario usuario)
+        public Usuario Guardar(Usuario usuario, string[] selectedRol)
         {
-            return repository.Guardar(usuario);
+            return repository.Guardar(usuario, selectedRol);
         }
 
         public IEnumerable<Rol> GetRol()
@@ -66,6 +66,11 @@ namespace ApplicationCore.Services
         public Usuario Login(string Correo, string contrasenna)
         {
             return repository.Login(Correo, contrasenna);
+        }
+
+        public Rol GetRolByID(int id)
+        {
+            return repository.GetRolByID(id);
         }
     }
 }
