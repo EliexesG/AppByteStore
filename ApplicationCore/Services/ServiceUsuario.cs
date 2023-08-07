@@ -52,5 +52,10 @@ namespace ApplicationCore.Services
         {
             return repository.GetRolByID(id);
         }
+
+        public Usuario ActualizarEstado(int idUsuario, bool estadoNuevo)
+        {
+            return repository.ActualizarEstado(idUsuario, estadoNuevo);
+        }
     }
 }

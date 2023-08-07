@@ -247,6 +247,8 @@
     <Content Include="Views\Usuario\_PartialMetodoPago.cshtml" />
     <Content Include="Views\Usuario\_PartialDireccion.cshtml" />
     <Content Include="Views\Usuario\Update.cshtml" />
+    <Content Include="Views\Usuario\_PartialListaUsuarios.cshtml" />
+    <Content Include="Views\Usuario\IndexAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

@@ -17,13 +17,8 @@ namespace Web.Controllers
     public class UsuarioController : Controller
     {
         // GET: Usuario
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        // GET: Usuario/Details/5
-        public ActionResult Details(int id)
+        [CustomAuthorize((int)Roles.Administrador)]
+        public ActionResult IndexAdmin()
         {
             return View();
         }
@@ -310,6 +305,66 @@ namespace Web.Controllers
 
         }
 
+        public PartialViewResult PartialListaUsuarios(int filtroEstado)
+        {
+            IServiceUsuario service = new ServiceUsuario();
+            IEnumerable<Usuario> lista = null;
+
+            try
+            {
+
+                if(filtroEstado == -1)
+                {
+                    lista = service.GetUsuario();
+                }
+                else if (filtroEstado == 1)
+                {
+                    lista = service.GetUsuarioByEstado(true);
+                }
+                else
+                {
+                    lista = service.GetUsuarioByEstado(false);
+                }
+                
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+
+            return PartialView("_PartialListaUsuarios" , lista);
+        }
+
+        [HttpPost]
+        public JsonResult ActualizarEstado(int idUsuario, bool estadoNuevo)
+        {
+            IServiceUsuario _ServiceUsuario = new ServiceUsuario();
+            bool resultado = false;
+
+            try
+            {
+
+                Usuario usuario = _ServiceUsuario.ActualizarEstado(idUsuario, estadoNuevo);
+
+                if (usuario != null)
+                {
+                    resultado = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+
+            return Json(new
+            {
+                success = resultado
+            });
+        }
+
 
         [HttpPost]
         public ActionResult SaveUsuario(Usuario pUsuario, string[] selectedRol, string password)
@@ -331,11 +386,12 @@ namespace Web.Controllers
             {
 
                 Usuario usuarioVerificacionRol = _ServiceUsuario.GetUsuarioByID(pUsuario.IdUsuario);
-                bool esVendedor = usuarioVerificacionRol.Rol.Where(u => u.IdRol == 2).FirstOrDefault() != null;
+                
 
                 if (usuarioVerificacionRol != null)
                 {
-                    if(esVendedor && !selectedRol.Contains("2") && _ServiceProducto.GetProductoPorVendedor(usuarioVerificacionRol.IdUsuario).Count() > 0)
+                    bool esVendedor = usuarioVerificacionRol.Rol.Where(u => u.IdRol == 2).FirstOrDefault() != null;
+                    if (esVendedor && !selectedRol.Contains("2") && _ServiceProducto.GetProductoPorVendedor(usuarioVerificacionRol.IdUsuario).Count() > 0)
                     {
                         ViewBag.NotificationMessage = Util.SweetAlertHelper.Mensaje("Login",
                             "El usuario posee Rol Vendedor, no se puede eliminar", Util.SweetAlertMessageType.warning);
@@ -389,7 +445,4 @@ namespace Web.Controllers
             return new MultiSelectList(lista, "IdRol", "Descripcion", SelectRol);
         }
     }
-
-
-
 }

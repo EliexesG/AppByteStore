@@ -16,6 +16,7 @@ namespace Infraestructure.Repositories
         IEnumerable<Rol> GetRol();
         IEnumerable<Usuario> GetUsuarioByEstado(bool estado);
         Rol GetRolByID(int id);
+        Usuario ActualizarEstado(int idUsuario, bool estadoNuevo);
         Usuario Guardar(Usuario usuario, string[] selectedRol);
 
     }
