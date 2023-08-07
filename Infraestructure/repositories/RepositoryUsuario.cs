@@ -2,11 +2,12 @@
 using Infraestructure.Utils;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
+using System.Web.Security;
 
 namespace Infraestructure.Repositories
 {
@@ -23,6 +24,8 @@ namespace Infraestructure.Repositories
 
                     usuario = ctx.Usuario.
                               Include(u => u.Rol).
+                              Include(u => u.MetodoPago).
+                              Include(u => u.Direccion).
                               Where(p => p.IdUsuario == id).
                               FirstOrDefault<Usuario>();
                 }
@@ -166,34 +169,6 @@ namespace Infraestructure.Repositories
             }
         }
 
-        public IEnumerable<TipoPago> GetTipoPago()
-        {
-            IEnumerable<TipoPago> lista = null;
-            try
-            {
-                using (ByteStoreContext ctx = new ByteStoreContext())
-                {
-                    ctx.Configuration.LazyLoadingEnabled = false;
-
-                    lista = ctx.TipoPago.ToList();
-
-                }
-                return lista;
-            }
-            catch (DbUpdateException dbEx)
-            {
-                string mensaje = "";
-                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
-                throw new Exception(mensaje);
-            }
-            catch (Exception ex)
-            {
-                string mensaje = "";
-                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
-                throw;
-            }
-        }
-
         public IEnumerable<Rol> GetRol()
         {
             IEnumerable<Rol> lista = null;
@@ -251,112 +226,25 @@ namespace Infraestructure.Repositories
             }
         }
 
-        public IEnumerable<MetodoPago> GetMetodoPagoByUsuario(int idUsuario)
-        {
-            IEnumerable<MetodoPago> lista = null;
-            try
-            {
-                using (ByteStoreContext ctx = new ByteStoreContext())
-                {
-                    ctx.Configuration.LazyLoadingEnabled = false;
-
-                    lista = ctx.MetodoPago
-                            .Include(m => m.Usuario)
-                            .Where(m => m.Usuario.IdUsuario == idUsuario)
-                            .ToList();
-                }
-                return lista;
-            }
-            catch (DbUpdateException dbEx)
-            {
-                string mensaje = "";
-                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
-                throw new Exception(mensaje);
-            }
-            catch (Exception ex)
-            {
-                string mensaje = "";
-                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
-                throw;
-            }
-        }
-
-        public IEnumerable<Direccion> GetDireccionByUsuario(int idUsuario)
-        {
-            IEnumerable<Direccion> lista = null;
-            try
-            {
-                using (ByteStoreContext ctx = new ByteStoreContext())
-                {
-                    ctx.Configuration.LazyLoadingEnabled = false;
-
-                    lista = ctx.Direccion
-                            .Include(d => d.Usuario)
-                            .Where(d => d.Usuario.IdUsuario == idUsuario)
-                            .ToList();
-                }
-                return lista;
-            }
-            catch (DbUpdateException dbEx)
-            {
-                string mensaje = "";
-                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
-                throw new Exception(mensaje);
-            }
-            catch (Exception ex)
-            {
-                string mensaje = "";
-                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
-                throw;
-            }
-        }
-
-        public IEnumerable<Telefono> GetTelefonoByUsuario(int idUsuario)
-        {
-            IEnumerable<Telefono> lista = null;
-            try
-            {
-                using (ByteStoreContext ctx = new ByteStoreContext())
-                {
-                    ctx.Configuration.LazyLoadingEnabled = false;
-
-                    lista = ctx.Telefono
-                            .Include(d => d.Usuario)
-                            .Where(d => d.Usuario.IdUsuario == idUsuario)
-                            .ToList();
-                }
-                return lista;
-            }
-            catch (DbUpdateException dbEx)
-            {
-                string mensaje = "";
-                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
-                throw new Exception(mensaje);
-            }
-            catch (Exception ex)
-            {
-                string mensaje = "";
-                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
-                throw;
-            }
-        }
-
         public Usuario Guardar(Usuario pUsuario, string[] selectedRol)
         {
-            IRepositoryUsuario _RepositoryUsuario = new RepositoryUsuario();
 
             Usuario oUsuario = null;
             int retorno = 0;
+            pUsuario.Contrasenna = Encrypter.Encrypt(UTF8Encoding.UTF8.GetString(pUsuario.Contrasenna));
+            pUsuario.NombreProveedor = pUsuario.NombreProveedor == null ? "N/A" : pUsuario.NombreProveedor;
+
 
             using (ByteStoreContext ctx = new ByteStoreContext())
             {
+
+                oUsuario = this.GetUsuarioByID(pUsuario.IdUsuario);
+
                 ctx.Configuration.LazyLoadingEnabled = false;
 
                 //Para Insertar 
                 if (oUsuario == null)
                 {
-
-
                     //Insertar
                     //Logica para agregar los roles al usuario
                     if (selectedRol != null)
@@ -365,22 +253,40 @@ namespace Infraestructure.Repositories
                         pUsuario.Rol = new List<Rol>();
                         foreach (var rol in selectedRol)
                         {
-                            var AddRol = _RepositoryUsuario.GetRolByID(int.Parse(rol));
+                            var AddRol = this.GetRolByID(int.Parse(rol));
                             ctx.Rol.Attach(AddRol);
                             pUsuario.Rol.Add(AddRol);
-
-
                         }
                     }
-                    ctx.Usuario.Attach(pUsuario);
 
                     ctx.Usuario.Add(pUsuario);
                     retorno = ctx.SaveChanges();
                 }
-            
+                else
+                {
+                    ctx.Usuario.Add(pUsuario);
+                    ctx.Entry(pUsuario).State = EntityState.Modified;
+                    retorno = ctx.SaveChanges();
+
+                    var idUsuario = new SqlParameter("@IdUsuario", pUsuario.IdUsuario);
+                    retorno += ctx.Database.ExecuteSqlCommand("EXEC SP_ELIMINAR_ROL_BY_USUARIO @IdUsuario", idUsuario);
+
+                    if (selectedRol != null)
+                    {
+                        var SelectedRolesID = new HashSet<string>(selectedRol);
+                        var newRolesForUsuario = ctx.Rol.Where(x => SelectedRolesID.Contains(x.IdRol.ToString())).ToList();
+                        pUsuario.Rol = newRolesForUsuario;
+                        ctx.Entry(pUsuario).State = EntityState.Modified;
+                        retorno += ctx.SaveChanges();
+                    }
+                    
+                }
+
             }
             if (retorno >= 0)
                 oUsuario = GetUsuarioByID((int)pUsuario.IdUsuario);
+
+
 
             return oUsuario;
 

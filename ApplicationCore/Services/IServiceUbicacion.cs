@@ -12,5 +12,8 @@ namespace ApplicationCore.Services
         Task<ApiResult> ObtenerCantonxProvincia(int idProvincia);
         Task<ApiResult> ObtenerDistritoxCanton(int idProvincia, int idCanton);
         Task<ApiResult> ObtenerProvincia();
+        Task<string> ObtenerNombreProvincia(int idProvincia);
+        Task<string> ObtenerNombreCanton(int idProvincia, int idCanton);
+        Task<string> ObtenerNombreDistrito(int idProvincia, int idCanton, int idDistrito);
     }
 }

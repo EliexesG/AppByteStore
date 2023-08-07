@@ -13,11 +13,6 @@ namespace ApplicationCore.Services
     {
         private IRepositoryUsuario repository = new RepositoryUsuario();
 
-        public IEnumerable<TipoPago> GetTipoPago()
-        {
-            return repository.GetTipoPago();
-        }
-
         public IEnumerable<Usuario> GetUsuario()
         {
             return repository.GetUsuario();
@@ -46,21 +41,6 @@ namespace ApplicationCore.Services
         public IEnumerable<Usuario> GetUsuarioByEstado(bool estado)
         {
             return repository.GetUsuarioByEstado(estado);
-        }
-
-        public IEnumerable<MetodoPago> GetMetodoPagoByUsuario(int idUsuario)
-        {
-            return repository.GetMetodoPagoByUsuario(idUsuario);   
-        }
-
-        public IEnumerable<Direccion> GetDireccionByUsuario(int idUsuario)
-        {
-            return repository.GetDireccionByUsuario(idUsuario);
-        }
-
-        public IEnumerable<Telefono> GetTelefonoByUsuario(int idUsuario)
-        {
-            return repository.GetTelefonoByUsuario(idUsuario);
         }
 
         public Usuario Login(string Correo, string contrasenna)

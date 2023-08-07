@@ -28,7 +28,7 @@ namespace Infraestructure.Models
         public Nullable<int> Distrito { get; set; }
         public string Sennas { get; set; }
         public string Telefono { get; set; }
-        public Nullable<bool> Tipo { get; set; }
+        public string CodigoPostal { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompraEncabezado> CompraEncabezado { get; set; }

@@ -1,70 +1,33 @@
-﻿@model Infraestructure.Models.Telefono
+﻿@model IEnumerable<Infraestructure.Models.Telefono>
 
 
-@{ 
-    int IdUsuarioTelefono = ViewBag.IdUsuarioTelefono;
+<table class="table table-hover text-center rounded-4 overflow-hidden p-3">
+    <thead class="table-success">
+        <tr>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Tipo</th>
 
-}
-<div class=" row col-md-12">
-    <h3>Teléfonos</h3>
-    <p>Para comunicarnos contigo por cualquier incoveniente</p>
+        </tr>
+    </thead>
 
-
-    @Html.LabelFor(model => model.Numero, htmlAttributes: new { @class = "control-label" })
-
-    <div class="col-md-4">
-        <div class="form-group">
-            @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
-        </div>
-
-    </div>
-
-
-    <div class="row col-md-8">
-
-        <div class="col-md-2">
-            <div class="form-group">
-                @Html.DropDownListFor(model => model.Tipo, (SelectList)ViewBag.listatipoTelefono, "--Tipo-- ", htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black" })
-                @Html.ValidationMessageFor(model => model.Tipo, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <input type="submit" data-id="Agregar" class="btn btn-primary" value="Agregar" />
-        </div>
-
-
-
-        <div class="col-md-8">
-            <table class="table table-hover text-center">
-                <thead>
-                    <tr>
-                        <th scope="col">Teléfono</th>
-                        <th scope="col">Tipo</th>
-                        <th scope="col">Acción</th>
-
-                    </tr>
-                </thead>
-
-                <tbody id="TablaTel">
-                    @foreach (Infraestructure.Models.Telefono tel in @Model.Usuario.Telefono)
+    <tbody id="TablaTel" class="table-dark">
+        @foreach (var tel in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => tel.Numero)
+                </td>
+                <td>
+                    @if (tel.Tipo == false)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => tel.Numero)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => tel.Tipo)
-                            </td>
-                            <td>
-                                <a href="@Url.Action("Delete", "Usuario", new { id = tel.IdTelefono })" class="btn btn-warning"></a>
-                            </td>
-                            </tr>
-                            }
-                    </tbody>
-            </table>
-
-        </div>
-    </div>
-</div>
+                        <p>Celular</p>
+                    }
+                    else
+                    {
+                        <p>Casa</p>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
