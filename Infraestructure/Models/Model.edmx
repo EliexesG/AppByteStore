@@ -47,7 +47,7 @@
           <Property Name="Distrito" Type="int" />
           <Property Name="Sennas" Type="varchar" MaxLength="100" />
           <Property Name="Telefono" Type="varchar" MaxLength="8" />
-          <Property Name="Tipo" Type="bit" />
+          <Property Name="CodigoPostal" Type="varchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="Evaluacion">
           <Key>
@@ -587,7 +587,7 @@
           <Property Name="Distrito" Type="Int32" />
           <Property Name="Sennas" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Telefono" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
-          <Property Name="Tipo" Type="Boolean" />
+          <Property Name="CodigoPostal" Type="String" />
           <NavigationProperty Name="CompraEncabezado" Relationship="Self.FK__CompraEnc__IdDir__49C3F6B7" FromRole="Direccion" ToRole="CompraEncabezado" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK__Direccion__IdUsu__2F10007B" FromRole="Direccion" ToRole="Usuario" />
         </EntityType>
@@ -972,7 +972,7 @@
                 <ScalarProperty Name="Distrito" ColumnName="Distrito" />
                 <ScalarProperty Name="Sennas" ColumnName="Sennas" />
                 <ScalarProperty Name="Telefono" ColumnName="Telefono" />
-                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="CodigoPostal" ColumnName="CodigoPostal" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

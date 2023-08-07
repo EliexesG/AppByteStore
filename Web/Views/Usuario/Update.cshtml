@@ -1,0 +1,579 @@
+﻿@model Infraestructure.Models.Usuario
+
+@{
+    ViewBag.Title = "ByteStore - Modificar Usuario";
+}
+
+@using (Html.BeginForm("SaveUsuario", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row justify-content-center mb-4">
+
+        <div class="col-md-12 p-3 rounded-3 border border-2 border-success" style="background-color: rgba(74, 46, 17, 0.9); color: white">
+            <h3>Datos Personales</h3>
+            <p>Todos los campos son requeridos</p>
+
+            @Html.HiddenFor(model => model.IdUsuario)
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Identificacion, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.Identificacion, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Identificacion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PrimerApellido, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.PrimerApellido, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PrimerApellido, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SegundoApellido, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.SegundoApellido, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.SegundoApellido, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CorreoElectronico, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.CorreoElectronico, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CorreoElectronico, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Contrasenna, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            <input type="password" class="form-control" name="password" value=@ViewBag.password data-val="true" data-val-required="La contraseña es requerida" />
+                            @Html.ValidationMessage("password", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NombreProveedor, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.NombreProveedor, new { htmlAttributes = new { @class = "form-control", @id = "NombreProveedor", @disabled = true } })
+                            @Html.ValidationMessageFor(model => model.NombreProveedor, "", new { @class = "text-danger", @id = "ValidacionProveedor" })
+                        </div>
+                    </div>
+                </div>
+
+                <br class="mb-4" />
+
+                @Html.LabelFor(model => model.Rol, htmlAttributes: new { @class = "control-label me-3" })
+                <div class=" row col-md-12">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @Html.DropDownList("selectedRol", (MultiSelectList)ViewBag.listaRoles, htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black", multiple = "multiple", @id = "SelectedRol" })
+                            @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                @Html.HiddenFor(model => model.PromedioEvaluaciones)
+
+                <div class="col-md-12 text-center mb-4">
+                    <input type="submit" class="btn btn-info" value="Registrarse" />
+                </div>
+
+                <hr class="mb-4" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class=" row justify-content-center mb-4">
+    <div class="col-md-12 p-3 rounded-3 border border-2 border-success" style="background-color: rgba(74, 46, 17, 0.9); color: white">
+
+        @*Telefonos*@
+        <div>
+            <form id="formTelefono" class="mb-4">
+                <h3>Teléfonos</h3>
+                <p>Para comunicarnos contigo por cualquier incoveniente</p>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label for="Numero" class="control-label">Número:</label>
+                        <div class="form-group">
+                            <input type="text" id="Numero" name="Numero" class="form-control" />
+                            <span class="text-danger" id="Numero-error"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <div class="form-group">
+                            <label for="Tipo" class="control-label">Tipo:</label>
+                            <select id="Tipo" name="Tipo" class="form-select form-control me-sm-2 text-black">
+                                <option value="">Seleccionar</option>
+                                @foreach (var tipo in ViewBag.listatipoTelefono.Items)
+                                {
+                                    <option value=@tipo.IdTipo>@tipo.Descripcion</option>
+                                }
+                            </select>
+                            <span class="text-danger" id="Tipo-error"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <input type="submit" id="AgregarTelefono" class="btn btn-primary" value="Agregar" />
+                    </div>
+                </div>
+            </form>
+            <div id="infoTelefonos">
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<div class=" row justify-content-center mb-4">
+    <div class="col-md-12 p-3 rounded-3 border border-2 border-success" style="background-color: rgba(74, 46, 17, 0.9); color: white">
+
+        @*Direccion*@
+        <div>
+            <form id="formDirrecion" class="mb-4">
+                <h3>Dirección</h3>
+                <p>Puede ser más de una dirección</p>
+
+
+                <div class="row col-md-12">
+                    <div class="col-md-4 mb-4">
+                        <select name="Provincia" class="form-select col-md" id="Provincia">
+                            <option value="" class="active provincia">Provincia</option>
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <select name="Canton" class="form-select col-md" id="Canton">
+                            <option value="" class="active canton">Cantón</option>
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <select name="Distrito" class="form-select col-md" id="Distrito">
+                            <option value="" class="active distrito">Distrito</option>
+                        </select>
+
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <div class="col-md-4 mb-4 me-4">
+                            <label for="Telefono" class="control-label">Teléfono:</label>
+                            <div class="form-group">
+                                <input type="text" id="Telefono" name="Telefono" class="form-control" />
+                                <span class="text-danger" id="Telefono-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-4">
+                            <label for="CodigoPostal" class="control-label">Código Postal:</label>
+                            <div class="form-group">
+                                <input type="text" id="CodigoPostal" name="CodigoPostal" class="form-control" />
+                                <span class="text-danger" id="CodigoPostal-error"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mb-4">
+                        <label for="Sennas" class="control-label">Sennas:</label>
+                        <div class="form-group">
+                            <textarea id="Sennas" name="Sennas" class="form-control"></textarea>
+                            <span class="text-danger" id="Sennas-error"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 mb-4">
+                        <input type="submit" id="AgregarDireccion" class="btn btn-primary" value="Agregar" />
+                    </div>
+                </div>
+            </form>
+            <div id="infoDireccion">
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<div class=" row justify-content-center mb-4">
+    <div class="col-md-12 p-3 rounded-3 border border-2 border-success" style="background-color: rgba(74, 46, 17, 0.9); color: white">
+
+        @*MetodoPago*@
+        <div>
+            <form id="formMetodoPago" class="mb-4">
+                <h3>Métodos de pago</h3>
+                <p>Puedes poner tu tarjeta de crédito o débito para realizar alguna compra</p>
+
+
+                <div class="row g-3">
+
+                    <div class="col-md-4 mb-4">
+                        <label for="Proveedor" class="control-label">Proveedor Bancario:</label>
+                        <div class="form-group">
+                            <input type="text" id="Proveedor" name="Proveedor" class="form-control" />
+                            <span class="text-danger" id="Proveedor-error"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <label for="NumeroTarjeta" class="control-label">Número de Tarjeta:</label>
+                        <div class="form-group">
+                            <input type="text" id="NumeroTarjeta" name="NumeroTarjeta" class="form-control" />
+                            <span class="text-danger" id="NumeroTarjeta-error"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <label for="FechaExpiracion" class="control-label">Fecha de Expiración:</label>
+                        <div class="form-group">
+                            <input type="text" id="FechaExpiracion" name="FechaExpiracion" class="form-control" />
+                            <span class="text-danger" id="FechaExpiracion-error"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <label for="Codigo" class="control-label">Código:</label>
+                        <div class="form-group">
+                            <input type="text" id="Codigo" name="Codigo" class="form-control" />
+                            <span class="text-danger" id="Codigo-error"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+
+                        <label for="TipoPago" class="control-label">Tipo de Pago:</label>
+
+                        <div class="col-md-12">
+                            <select class="form-select col-md" id="TipoPago" name="TipoPago">
+                                <option value="" class="active tipo">Seleccionar</option>
+
+                                @*Cargar lista Categorías*@
+                                @foreach (var tipoPago in (List<Infraestructure.Models.TipoPago>)ViewBag.listaTipoPago)
+                                {
+                                    <option class="tipo" value="@tipoPago.IdTipoPago">@tipoPago.Descripcion</option>
+                                }
+                            </select>
+                            <span class="text-danger" id="TipoPago-error"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <button id="btnAgregarMetodoPago" class="btn btn-primary my-2 my-sm-0 shadow-lg" type="submit" form="formMetodoPago" )>Agregar</button>
+                </div>
+            </form>
+            <div id="infoMetodoPago">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+            var idUsuario = @Html.Raw(Json.Encode(Model.IdUsuario));
+
+            var roles = @Html.Raw(Json.Encode(Model.Rol.Select(r => r.IdRol).ToList()));
+            console.log(roles)
+            $(SelectedRol).val(roles);
+            if (roles.includes(2)) {
+                $("#NombreProveedor").prop("disabled", false);
+                $("#ValidacionProveedor").show();
+            }
+
+            var idUsuario = @Html.Raw(Json.Encode(Model.IdUsuario));
+
+            $.ajax({
+                method: "GET",
+                url: "/Usuario/PartialTelefonos",
+                data: { "idUsuario": idUsuario },
+                success: function (result) {
+
+                    $("#infoTelefonos").html("");
+                    $("#infoTelefonos").html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "/Usuario/PartialDireccion",
+                data: { "idUsuario": idUsuario },
+                success: function (result) {
+
+                    $("#infoDireccion").html("");
+                    $("#infoDireccion").html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "/Usuario/PartialMetodoPago",
+                data: { "idUsuario": idUsuario },
+                success: function (result) {
+
+                    $("#infoMetodoPago").html("");
+                    $("#infoMetodoPago").html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            });
+
+            //Formulario para métodos de Pago
+            $.validator.addMethod("formatoFecha", function (value, element) {
+                return jQuery.validator.methods['date'].call(
+                    this, value, element
+                ) || value == ("MM/yy");
+            }, "La fecha debe ser mm/dd")
+
+            $("#formMetodoPago").validate({
+                rules: {
+                    Proveedor: 'required',
+                    NumeroTarjeta: {
+                        required: true,
+                        minlength: 13,
+                        maxlength: 18,
+                        digits: true
+                    },
+                    FechaExpiracion: {
+                        required: true,
+                        formatoFecha: true
+                    },
+                    Codigo: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 3,
+                        digits: true
+                    },
+                    TipoPago: {
+                        required: true,
+                        min: 1
+                    }
+                },
+                messages: {
+                    Proveedor: 'Debes escribir el Proveedor Bancario',
+                    NumeroTarjeta: 'El número de tarjeta debe ser numérico y tener un mínimo de 13 y maxímo de 18 dígitos',
+                    FechaExpiracion: 'La fecha de expiración debe representar un dato en formato (mes/año)',
+                    Codigo: 'El Código debe ser numérico de 3 dígitos',
+                    TipoPago: 'Debe seleccionar un Método de Pago'
+                },
+                submitHandler: function (form, event) {
+                    event.preventDefault();
+
+                    var proveedor = $(form).find('[name="Proveedor"]').val();
+                    var numeroTarjeta = $(form).find('[name="NumeroTarjeta"]').val();
+                    var fechaExpiracion = $(form).find('[name="FechaExpiracion"]').val();
+                    var codigo = $(form).find('[name="Codigo"]').val();
+                    var idTipoPago = $(form).find('[name="TipoPago"]').val();
+
+                    $.ajax({
+                        method: "POST",
+                        url: "/Usuario/SaveMetodoPago",
+                        data: { proveedor, numeroTarjeta, fechaExpiracion, codigo, idTipoPago },
+                        success: function (result) {
+
+                            if (result.success) {
+                                $.ajax({
+                                    method: "GET",
+                                    url: "/Usuario/PartialMetodoPago",
+                                    data: { "idUsuario": idUsuario },
+                                    success: function (result) {
+
+                                        $("#infoMetodoPago").html("");
+                                        $("#infoMetodoPago").html(result);
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.log("error" + error, "no Error: " + xhr.status)
+                                    }
+                                });
+                            }
+                            
+                        },
+                        error: function (xhr, status, error) {
+                            console.log("error" + error, "no Error: " + xhr.status)
+                        }
+                    });
+                },
+            });
+        })
+
+        $("#SelectedRol").on('change', function () {
+
+            var roles = $(this).val();
+
+            for (var i = 0; i < roles.length; i++) {
+
+                console.log(roles[i])
+
+                if (roles[i] == "2") {
+                    $("#NombreProveedor").prop("disabled", false);
+                    $("#ValidacionProveedor").show();
+                    break;
+                }
+                else {
+                    $("#NombreProveedor").prop("disabled", true);
+                    $("#ValidacionProveedor").hide();
+                    break;
+                }
+            }
+
+        });
+
+
+        var idProvincia = -1;
+
+        $(document).ready(function () {
+            $.ajax({
+                method: "GET",
+                url: "/Usuario/ObtenerProvincias",
+                data: {},
+                success: function (result) {
+
+                    var html = '<option value="-1" class="active provincia">Provincia</option>'
+
+                    var data = (result.Result.replace('{', "").replace('}', "").split(","));
+
+                    data.forEach(provincia => {
+
+                        provincia = provincia.split(":")
+                        html += `<option value=${provincia[0]} class="active provincia">${provincia[1].replace(/\"+/g, "")}</option >`
+                    })
+
+                    $("#Provincia").html("");
+                    $("#Provincia").html(html);
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+
+                }
+            })
+        });
+
+        $("#Provincia").on("change", function () {
+
+            idProvincia = $(this).val();
+
+            $.ajax({
+                method: "GET",
+                url: "/Usuario/ObtenerCantonesxProvincia",
+                data: { idProvincia },
+                success: function (result) {
+
+                    var html = '<option value="-1" class="active canton">Cantón</option>'
+
+                    var data = (result.Result.replace('{', "").replace('}', "").split(","));
+
+                    data.forEach(canton => {
+
+                        canton = canton.split(":")
+                        html += `<option value=${canton[0]} class="active canton">${canton[1].replace(/\"+/g, "")}</option >`
+                    })
+
+                    $("#Canton").html("");
+                    $("#Canton").html(html);
+                    $("#Distrito").html("");
+                    $("#Distrito").html('<option value="-1" class="active distrito">Distrito</option>');
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                    $("#Canton").html("");
+                    $("#Canton").html('<option value="-1" class="active canton">Cantón</option>');
+                    $("#Distrito").html("");
+                    $("#Distrito").html('<option value="-1" class="active distrito">Distrito</option>');
+                }
+            })
+        });
+
+        $("#Canton").on("change", function () {
+
+            var idCanton = $(this).val();
+
+            $.ajax({
+                method: "GET",
+                url: "/Usuario/ObtenerDistritosxCanton",
+                data: { idProvincia, idCanton },
+                success: function (result) {
+
+                    var html = '<option value="-1" class="active distrito">Distrito</option>'
+
+                    var data = (result.Result.replace('{', "").replace('}', "").split(","));
+
+                    data.forEach(distrito => {
+
+                        distrito = distrito.split(":")
+                        html += `<option value=${distrito[0]} class="active distrito">${distrito[1].replace(/\"+/g, "")}</option >`
+                    })
+
+                    console.log(html)
+
+                    $("#Distrito").html("");
+                    $("#Distrito").html(html);
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                    $("#Distrito").html("");
+                    $("#Distrito").html('<option value="-1" class="active distrito">Distrito</option>');
+                }
+            })
+        });
+
+
+
+
+</script>
+}
+
+

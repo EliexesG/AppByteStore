@@ -105,8 +105,8 @@ namespace Infraestructure.Models
         [Display(Name = "Teléfono")]
         public string Telefono { get; set; }
 
-        [Display(Name = "Tipo de Dirección")]
-        public Nullable<bool> Tipo { get; set; }
+        [Display(Name = "Código Postal")]
+        public string CodigoPostal { get; set; }
 
         [Display(Name = "Encabezado de Compra")]
         public virtual ICollection<CompraEncabezado> CompraEncabezado { get; set; }
@@ -280,7 +280,7 @@ namespace Infraestructure.Models
         public string NombreProveedor { get; set; }
 
         [Required(ErrorMessage = "{0} es un dato requerido")]
-        [RegularExpression("^\\d{8,10}$", ErrorMessage = "Debe ingresar un mínimo de 8 y un máximo de 10 números")]
+        [RegularExpression("^\\d{9,10}$", ErrorMessage = "Debe ingresar un mínimo de 8 y un máximo de 10 números")]
         [Display(Name = "Identificación")]
         public string Identificacion { get; set; }
 
@@ -296,6 +296,7 @@ namespace Infraestructure.Models
         public string SegundoApellido { get; set; }
 
         [Required(ErrorMessage = "{0} es un dato requerido")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "{0} inserte un correo válido")]
         [Display(Name = "Correo Electrónico")]
         public string CorreoElectronico { get; set; }
 
@@ -335,6 +336,7 @@ namespace Infraestructure.Models
         [Display(Name = "Teléfonos")]
         public virtual ICollection<Telefono> Telefono { get; set; }
 
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Roles")]
         public virtual ICollection<Rol> Rol { get; set; }
     }

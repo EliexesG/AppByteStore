@@ -17,7 +17,7 @@
             <h3>Datos Personales</h3>
             <p>Todos los campos son requeridos</p>
 
-            
+
             <div class="row g-3">
 
                 <div class="col-md-4">
@@ -76,8 +76,8 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Contrasenna, htmlAttributes: new { @class = "control-label" })
                         <div class="col-md-12">
-                            @Html.PasswordFor(model => model.Contrasenna, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Contrasenna, "", new { @class = "text-danger" })
+                            <input type="password" class="form-control" name="password" value="" data-val="true" data-val-required="La contraseña es requerida" />
+                            @Html.ValidationMessage("password", "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
@@ -88,72 +88,29 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.NombreProveedor, htmlAttributes: new { @class = "control-label" })
                         <div class="col-md-12">
-                            @Html.EditorFor(model => model.NombreProveedor, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.NombreProveedor, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.NombreProveedor, new { htmlAttributes = new { @class = "form-control", @id = "NombreProveedor", @disabled = true } })
+                            @Html.ValidationMessageFor(model => model.NombreProveedor, "", new { @class = "text-danger", @id = "ValidacionProveedor" })
                         </div>
                     </div>
                 </div>
 
+                <br class="mb-4" />
 
-
-
-                <div class="col-md-4">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PromedioEvaluaciones, htmlAttributes: new { @class = "control-label" })
-                        <div class="col-md-12">
-                            @Html.EditorFor(model => model.PromedioEvaluaciones, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.PromedioEvaluaciones, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-
-                <br />
-
-
-
-                @Html.LabelFor(model => model.Rol, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.Rol, htmlAttributes: new { @class = "control-label me-3" })
                 <div class=" row col-md-12">
                     <div class="col-md-4">
                         <div class="form-group">
-                            @Html.DropDownList("selectedRol", (MultiSelectList)ViewBag.listaRoles, htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black",  multiple = "multiple" })
+                            @Html.DropDownList("selectedRol", (MultiSelectList)ViewBag.listaRoles, htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black", multiple = "multiple", @id = "SelectedRol" })
                             @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
-
-
                 </div>
+
                 <div class="col-md-12 text-center">
-                    <input type="submit" class="btn btn-info" value="Confirmar datos personales" />
-                </div>
-
-                <hr />
-
-
-                @Html.Partial("_PartialTelefonos")
-
-                <hr />
-
-                @Html.Partial("_PartialDireccion")
-
-
-
-                <hr />
-
-
-
-                @Html.Partial("_PartialMetodosPago")
-
-
-                <div class="form-group  col-md-12">
-                    <div class="col-md-offset-2 text-center  ">
-                        <input type="submit" class="btn btn-success" value="Registrarse" />
-                        <a href="@Url.Action("Index","Home")" class="btn btn-secondary m-3"> Cancelar</a>
-
-                    </div>
+                    <input type="submit" class="btn btn-info" value="Registrarse" />
                 </div>
             </div>
-            </div>
+        </div>
     </div>
 }
 
@@ -162,107 +119,28 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    var idProvincia = -1;
+        $("#SelectedRol").on('change', function () {
 
-        $(document).ready(function () {
-            $.ajax({
-                method: "GET",
-                url: "/Usuario/ObtenerProvincias",
-                data: { },
-                success: function (result) {
+            var roles = $(this).val();
 
-                    var html = '<option value="-1" class="active provincia">Provincia</option>'
+            for (var i = 0; i < roles.length; i++) {
 
-                    var data = (result.Result.replace('{', "").replace('}', "").split(","));
+                console.log(roles[i])
 
-                    data.forEach(provincia => {
-
-                        provincia = provincia.split(":")
-                        html += `<option value=${provincia[0]} class="active provincia">${provincia[1].replace(/\"+/g, "")}</option >`
-                    })
-
-                    $("#Provincia").html("");
-                    $("#Provincia").html(html);
-                },
-                error: function (xhr, status, error) {
-                    console.log("error" + error, "no Error: " + xhr.status)
-
+                if (roles[i] == "2") {
+                    $("#NombreProveedor").prop("disabled", false);
+                    $("#ValidacionProveedor").show();
+                    break;
                 }
-            })
+                else {
+                    $("#NombreProveedor").prop("disabled", true);
+                    $("#ValidacionProveedor").hide();
+                    break;
+                }
+            }
+
         });
-
-    $("#Provincia").on("change", function () {
-
-        idProvincia = $(this).val();
-
-        $.ajax({
-            method: "GET",
-            url: "/Usuario/ObtenerCantonesxProvincia",
-            data: { idProvincia },
-            success: function (result) {
-
-                var html = '<option value="-1" class="active canton">Cantón</option>'
-
-                var data = (result.Result.replace('{', "").replace('}', "").split(","));
-
-                data.forEach(canton => {
-
-                    canton = canton.split(":")
-                    html += `<option value=${canton[0]} class="active canton">${canton[1].replace(/\"+/g, "")}</option >`
-                })
-
-                $("#Canton").html("");
-                $("#Canton").html(html);
-                $("#Distrito").html("");
-                $("#Distrito").html('<option value="-1" class="active distrito">Distrito</option>');
-            },
-            error: function (xhr, status, error) {
-                console.log("error" + error, "no Error: " + xhr.status)
-                $("#Canton").html("");
-                $("#Canton").html('<option value="-1" class="active canton">Cantón</option>');
-                $("#Distrito").html("");
-                $("#Distrito").html('<option value="-1" class="active distrito">Distrito</option>');
-            }
-        })
-    });
-
-    $("#Canton").on("change", function () {
-
-        var idCanton = $(this).val();
-
-        $.ajax({
-            method: "GET",
-            url: "/Usuario/ObtenerDistritosxCanton",
-            data: { idProvincia, idCanton },
-            success: function (result) {
-
-                var html = '<option value="-1" class="active distrito">Distrito</option>'
-
-                var data = (result.Result.replace('{', "").replace('}', "").split(","));
-
-                data.forEach(distrito => {
-
-                    distrito = distrito.split(":")
-                    html += `<option value=${distrito[0]} class="active distrito">${distrito[1].replace(/\"+/g, "")}</option >`
-                })
-
-                console.log(html)
-
-                $("#Distrito").html("");
-                $("#Distrito").html(html);
-            },
-            error: function (xhr, status, error) {
-                console.log("error" + error, "no Error: " + xhr.status)
-                $("#Distrito").html("");
-                $("#Distrito").html('<option value="-1" class="active distrito">Distrito</option>');
-            }
-        })
-    });
-
-           
-   
-
-</script>
+    </script>
 }

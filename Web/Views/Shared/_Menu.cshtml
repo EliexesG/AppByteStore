@@ -14,73 +14,107 @@
                 <li class="nav-item me-3">
                     <a href="@Url.Action("Index","Producto")" class="nav-link fw-bold"><i class="fa-solid fa-gamepad"></i> Productos</a>
                 </li>
-                @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }))
+                @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente", "Vendedor" }) && (((Infraestructure.Models.Usuario)Session["User"]).MetodoPago.Count() <= 0 || ((Infraestructure.Models.Usuario)Session["User"]).Direccion.Count() <= 0))
                 {
-                    <li class="nav-item me-3">
-                        <a href="@Url.Action("IndexVendedor","Producto")" class="nav-link fw-bold"><i class="fa-solid fa-money-bill"></i><i class="fa-solid fa-gamepad"></i> Tus Productos</a>
-                    </li>
-                }
-                @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
-                {
-                    <li class="nav-item me-3">
-                        <a href="@Url.Action("Index","Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-truck-fast"></i> Pedidos</a>
-                    </li>
-                }
-                @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }))
-                {
-                    <li class="nav-item me-3">
-                        <a href="@Url.Action("IndexVendedor","Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-money-bill"></i><i class="fa-solid fa-truck-fast"></i> Tus Ventas</a>
-                    </li>
-                }
-                @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
-                {
-                    <li class="nav-item me-3">
-                        <a href="@Url.Action("Carrito","Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-cart-shopping"></i> Carrito (<span class="fw-bold text-white cantCarrito">@Web.Utils.Carrito.Instancia.GetCountItems()</span>)</a>
-                    </li>
-                }
-                @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Administrador" }))
-                {
-                    <li class="nav-item dropdown me-3">
-                        <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-wrench"></i> Mantenimientos</a>
-                        <div class="dropdown-menu fs-5">
-                            @Html.ActionLink("Gestionar Productos", "IndexAdmin", "Producto", null, new { @class = "dropdown-item fw-bold" })
-                            @Html.ActionLink("Gestionar Pedidos", "IndexAdmin", "Pedido", null, new { @class = "dropdown-item fw-bold" })
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                           href="#" role="button" aria-haspopup="true"
+                           aria-expanded="false"><i class="fa-solid fa-user"></i> Perfil</a>
+                        <div class="dropdown-menu">
+                            @if (Session["User"] != null)
+                            {
+                                <div class="dropdown-item">
+                                    Usuario: @((Session["User"] as Infraestructure.Models.Usuario).Nombre) @((Session["User"] as Infraestructure.Models.Usuario).PrimerApellido)
+                                </div>
+                            }
+
+                            @if (Session["User"] == null)
+                            {
+                                <a href="@Url.Action("Index", "Login")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user"></i> Iniciar Sesión</a>
+                            }
+                            else
+                            {
+                                <div class="dropdown-divider"></div>
+                                <a href="@Url.Action("Update", "Usuario")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user"></i> Editar Cuenta</a>
+                                <a href="@Url.Action("Logout", "Login")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user-minus"></i> Cerrar Sesión</a>
+                            }
                         </div>
                     </li>
-                }
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
-                       href="#" role="button" aria-haspopup="true"
-                       aria-expanded="false"><i class="fa-solid fa-user"></i> Perfil</a>
-                    <div class="dropdown-menu">
-                        @if (Session["User"] != null)
-                        {
-                            <div class="dropdown-item">
-                                Usuario: @((Session["User"] as Infraestructure.Models.Usuario).Nombre) @((Session["User"] as Infraestructure.Models.Usuario).PrimerApellido)
-                            </div>
-                        }
-
-                        @if (Session["User"] == null)
-                        {
-                            <a href="@Url.Action("Index","Login")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user"></i> Iniciar Sesión</a>
-                        }
-                        else
-                        {
-                            <div class="dropdown-divider"></div>
-                            <a href="@Url.Action("Index","Login")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user"></i> Editar Cuenta</a>
-                            <a href="@Url.Action("Logout","Login")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user-minus"></i> Cerrar Sesión</a>
-                        }
-                    </div>
-                </li>
-                @if (!Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
-                {
                     <li class="nav-item ms-md-5 d-flex align-items-center justify-content-center">
                         <div class="bg-danger rounded-4 p-1 pe-3 ps-3">
-                            <h5 class="text-white text-center"><i class="fa-solid fa-warning text-white"></i> No puede ordenar si no es un cliente registrado</h5>
+                            <h5 class="text-white text-center"><i class="fa-solid fa-warning text-white"></i> Para poder realizar cualquier acción debe completar perfil</h5>
                         </div>
                     </li>
                 }
+                else
+                {
+                    if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }))
+                    {
+                        <li class="nav-item me-3">
+                            <a href="@Url.Action("IndexVendedor", "Producto")" class="nav-link fw-bold"><i class="fa-solid fa-money-bill"></i><i class="fa-solid fa-gamepad"></i> Tus Productos</a>
+                        </li>
+                    }
+                    if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
+                    {
+                        <li class="nav-item me-3">
+                            <a href="@Url.Action("Index", "Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-truck-fast"></i> Pedidos</a>
+                        </li>
+                    }
+                    if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }))
+                    {
+                        <li class="nav-item me-3">
+                            <a href="@Url.Action("IndexVendedor", "Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-money-bill"></i><i class="fa-solid fa-truck-fast"></i> Tus Ventas</a>
+                        </li>
+                    }
+                    if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
+                    {
+                        <li class="nav-item me-3">
+                            <a href="@Url.Action("Carrito", "Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-cart-shopping"></i> Carrito (<span class="fw-bold text-white cantCarrito">@Web.Utils.Carrito.Instancia.GetCountItems()</span>)</a>
+                        </li>
+                    }
+                    if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Administrador" }))
+                    {
+                        <li class="nav-item dropdown me-3">
+                            <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-wrench"></i> Mantenimientos</a>
+                            <div class="dropdown-menu fs-5">
+                                @Html.ActionLink("Gestionar Productos", "IndexAdmin", "Producto", null, new { @class = "dropdown-item fw-bold" })
+                                @Html.ActionLink("Gestionar Pedidos", "IndexAdmin", "Pedido", null, new { @class = "dropdown-item fw-bold" })
+                            </div>
+                        </li>
+                    }
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                           href="#" role="button" aria-haspopup="true"
+                           aria-expanded="false"><i class="fa-solid fa-user"></i> Perfil</a>
+                        <div class="dropdown-menu">
+                            @if (Session["User"] != null)
+                            {
+                                <div class="dropdown-item">
+                                    Usuario: @((Session["User"] as Infraestructure.Models.Usuario).Nombre) @((Session["User"] as Infraestructure.Models.Usuario).PrimerApellido)
+                                </div>
+                            }
 
+                            @if (Session["User"] == null)
+                            {
+                                <a href="@Url.Action("Index", "Login")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user"></i> Iniciar Sesión</a>
+                            }
+                            else
+                            {
+                                <div class="dropdown-divider"></div>
+                                <a href="@Url.Action("Update", "Usuario")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user"></i> Editar Cuenta</a>
+                                <a href="@Url.Action("Logout", "Login")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user-minus"></i> Cerrar Sesión</a>
+                            }
+                        </div>
+                    </li>
+                    if (!Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
+                    {
+                        <li class="nav-item ms-md-5 d-flex align-items-center justify-content-center">
+                            <div class="bg-danger rounded-4 p-1 pe-3 ps-3">
+                                <h5 class="text-white text-center"><i class="fa-solid fa-warning text-white"></i> No puede ordenar si no es un cliente registrado</h5>
+                            </div>
+                        </li>
+                    }
+                }
             </ul>
             
         </div>

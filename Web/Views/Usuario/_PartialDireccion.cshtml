@@ -1,75 +1,41 @@
-﻿@model Infraestructure.Models.Direccion
+﻿@model IEnumerable<Infraestructure.Models.Direccion>
 
 
-<div class=" row col-md-12">
-    <h3>Dirección</h3>
-    <p>Puede ser más de una dirección</p>
+<table class="table table-hover text-center rounded-4 overflow-hidden p-3">
+    <thead class="table-success">
+        <tr>
+            <th scope="col">Provincia</th>
+            <th scope="col">Cantón</th>
+            <th scope="col">Distrito</th>
+            <th scope="col">Otras señas</th>
+            <th scope="col">Código Postal</th>
+            <th scope="col">Teléfono</th>
+        </tr>
+    </thead>
 
-
-    <div class="row col-md-5">
-        <div class="col-md-4 mb-4">
-            <select class="form-select col-md" id="Provincia">
-                <option value="-1" class="active provincia">Provincia</option>
-
-
-            </select>
-
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <select class="form-select col-md" id="Canton">
-                <option value="-1" class="active canton">Cantón</option>
-
-
-            </select>
-
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <select class="form-select col-md" id="Distrito">
-                <option value="-1" class="active distrito">Distrito</option>
-
-
-            </select>
-
-        </div>
-
-        <div class="form-group col-md-12  mb-4">
-            <p>Otras señas</p>
-
-            @Html.TextAreaFor(model => model.Sennas, new { @class = "form-control", @style = "min-height: 50px;", placeholder = "Mi casa 10m oeste del palo de mangos" })
-        </div>
-
-        <div class="col-md-2 mb-4">
-            <input type="submit" data-id="AgregarDireccion" class="btn btn-primary" value="Agregar" />
-        </div>
-    </div>
-
-    @Html.ValidationMessageFor(model => model.Sennas, "", new { @class = "text-danger" })
-
-
-
-    <div class="col-md-12">
-
-        <div class="col-md-12">
-            <table class="table table-hover text-center">
-                <thead>
-                    <tr>
-                        <th scope="col">Provincia</th>
-                        <th scope="col">Cantón</th>
-                        <th scope="col">Distrito</th>
-                        <th scope="col">Otras señas</th>
-                        <th scope="col">Acción</th>
-
-
-
-                    </tr>
-                </thead>
-
-                <tbody>
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-</div>
+    <tbody id="TablaTel" class="table-dark">
+        @foreach(var direccion in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => direccion.Provincia)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => direccion.Canton)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => direccion.Distrito)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => direccion.Sennas)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => direccion.CodigoPostal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => direccion.Telefono)
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>

@@ -244,9 +244,9 @@
     <Content Include="Views\Pedido\_DetalleCarritoNoEditable.cshtml" />
     <Content Include="Views\Usuario\Create.cshtml" />
     <Content Include="Views\Usuario\_PartialTelefonos.cshtml" />
-    <Content Include="Views\Usuario\_PartialMetodosPago.cshtml" />
-    <Content Include="Views\Usuario\View.cshtml" />
+    <Content Include="Views\Usuario\_PartialMetodoPago.cshtml" />
     <Content Include="Views\Usuario\_PartialDireccion.cshtml" />
+    <Content Include="Views\Usuario\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

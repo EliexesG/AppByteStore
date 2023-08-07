@@ -13,13 +13,10 @@ namespace Infraestructure.Repositories
         IEnumerable<Usuario> GetUsuario();
         IEnumerable<Usuario> GetUsuarioByRol(int IdRol);
         Usuario Login(string Correo, string contrasenna);
-        IEnumerable<TipoPago> GetTipoPago();
         IEnumerable<Rol> GetRol();
         IEnumerable<Usuario> GetUsuarioByEstado(bool estado);
-        IEnumerable<MetodoPago> GetMetodoPagoByUsuario(int idUsuario);
         IEnumerable<Direccion> GetDireccionByUsuario(int idUsuario);
         IEnumerable<Telefono> GetTelefonoByUsuario(int idUsuario);
-
         Rol GetRolByID(int id);
         Usuario Guardar(Usuario usuario, string[] selectedRol);
 

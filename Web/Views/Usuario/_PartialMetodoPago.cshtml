@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Infraestructure.Models.MetodoPago>
+
+
+<table class="table table-hover text-center rounded-4 overflow-hidden p-3">
+    <thead class="table-success">
+        <tr>
+            <th scope="col">Proveedor Bancario</th>
+            <th scope="col">Número de Tarjeta</th>
+            <th scope="col">Fecha de expiración</th>
+            <th scope="col">Código</th>
+            <th scope="col">Tipo de pago</th>
+
+        </tr>
+    </thead>
+    <tbody class="table-dark">
+        @foreach (var metodo in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => metodo.Proveedor)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => metodo.NumeroTarjeta)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => metodo.FechaExpiracion)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => metodo.Codigo)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => metodo.TipoPago.Descripcion)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

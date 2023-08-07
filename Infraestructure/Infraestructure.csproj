@@ -121,17 +121,20 @@
     <Compile Include="Models\TipoPago.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TipoTelefono.cs" />
     <Compile Include="Models\Usuario.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IRepositoryCategoria.cs" />
+    <Compile Include="Repositories\IRepositoryMetodoPago.cs" />
     <Compile Include="Repositories\IRepositoryPregunta.cs" />
     <Compile Include="Repositories\IRepositoryProducto.cs" />
     <Compile Include="Repositories\IRepositoryPedido.cs" />
     <Compile Include="Repositories\IRepositoryUbicacion.cs" />
     <Compile Include="Repositories\IRepositoryUsuario.cs" />
     <Compile Include="Repositories\RepositoryCategoria.cs" />
+    <Compile Include="Repositories\RepositoryMetodoPago.cs" />
     <Compile Include="Repositories\RepositoryPregunta.cs" />
     <Compile Include="Repositories\RepositoryUbicacion.cs" />
     <Compile Include="Repositories\RepositoryUsuario.cs" />
