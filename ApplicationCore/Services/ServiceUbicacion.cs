@@ -23,6 +23,21 @@ namespace ApplicationCore.Services
             return await repository.ObtenerDistritoxCanton(idProvincia, idCanton);
         }
 
+        public async Task<string> ObtenerNombreCanton(int idProvincia, int idCanton)
+        {
+            return await repository.ObtenerNombreCanton(idProvincia, idCanton);
+        }
+
+        public async Task<string> ObtenerNombreDistrito(int idProvincia, int idCanton, int idDistrito)
+        {
+            return await repository.ObtenerNombreDistrito(idProvincia, idCanton, idDistrito);
+        }
+
+        public async Task<string> ObtenerNombreProvincia(int idProvincia)
+        {
+            return await repository.ObtenerNombreProvincia(idProvincia);
+        }
+
         public async Task<ApiResult> ObtenerProvincia()
         {
             return await repository.ObtenerProvincia();

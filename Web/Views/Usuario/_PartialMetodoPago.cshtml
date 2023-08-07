@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<Infraestructure.Models.MetodoPago>
 
+@{ 
+    ApplicationCore.Services.IServiceMetodoPago service = new ApplicationCore.Services.ServiceMetodoPago();
+}
 
 <table class="table table-hover text-center rounded-4 overflow-hidden p-3">
     <thead class="table-success">
@@ -20,7 +23,7 @@
                     @Html.DisplayFor(model => metodo.Proveedor)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => metodo.NumeroTarjeta)
+                    @service.mostradorNumeroTarjeta(metodo.NumeroTarjeta)
                 </td>
                 <td>
                     @Html.DisplayFor(model => metodo.FechaExpiracion)

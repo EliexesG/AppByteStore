@@ -72,5 +72,46 @@ namespace Infraestructure.Repositories
             };
         }
 
+        public async Task<string> ObtenerNombreProvincia(int idProvincia)
+        {
+            string endpoint = "provincias.json";
+            var response = await CallApiUbicaciones(endpoint);
+
+            string result = await response.Content.ReadAsStringAsync();
+
+            List<string> separacion = new List<string>(result.Split(','));
+            string nombre = separacion.Where(s => s.Contains(idProvincia.ToString())).FirstOrDefault();
+            nombre = nombre.Split(':')[1].Replace("\"", "").Replace("{", "").Replace("}", "");
+
+            return nombre;
+        }
+
+        public async Task<string> ObtenerNombreCanton(int idProvincia, int idCanton)
+        {
+            string endpoint = $"provincia/{idProvincia}/cantones.json";
+            var response = await CallApiUbicaciones(endpoint);
+
+            string result = await response.Content.ReadAsStringAsync();
+
+            List<string> separacion = new List<string>(result.Split(','));
+            string nombre = separacion.Where(s => s.Contains(idCanton.ToString())).FirstOrDefault();
+            nombre = nombre.Split(':')[1].Replace("\"", "").Replace("{", "").Replace("}", "");
+
+            return nombre;
+        }
+
+        public async Task<string> ObtenerNombreDistrito(int idProvincia, int idCanton, int idDistrito)
+        {
+            string endpoint = $"provincia/{idProvincia}/canton/{idCanton}/distritos.json";
+            var response = await CallApiUbicaciones(endpoint);
+
+            string result = await response.Content.ReadAsStringAsync();
+
+            List<string> separacion = new List<string>(result.Split(','));
+            string nombre = separacion.Where(s => s.Contains(idDistrito.ToString())).FirstOrDefault();
+            nombre = nombre.Split(':')[1].Replace("\"", "").Replace("{", "").Replace("}", "");
+
+            return nombre;
+        }
     }
 }

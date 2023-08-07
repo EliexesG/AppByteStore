@@ -102,6 +102,7 @@ namespace Infraestructure.Models
         [Display(Name = "Señas")]
         public string Sennas { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:####-####}", ApplyFormatInEditMode = true)]
         [Display(Name = "Teléfono")]
         public string Telefono { get; set; }
 
@@ -251,6 +252,7 @@ namespace Infraestructure.Models
     {
         public int IdTelefono { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dddd-dddd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Número")]
         public string Numero { get; set; }
 

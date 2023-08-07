@@ -9,5 +9,6 @@ namespace Infraestructure.Repositories
         IEnumerable<MetodoPago> GetMetodoPagoByUsuario(int idUsuario);
         IEnumerable<TipoPago> GetTipoPago();
         MetodoPago SaveMetodoPago(MetodoPago pMetodoPago);
+        string mostradorNumeroTarjeta(byte[] numeroTarjeta);
     }
 }

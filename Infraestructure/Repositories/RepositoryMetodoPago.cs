@@ -141,5 +141,25 @@ namespace Infraestructure.Repositories
 
             return oMetodoPago;
         }
+
+        public string mostradorNumeroTarjeta(byte[] numeroTarjeta)
+        {
+            string numATarjeta = UTF8Encoding.UTF8.GetString(numeroTarjeta);
+            string mostrarNumero = "";
+
+            for (int i = 0; i < numATarjeta.Length; i++)
+            {
+                if(numATarjeta.Length - i <= 4)
+                {
+                    mostrarNumero += numATarjeta[1];
+                }
+                else
+                {
+                    mostrarNumero += "*";
+                }
+            }
+
+            return mostrarNumero;
+        }
     }
 }

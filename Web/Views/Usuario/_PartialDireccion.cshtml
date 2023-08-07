@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<Infraestructure.Models.Direccion>
 
-
 <table class="table table-hover text-center rounded-4 overflow-hidden p-3">
     <thead class="table-success">
         <tr>
@@ -14,28 +13,32 @@
     </thead>
 
     <tbody id="TablaTel" class="table-dark">
-        @foreach(var direccion in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(model => direccion.Provincia)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => direccion.Canton)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => direccion.Distrito)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => direccion.Sennas)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => direccion.CodigoPostal)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => direccion.Telefono)
-                    </td>
-                </tr>
-            }
+
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+
+            string[] nombre = ((List<string[]>)ViewBag.ListaNombres).ElementAt(i);
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => nombre[0])
+                </td>
+                <td>
+                    @Html.DisplayFor(model => nombre[1])
+                </td>
+                <td>
+                    @Html.DisplayFor(model => nombre[2])
+                </td>
+                <td>
+                    @Html.DisplayFor(model => Model.ElementAt(i).Sennas)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => Model.ElementAt(i).CodigoPostal)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => Model.ElementAt(i).Telefono)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

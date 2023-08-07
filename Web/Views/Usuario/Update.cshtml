@@ -363,6 +363,7 @@
             }
         });
 
+        $("#loaderSpinner").addClass("d-none");
         $.ajax({
             method: "GET",
             url: "/Usuario/PartialMetodoPago",
@@ -441,6 +442,8 @@
                         $("#TipoPago").val("");
 
                         if (result.success) {
+                            $("#loaderSpinner").addClass("d-none");
+
                             $.ajax({
                                 method: "GET",
                                 url: "/Usuario/PartialMetodoPago",
@@ -454,6 +457,8 @@
                                     console.log("error" + error, "no Error: " + xhr.status)
                                 }
                             });
+
+                            $("#loaderSpinner").removeClass("d-none");
                         }
 
                     },
@@ -529,6 +534,9 @@
                         $("#Sennas").val("");
 
                         if (result.success) {
+
+                            $("#loaderSpinner").addClass("d-none");
+
                             $.ajax({
                                 method: "GET",
                                 url: "/Usuario/PartialDireccion",
@@ -542,6 +550,8 @@
                                     console.log("error" + error, "no Error: " + xhr.status)
                                 }
                             });
+
+                            $("#loaderSpinner").removeClass("d-none");
                         }
 
                     },
@@ -587,6 +597,9 @@
                         $("#Tipo").val("");
 
                         if (result.success) {
+
+                            $("#loaderSpinner").addClass("d-none");
+
                             $.ajax({
                                 method: "GET",
                                 url: "/Usuario/PartialTelefonos",
@@ -600,6 +613,7 @@
                                     console.log("error" + error, "no Error: " + xhr.status)
                                 }
                             });
+                            $("#loaderSpinner").removeClass("d-none");
                         }
 
                     },

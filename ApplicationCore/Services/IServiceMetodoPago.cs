@@ -13,5 +13,6 @@ namespace ApplicationCore.Services
         IEnumerable<MetodoPago> GetMetodoPagoByUsuario(int idUsuario);
         IEnumerable<TipoPago> GetTipoPago();
         MetodoPago SaveMetodoPago(MetodoPago pMetodoPago);
+        string mostradorNumeroTarjeta(byte[] numeroTarjeta);
     }
 }

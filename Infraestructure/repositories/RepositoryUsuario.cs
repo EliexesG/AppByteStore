@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Web.Security;
@@ -266,6 +267,9 @@ namespace Infraestructure.Repositories
                     ctx.Usuario.Add(pUsuario);
                     ctx.Entry(pUsuario).State = EntityState.Modified;
                     retorno = ctx.SaveChanges();
+
+                    var idUsuario = new SqlParameter("@IdUsuario", pUsuario.IdUsuario);
+                    retorno += ctx.Database.ExecuteSqlCommand("EXEC SP_ELIMINAR_ROL_BY_USUARIO @IdUsuario", idUsuario);
 
                     if (selectedRol != null)
                     {

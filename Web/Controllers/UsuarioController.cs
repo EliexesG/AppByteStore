@@ -179,14 +179,27 @@ namespace Web.Controllers
             });
         }
 
-        public PartialViewResult PartialDireccion(int idUsuario)
+        public async Task<PartialViewResult> PartialDireccion(int idUsuario)
         {
             IEnumerable<Direccion> lista = null;
+            IServiceUbicacion serviceUbicacion = new ServiceUbicacion();
 
             try
             {
+                List<string[]> listaNombres = new List<string[]>();
                 IServiceDireccion _ServiceDireccion = new ServiceDireccion();
                 lista = _ServiceDireccion.GetDireccionByUsuario(idUsuario);
+
+                foreach (var direccion in lista)
+                {
+                    string[] nombres = new string[3];
+                    nombres[0] = await serviceUbicacion.ObtenerNombreProvincia((int)direccion.Provincia);
+                    nombres[1] = await serviceUbicacion.ObtenerNombreCanton((int)direccion.Provincia, (int)direccion.Canton);
+                    nombres[2] = await serviceUbicacion.ObtenerNombreDistrito((int)direccion.Provincia, (int)direccion.Canton, (int)direccion.Distrito);
+                    listaNombres.Add(nombres);
+                }
+
+                ViewBag.ListaNombres = listaNombres;
             }
             catch (Exception ex)
             {

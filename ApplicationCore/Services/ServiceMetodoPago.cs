@@ -32,5 +32,10 @@ namespace ApplicationCore.Services
         {
             return repository.SaveMetodoPago(pMetodoPago);
         }
+
+        public string mostradorNumeroTarjeta(byte[] numeroTarjeta)
+        {
+            return repository.mostradorNumeroTarjeta(numeroTarjeta);
+        }
     }
 }
