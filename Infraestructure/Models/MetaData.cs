@@ -338,8 +338,8 @@ namespace Infraestructure.Models
         [Display(Name = "Teléfonos")]
         public virtual ICollection<Telefono> Telefono { get; set; }
 
-        [Required(ErrorMessage = "{0} es un dato requerido")]
         [Display(Name = "Roles")]
+        [Required(ErrorMessage = "{0} es un dato requerido")]
         public virtual ICollection<Rol> Rol { get; set; }
     }
 }

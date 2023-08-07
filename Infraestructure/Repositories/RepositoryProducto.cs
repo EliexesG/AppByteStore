@@ -32,6 +32,7 @@ namespace Infraestructure.Repositories
                     lista = ctx.Producto.Include("Usuario").
                         Include("FotoProducto")
                         .Include("Categoria")
+                        .Where(p => p.Usuario.Estado == true)
                         .ToList();
 
                 }
@@ -65,6 +66,7 @@ namespace Infraestructure.Repositories
                         .Include("Usuario")
                         .Include("FotoProducto")
                         .Include("Categoria")
+                        .Where(p => p.Usuario.Estado == true)
                         .Where(o => o.Categoria.IdCategoria == idCategoria).ToList();
 
                 }
@@ -100,6 +102,7 @@ namespace Infraestructure.Repositories
                             .Include("Usuario")
                             .Include("Categoria")
                             .Include("FotoProducto")
+                            .Where(p => p.Usuario.Estado == true)
                             .Where(l => l.IdProducto == id)
                             .FirstOrDefault();
 
@@ -134,6 +137,7 @@ namespace Infraestructure.Repositories
                         .Include("Usuario")
                         .Include("FotoProducto")
                         .Include("Categoria")
+                        .Where(p => p.Usuario.Estado == true)
                         .ToList()
                         .FindAll(x => x.Nombre.ToLower()
                         .Contains(nombre.ToLower()));
@@ -169,6 +173,7 @@ namespace Infraestructure.Repositories
                         .Include("Usuario")
                         .Include("FotoProducto")
                         .Include("Categoria")
+                        .Where(p => p.Usuario.Estado == true)
                         .Where(l => l.Usuario.IdUsuario == idVendedor)
                         .ToList();
 

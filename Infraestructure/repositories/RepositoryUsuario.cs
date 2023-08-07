@@ -82,6 +82,8 @@ namespace Infraestructure.Repositories
 
                     lista = ctx.Usuario.
                             Include(u => u.Rol).
+                            Where(u => u.Rol.Any(r => r.IdRol != 1)).
+                            OrderBy(usuario => usuario.Nombre).
                             ToList();
                 }
                 return lista;
@@ -113,6 +115,7 @@ namespace Infraestructure.Repositories
                     lista = ctx.Usuario
                             .Include(u => u.Rol)
                             .Where(usuario => usuario.Rol.Any(rol => rol.IdRol == IdRol))
+                            .OrderBy(usuario => usuario.Nombre)
                             .ToList();
                 }
                 return lista;
@@ -206,8 +209,10 @@ namespace Infraestructure.Repositories
                     ctx.Configuration.LazyLoadingEnabled = false;
 
                     lista = ctx.Usuario
-                            .Include("Rol")
+                            .Include("Rol").
+                             Where(u => u.Rol.Any(r => r.IdRol != 1))
                             .Where(usuario => usuario.Estado == estado)
+                            .OrderBy(usuario => usuario.Nombre)
                             .ToList();
                 }
                 return lista;
@@ -224,6 +229,52 @@ namespace Infraestructure.Repositories
                 Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
                 throw;
             }
+        }
+
+        public Usuario ActualizarEstado (int idUsuario, bool estadoNuevo)
+        {
+            Usuario oUsuario = null;
+            int retorno = 0;
+
+            try
+            {
+
+                oUsuario = this.GetUsuarioByID((int)idUsuario);
+
+                if (oUsuario != null)
+                {
+                    oUsuario.Estado = estadoNuevo;
+
+                    using (ByteStoreContext ctx = new ByteStoreContext())
+                    {
+
+                        ctx.Usuario.Attach(oUsuario);
+                        ctx.Entry(oUsuario).Property("Estado").IsModified = true;
+
+                        retorno = ctx.SaveChanges();
+
+                        if (retorno <= 0)
+                        {
+                            oUsuario = null;
+                        }
+                    }
+                }
+
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+
+            return oUsuario;
         }
 
         public Usuario Guardar(Usuario pUsuario, string[] selectedRol)

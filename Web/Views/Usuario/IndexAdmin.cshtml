@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "ByteStore - Información de Usuarios";
+}
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        <h2 class="text-center border border-primary border-3 text-light rounded-4">Usuarios Registrados</h2>
+    </div>
+</div>
+
+<div class="col-md-4 mb-4">
+    <label class="form-label text-white" for="filtroEstado">Estado</label>
+    <select class="form-select" id="filtroEstado">
+        <option value="-1" class="active filtroEstado">Ambos</option>
+        <option value="1" class="active filtroEstado">Habilitados</option>
+        <option value="2" class="active filtroEstado">Deshabilitados</option>
+    </select>
+</div>
+
+<hr class="mb-4" />
+
+<div id="infoUsuarios">
+
+</div>
+
+@section Scripts {
+    
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var filtroEstado = -1;
+
+            $("#loaderSpinner").removeClass("d-none");
+            $.ajax({
+                method: "GET",
+                url: "/Usuario/PartialListaUsuarios",
+                data: { filtroEstado },
+                success: function (response) {
+                    $("#infoUsuarios").html("");
+                    $("#infoUsuarios").html(response);
+                    $("#loaderSpinner").addClass("d-none");
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            })
+        })
+
+        $("#filtroEstado").on('change', function () {
+            var filtroEstado = $("#filtroEstado").val();
+            $("#loaderSpinner").removeClass("d-none");
+            $.ajax({
+                method: "GET",
+                url: "/Usuario/PartialListaUsuarios",
+                data: { filtroEstado },
+                success: function (response) {
+                    $("#infoUsuarios").html("");
+                    $("#infoUsuarios").html(response);
+                    $("#loaderSpinner").addClass("d-none");
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            })
+        })
+
+        $(document).on('click', '.btnEstadoUsuario', function () {
+            var idUsuario = $(this).data("idusuario");
+            var estadoActual = $(this).data("estadoactual");
+            var estadoNuevo = false;
+
+            if (estadoActual == 'False') {
+                estadoNuevo = true;
+            } 
+
+            console.log(estadoNuevo)
+
+            $.ajax({
+                method: "POST",
+                url: "/Usuario/ActualizarEstado",
+                data: { idUsuario, estadoNuevo },
+                success: function (result) {
+
+                    if (result.success) {
+                        $("#loaderSpinner").removeClass("d-none");
+                        var filtroEstado = $("#filtroEstado").val();
+
+                        $.ajax({
+                            method: "GET",
+                            url: "/Usuario/PartialListaUsuarios",
+                            data: { filtroEstado },
+                            success: function (result) {
+
+                                $("#infoUsuarios").html("");
+                                $("#infoUsuarios").html(result);
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("error" + error, "no Error: " + xhr.status)
+                            }
+                        });
+
+                        $("#loaderSpinner").addClass("d-none");
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            });
+        });
+
+    </script>
+
+}

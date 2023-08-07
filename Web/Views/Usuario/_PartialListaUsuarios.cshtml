@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Infraestructure.Models.Usuario>
+
+@if (Model.Count() > 0)
+{
+    <table class="table table-info rounded-4 overflow-hidden p-3">
+        <thead>
+            <tr class="text-center">
+                <th scope="col">
+                    <h5> @Html.DisplayNameFor(model => model.Identificacion)</h5>
+                </th>
+                <th scope="col">
+                    <h5> @Html.DisplayNameFor(model => model.Nombre)</h5>
+                </th>
+                <th scope="col" class="bg-primary">
+                    <h5> @Html.DisplayNameFor(model => model.CorreoElectronico)</h5>
+                </th>
+                <th scope="col">
+                    <h5>@Html.DisplayNameFor(model => model.Rol)</h5>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) //Itera la lista de los productos guardados en la BD
+            {
+                <tr class="table-dark text-center">
+                    <td class="p-3">
+                        @Html.DisplayFor(modelItem => item.Identificacion)
+                    </td>
+                    <td class="p-3 descripcion">
+                        @item.Nombre @item.PrimerApellido @item.SegundoApellido
+                    </td>
+                    <td class="p-3">
+                        @Html.DisplayFor(modelItem => item.CorreoElectronico)
+                    </td>
+                    <td class="p-3">
+                        <p>
+                            @item.Rol.ElementAt(0).Descripcion
+                            @if (item.Rol.Count() > 1)
+                            {
+                                <span> | @item.Rol.ElementAt(1).Descripcion</span>
+                            }
+                        </p>
+                    </td>
+                    <td class="p-3">
+                        <div class="d-flex">
+                            <a class="btn @(item.Estado == true ? "bg-danger" : "bg-success") fs-4 btnEstadoUsuario w-100 text-white" data-idusuario="@item.IdUsuario" data-estadoactual="@item.Estado"><i class="fa-solid @(item.Estado == true ? " fa-ban" : " fa-check")"></i> @(item.Estado == true ? " Deshabilitar" : " Habilitar")</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h3 class="text-white mb-4 text-center mt-4"><i class="fa-solid fa-warning text-warning"></i> No hay información de usuarios</h3>
+}
+
+

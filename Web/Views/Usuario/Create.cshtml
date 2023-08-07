@@ -100,8 +100,8 @@
                 <div class=" row col-md-12">
                     <div class="col-md-4">
                         <div class="form-group">
-                            @Html.DropDownList("selectedRol", (MultiSelectList)ViewBag.listaRoles, htmlAttributes: new { @class = "form-select form-control me-sm-2 text-black", multiple = "multiple", @id = "SelectedRol" })
-                            @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
+                            @Html.DropDownList("selectedRol", (MultiSelectList)ViewBag.listaRoles, htmlAttributes: new { @name="roles", @class = "form-select form-control me-sm-2 text-black", multiple = "multiple", @id = "SelectedRol", @required = true })
+                            @Html.ValidationMessage("roles", "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
