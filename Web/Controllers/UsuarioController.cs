@@ -72,8 +72,8 @@ namespace Web.Controllers
 
             try
             {
-                IServiceUsuario _ServiceUsuario = new ServiceUsuario();
-                lista = _ServiceUsuario.GetTelefonoByUsuario(idUsuario);
+                IServiceTelefono _ServiceTelefono = new ServiceTelefono();
+                lista = _ServiceTelefono.GetTelefonoByUsuario(idUsuario);
             }
             catch (Exception ex)
             {
@@ -82,6 +82,42 @@ namespace Web.Controllers
             }
 
             return PartialView("_PartialTelefonos", lista);
+        }
+
+        [HttpPost]
+        public JsonResult SaveTelefono(string numero, int tipo)
+        {
+            IServiceTelefono _ServiceTelefono = new ServiceTelefono();
+            bool resultado = false;
+
+            try
+            {
+                int idUsuario = ((Usuario)Session["User"]).IdUsuario;
+
+                Telefono oTelefono = new Telefono()
+                {
+                    Numero = numero,
+                    Tipo = tipo == 2 ? false : true,
+                    Usuario = new Usuario() { IdUsuario = idUsuario }
+                };
+
+                Telefono telefono = _ServiceTelefono.SaveTelefono(oTelefono);
+
+                if (telefono != null)
+                {
+                    resultado = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+
+            return Json(new
+            {
+                success = resultado
+            });
         }
 
         public PartialViewResult PartialMetodoPago(int idUsuario)
@@ -149,8 +185,8 @@ namespace Web.Controllers
 
             try
             {
-                IServiceUsuario _ServiceUsuario = new ServiceUsuario();
-                lista = _ServiceUsuario.GetDireccionByUsuario(idUsuario);
+                IServiceDireccion _ServiceDireccion = new ServiceDireccion();
+                lista = _ServiceDireccion.GetDireccionByUsuario(idUsuario);
             }
             catch (Exception ex)
             {
@@ -159,6 +195,46 @@ namespace Web.Controllers
             }
 
             return PartialView("_PartialDireccion", lista);
+        }
+
+        [HttpPost]
+        public JsonResult SaveDireccion(int provincia, int canton, int distrito, string telefono, string codigoPostal, string sennas)
+        {
+            IServiceDireccion _ServiceDireccion = new ServiceDireccion();
+            bool resultado = false;
+
+            try
+            {
+                int idUsuario = ((Usuario)Session["User"]).IdUsuario;
+
+                Direccion oDireccion = new Direccion()
+                {
+                    Provincia = provincia,
+                    Canton = canton,
+                    Distrito = distrito,
+                    Telefono = telefono,
+                    CodigoPostal = codigoPostal,
+                    Sennas = sennas,
+                    Usuario = new Usuario() { IdUsuario = idUsuario }
+                };
+
+                Direccion direccion = _ServiceDireccion.SaveDireccion(oDireccion);
+
+                if (direccion != null)
+                {
+                    resultado = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+
+            return Json(new
+            {
+                success = resultado
+            });
         }
 
         public async Task<JsonResult> ObtenerProvincias()

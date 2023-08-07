@@ -224,66 +224,6 @@ namespace Infraestructure.Repositories
                 throw;
             }
         }
-        
-        public IEnumerable<Direccion> GetDireccionByUsuario(int idUsuario)
-        {
-            IEnumerable<Direccion> lista = null;
-            try
-            {
-                using (ByteStoreContext ctx = new ByteStoreContext())
-                {
-                    ctx.Configuration.LazyLoadingEnabled = false;
-
-                    lista = ctx.Direccion
-                            .Include(d => d.Usuario)
-                            .Where(d => d.Usuario.IdUsuario == idUsuario)
-                            .ToList();
-                }
-                return lista;
-            }
-            catch (DbUpdateException dbEx)
-            {
-                string mensaje = "";
-                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
-                throw new Exception(mensaje);
-            }
-            catch (Exception ex)
-            {
-                string mensaje = "";
-                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
-                throw;
-            }
-        }
-
-        public IEnumerable<Telefono> GetTelefonoByUsuario(int idUsuario)
-        {
-            IEnumerable<Telefono> lista = null;
-            try
-            {
-                using (ByteStoreContext ctx = new ByteStoreContext())
-                {
-                    ctx.Configuration.LazyLoadingEnabled = false;
-
-                    lista = ctx.Telefono
-                            .Include(d => d.Usuario)
-                            .Where(d => d.Usuario.IdUsuario == idUsuario)
-                            .ToList();
-                }
-                return lista;
-            }
-            catch (DbUpdateException dbEx)
-            {
-                string mensaje = "";
-                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
-                throw new Exception(mensaje);
-            }
-            catch (Exception ex)
-            {
-                string mensaje = "";
-                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
-                throw;
-            }
-        }
 
         public Usuario Guardar(Usuario pUsuario, string[] selectedRol)
         {

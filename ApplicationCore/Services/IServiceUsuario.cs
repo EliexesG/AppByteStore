@@ -15,10 +15,7 @@ namespace ApplicationCore.Services
         Usuario Login(string Correo, string contrasenna);
         IEnumerable<Rol> GetRol();
         IEnumerable<Usuario> GetUsuarioByEstado(bool estado);
-        IEnumerable<Direccion> GetDireccionByUsuario(int idUsuario);
-        IEnumerable<Telefono> GetTelefonoByUsuario(int idUsuario);
         Rol GetRolByID(int id);
-
         Usuario Guardar(Usuario usuario, string[] selectedRol);
 
     }

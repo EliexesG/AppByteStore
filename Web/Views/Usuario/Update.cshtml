@@ -108,7 +108,7 @@
                 @Html.HiddenFor(model => model.PromedioEvaluaciones)
 
                 <div class="col-md-12 text-center mb-4">
-                    <input type="submit" class="btn btn-info" value="Registrarse" />
+                    <input type="submit" class="btn btn-info" value="Actualizar" />
                 </div>
 
                 <hr class="mb-4" />
@@ -149,7 +149,7 @@
                     </div>
 
                     <div class="col-md-2">
-                        <input type="submit" id="AgregarTelefono" class="btn btn-primary" value="Agregar" />
+                        <button id="btnAgregartelefono" class="btn btn-primary my-2 my-sm-0 shadow-lg" type="submit" form="formTelefono" )>Agregar</button>
                     </div>
                 </div>
             </form>
@@ -176,21 +176,21 @@
                 <div class="row col-md-12">
                     <div class="col-md-4 mb-4">
                         <select name="Provincia" class="form-select col-md" id="Provincia">
-                            <option value="" class="active provincia">Provincia</option>
+                            <option value="-1" class="active provincia">Provincia</option>
                         </select>
 
                     </div>
 
                     <div class="col-md-4 mb-4">
                         <select name="Canton" class="form-select col-md" id="Canton">
-                            <option value="" class="active canton">Cantón</option>
+                            <option value="-1" class="active canton">Cantón</option>
                         </select>
 
                     </div>
 
                     <div class="col-md-4 mb-4">
                         <select name="Distrito" class="form-select col-md" id="Distrito">
-                            <option value="" class="active distrito">Distrito</option>
+                            <option value="-1" class="active distrito">Distrito</option>
                         </select>
 
                     </div>
@@ -222,7 +222,7 @@
                     </div>
 
                     <div class="col-md-2 mb-4">
-                        <input type="submit" id="AgregarDireccion" class="btn btn-primary" value="Agregar" />
+                        <button id="btnAgregarDireccion" class="btn btn-primary my-2 my-sm-0 shadow-lg" type="submit" form="formDirrecion" )>Agregar</button>
                     </div>
                 </div>
             </form>
@@ -252,7 +252,7 @@
                         <label for="Proveedor" class="control-label">Proveedor Bancario:</label>
                         <div class="form-group">
                             <input type="text" id="Proveedor" name="Proveedor" class="form-control" />
-                            <span class="text-danger" id="Proveedor-error"></span>
+                            <span class="text-danger metodopago-error" id="Proveedor-error"></span>
                         </div>
                     </div>
 
@@ -260,7 +260,7 @@
                         <label for="NumeroTarjeta" class="control-label">Número de Tarjeta:</label>
                         <div class="form-group">
                             <input type="text" id="NumeroTarjeta" name="NumeroTarjeta" class="form-control" />
-                            <span class="text-danger" id="NumeroTarjeta-error"></span>
+                            <span class="text-danger metodopago-error" id="NumeroTarjeta-error"></span>
                         </div>
                     </div>
 
@@ -268,7 +268,7 @@
                         <label for="FechaExpiracion" class="control-label">Fecha de Expiración:</label>
                         <div class="form-group">
                             <input type="text" id="FechaExpiracion" name="FechaExpiracion" class="form-control" />
-                            <span class="text-danger" id="FechaExpiracion-error"></span>
+                            <span class="text-danger metodopago-error" id="FechaExpiracion-error"></span>
                         </div>
                     </div>
 
@@ -276,7 +276,7 @@
                         <label for="Codigo" class="control-label">Código:</label>
                         <div class="form-group">
                             <input type="text" id="Codigo" name="Codigo" class="form-control" />
-                            <span class="text-danger" id="Codigo-error"></span>
+                            <span class="text-danger metodopago-error" id="Codigo-error"></span>
                         </div>
                     </div>
 
@@ -294,7 +294,7 @@
                                     <option class="tipo" value="@tipoPago.IdTipoPago">@tipoPago.Descripcion</option>
                                 }
                             </select>
-                            <span class="text-danger" id="TipoPago-error"></span>
+                            <span class="text-danger metodopago-error" id="TipoPago-error"></span>
                         </div>
                     </div>
                 </div>
@@ -309,6 +309,11 @@
     </div>
 </div>
 
+<style type="text/css">
+    .error {
+        color: red;
+    }
+</style>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -316,139 +321,296 @@
 <script type="text/javascript">
 
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            var idUsuario = @Html.Raw(Json.Encode(Model.IdUsuario));
+        var idUsuario = @Html.Raw(Json.Encode(Model.IdUsuario));
 
-            var roles = @Html.Raw(Json.Encode(Model.Rol.Select(r => r.IdRol).ToList()));
-            console.log(roles)
-            $(SelectedRol).val(roles);
-            if (roles.includes(2)) {
-                $("#NombreProveedor").prop("disabled", false);
-                $("#ValidacionProveedor").show();
+        var roles = @Html.Raw(Json.Encode(Model.Rol.Select(r => r.IdRol).ToList()));
+        console.log(roles)
+        $(SelectedRol).val(roles);
+        if (roles.includes(2)) {
+            $("#NombreProveedor").prop("disabled", false);
+            $("#ValidacionProveedor").show();
+        }
+
+        var idUsuario = @Html.Raw(Json.Encode(Model.IdUsuario));
+
+        $.ajax({
+            method: "GET",
+            url: "/Usuario/PartialTelefonos",
+            data: { "idUsuario": idUsuario },
+            success: function (result) {
+
+                $("#infoTelefonos").html("");
+                $("#infoTelefonos").html(result);
+            },
+            error: function (xhr, status, error) {
+                console.log("error" + error, "no Error: " + xhr.status)
             }
+        });
 
-            var idUsuario = @Html.Raw(Json.Encode(Model.IdUsuario));
+        $.ajax({
+            method: "GET",
+            url: "/Usuario/PartialDireccion",
+            data: { "idUsuario": idUsuario },
+            success: function (result) {
 
-            $.ajax({
-                method: "GET",
-                url: "/Usuario/PartialTelefonos",
-                data: { "idUsuario": idUsuario },
-                success: function (result) {
+                $("#infoDireccion").html("");
+                $("#infoDireccion").html(result);
+            },
+            error: function (xhr, status, error) {
+                console.log("error" + error, "no Error: " + xhr.status)
+            }
+        });
 
-                    $("#infoTelefonos").html("");
-                    $("#infoTelefonos").html(result);
+        $.ajax({
+            method: "GET",
+            url: "/Usuario/PartialMetodoPago",
+            data: { "idUsuario": idUsuario },
+            success: function (result) {
+
+                $("#infoMetodoPago").html("");
+                $("#infoMetodoPago").html(result);
+            },
+            error: function (xhr, status, error) {
+                console.log("error" + error, "no Error: " + xhr.status)
+            }
+        });
+
+        //Formulario para métodos de Pago
+        $.validator.addMethod("formatoFecha", function (value, element) {
+            return jQuery.validator.methods['date'].call(
+                this, value, element
+            ) || value == ("MM/yy");
+        }, "La fecha debe ser mm/dd")
+
+        $("#formMetodoPago").validate({
+            errorClass: "error",
+            rules: {
+                Proveedor: {
+                    required: true,
                 },
-                error: function (xhr, status, error) {
-                    console.log("error" + error, "no Error: " + xhr.status)
+                NumeroTarjeta: {
+                    required: true,
+                    minlength: 13,
+                    maxlength: 18,
+                    digits: true,
+                },
+                FechaExpiracion: {
+                    required: true,
+                    formatoFecha: true,
+                },
+                Codigo: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 3,
+                    digits: true,
+                },
+                TipoPago: {
+                    required: true,
+                    min: 1,
                 }
-            });
+            },
+            messages: {
+                Proveedor: 'Debes escribir el Proveedor Bancario',
+                NumeroTarjeta: 'El número de tarjeta debe ser numérico y tener un mínimo de 13 y maxímo de 18 dígitos',
+                FechaExpiracion: 'La fecha de expiración debe representar un dato en formato (mes/año)',
+                Codigo: 'El Código debe ser numérico de 3 dígitos',
+                TipoPago: 'Debe seleccionar un Método de Pago',
+            },
+            submitHandler: function (form, event) {
 
-            $.ajax({
-                method: "GET",
-                url: "/Usuario/PartialDireccion",
-                data: { "idUsuario": idUsuario },
-                success: function (result) {
+                event.preventDefault();
 
-                    $("#infoDireccion").html("");
-                    $("#infoDireccion").html(result);
-                },
-                error: function (xhr, status, error) {
-                    console.log("error" + error, "no Error: " + xhr.status)
-                }
-            });
+                var proveedor = $(form).find('[name="Proveedor"]').val();
+                var numeroTarjeta = $(form).find('[name="NumeroTarjeta"]').val();
+                var fechaExpiracion = $(form).find('[name="FechaExpiracion"]').val();
+                var codigo = $(form).find('[name="Codigo"]').val();
+                var idTipoPago = $(form).find('[name="TipoPago"]').val();
 
-            $.ajax({
-                method: "GET",
-                url: "/Usuario/PartialMetodoPago",
-                data: { "idUsuario": idUsuario },
-                success: function (result) {
+                $.ajax({
+                    method: "POST",
+                    url: "/Usuario/SaveMetodoPago",
+                    data: { proveedor, numeroTarjeta, fechaExpiracion, codigo, idTipoPago },
+                    success: function (result) {
 
-                    $("#infoMetodoPago").html("");
-                    $("#infoMetodoPago").html(result);
-                },
-                error: function (xhr, status, error) {
-                    console.log("error" + error, "no Error: " + xhr.status)
-                }
-            });
+                        $("#Proveedor").val("");
+                        $("#NumeroTarjeta").val("");
+                        $("#FechaExpiracion").val("");
+                        $("#Codigo").val("");
+                        $("#TipoPago").val("");
 
-            //Formulario para métodos de Pago
-            $.validator.addMethod("formatoFecha", function (value, element) {
-                return jQuery.validator.methods['date'].call(
-                    this, value, element
-                ) || value == ("MM/yy");
-            }, "La fecha debe ser mm/dd")
+                        if (result.success) {
+                            $.ajax({
+                                method: "GET",
+                                url: "/Usuario/PartialMetodoPago",
+                                data: { "idUsuario": idUsuario },
+                                success: function (result) {
 
-            $("#formMetodoPago").validate({
-                rules: {
-                    Proveedor: 'required',
-                    NumeroTarjeta: {
-                        required: true,
-                        minlength: 13,
-                        maxlength: 18,
-                        digits: true
-                    },
-                    FechaExpiracion: {
-                        required: true,
-                        formatoFecha: true
-                    },
-                    Codigo: {
-                        required: true,
-                        minlength: 3,
-                        maxlength: 3,
-                        digits: true
-                    },
-                    TipoPago: {
-                        required: true,
-                        min: 1
-                    }
-                },
-                messages: {
-                    Proveedor: 'Debes escribir el Proveedor Bancario',
-                    NumeroTarjeta: 'El número de tarjeta debe ser numérico y tener un mínimo de 13 y maxímo de 18 dígitos',
-                    FechaExpiracion: 'La fecha de expiración debe representar un dato en formato (mes/año)',
-                    Codigo: 'El Código debe ser numérico de 3 dígitos',
-                    TipoPago: 'Debe seleccionar un Método de Pago'
-                },
-                submitHandler: function (form, event) {
-                    event.preventDefault();
-
-                    var proveedor = $(form).find('[name="Proveedor"]').val();
-                    var numeroTarjeta = $(form).find('[name="NumeroTarjeta"]').val();
-                    var fechaExpiracion = $(form).find('[name="FechaExpiracion"]').val();
-                    var codigo = $(form).find('[name="Codigo"]').val();
-                    var idTipoPago = $(form).find('[name="TipoPago"]').val();
-
-                    $.ajax({
-                        method: "POST",
-                        url: "/Usuario/SaveMetodoPago",
-                        data: { proveedor, numeroTarjeta, fechaExpiracion, codigo, idTipoPago },
-                        success: function (result) {
-
-                            if (result.success) {
-                                $.ajax({
-                                    method: "GET",
-                                    url: "/Usuario/PartialMetodoPago",
-                                    data: { "idUsuario": idUsuario },
-                                    success: function (result) {
-
-                                        $("#infoMetodoPago").html("");
-                                        $("#infoMetodoPago").html(result);
-                                    },
-                                    error: function (xhr, status, error) {
-                                        console.log("error" + error, "no Error: " + xhr.status)
-                                    }
-                                });
-                            }
-                            
-                        },
-                        error: function (xhr, status, error) {
-                            console.log("error" + error, "no Error: " + xhr.status)
+                                    $("#infoMetodoPago").html("");
+                                    $("#infoMetodoPago").html(result);
+                                },
+                                error: function (xhr, status, error) {
+                                    console.log("error" + error, "no Error: " + xhr.status)
+                                }
+                            });
                         }
-                    });
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error" + error, "no Error: " + xhr.status)
+                    }
+                });
+            },
+        });
+
+        //Formulario para direcciones
+        $("#formDirrecion").validate({
+            errorClass: "error",
+            rules: {
+                Provincia: {
+                    required: true,
+                    min: 1
                 },
-            });
+                Canton: {
+                    required: true,
+                    min: 1
+                },
+                Distrito: {
+                    required: true,
+                    min: 1
+                },
+                Telefono: {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 8,
+                    digits: true
+                },
+                CodigoPostal: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 5,
+                    digits: true
+                },
+                Sennas: {
+                    required: true,
+                    minlength: 10
+                }
+            },
+            messages: {
+                Provincia: "Debe escoger una provincia",
+                Canton: "Debe escoger un Cantón",
+                Distrito: "Debe escoger un distrito",
+                Telefono: "El telefono debe ser numérico y de 8 dígitos",
+                CodigoPostal: "El código postal numérico y de 5 dígitos",
+                Sennas: "Las Señas debe poseer un mínimo de 10 carácteres"
+            },
+            submitHandler: function (form, event) {
+                event.preventDefault();
+
+                var provincia = $(form).find('[name="Provincia"]').val();
+                var canton = $(form).find('[name="Canton"]').val();
+                var distrito = $(form).find('[name="Distrito"]').val();
+                var telefono = $(form).find('[name="Telefono"]').val();
+                var codigoPostal = $(form).find('[name="CodigoPostal"]').val();
+                var sennas = $(form).find('[name="Sennas"]').val();
+
+                $.ajax({
+                    method: "POST",
+                    url: "/Usuario/SaveDireccion",
+                    data: { provincia, canton, distrito, telefono, codigoPostal, sennas },
+                    success: function (result) {
+
+                        $("#Provincia").val(-1);
+                        $("#Canton").val(-1);
+                        $("#Distrito").val(-1);
+                        $("#Telefono").val("");
+                        $("#CodigoPostal").val("");
+                        $("#Sennas").val("");
+
+                        if (result.success) {
+                            $.ajax({
+                                method: "GET",
+                                url: "/Usuario/PartialDireccion",
+                                data: { "idUsuario": idUsuario },
+                                success: function (result) {
+
+                                    $("#infoDireccion").html("");
+                                    $("#infoDireccion").html(result);
+                                },
+                                error: function (xhr, status, error) {
+                                    console.log("error" + error, "no Error: " + xhr.status)
+                                }
+                            });
+                        }
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error" + error, "no Error: " + xhr.status)
+                    }
+                });
+            }
         })
+
+        //Formulario para telefonos
+        $("#formTelefono").validate({
+            errorClass: "error",
+            rules: {
+                Numero: {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 8,
+                    digits: true
+                },
+                Tipo: {
+                    required: true,
+                    min: 1
+                }
+            },
+            messages: {
+                Numero: "El número debe ser numérico y de 8 dígitos",
+                Tipo: "Debe escoger un tipo de teléfono"
+            },
+            submitHandler: function (form, event) {
+                event.preventDefault();
+
+                var numero = $(form).find('[name="Numero"]').val();
+                var tipo = $(form).find('[name="Tipo"]').val();
+
+                $.ajax({
+                    method: "POST",
+                    url: "/Usuario/SaveTelefono",
+                    data: { numero, tipo },
+                    success: function (result) {
+
+                        $("#Numero").val("");
+                        $("#Tipo").val("");
+
+                        if (result.success) {
+                            $.ajax({
+                                method: "GET",
+                                url: "/Usuario/PartialTelefonos",
+                                data: { "idUsuario": idUsuario },
+                                success: function (result) {
+
+                                    $("#infoTelefonos").html("");
+                                    $("#infoTelefonos").html(result);
+                                },
+                                error: function (xhr, status, error) {
+                                    console.log("error" + error, "no Error: " + xhr.status)
+                                }
+                            });
+                        }
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error" + error, "no Error: " + xhr.status)
+                    }
+                });
+            }
+        })
+    });
+
 
         $("#SelectedRol").on('change', function () {
 
