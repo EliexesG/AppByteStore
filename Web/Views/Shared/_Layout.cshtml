@@ -31,7 +31,7 @@
             @RenderBody()
         </main>
     </div>
-    
+
     @Html.Partial("_Footer")
 
     @Scripts.Render("~/bundles/jquery")
@@ -41,10 +41,13 @@
 
     @Scripts.Render("~/bundles/sweetalert")
 
-    @if (ViewBag.NotificationMessage != null)
+
+    @if (TempData["NotificationMessage"] != null)
     {
-        <script>
-            @Html.Raw(ViewBag.NotificationMessage)
+        <script type="text/javascript">
+            var script = "@Html.Raw(TempData["NotificationMessage"])";
+            console.log(script)
+            eval(script);
         </script>
     }
 </body>

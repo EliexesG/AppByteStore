@@ -26,6 +26,11 @@ namespace Web.Controllers
 
             try
             {
+                if (((Usuario)Session["User"]).MetodoPago.Count() <= 0 || ((Usuario)Session["User"]).Direccion.Count() <= 0)
+                {
+                    return RedirectToAction("UnAuthorized", "Login");
+                }
+
                 Usuario user = Session["User"] as Usuario;
                 IServicePedido _ServicePedido = new ServicePedido();
                 lista = _ServicePedido.GetPedidoByCliente(user.IdUsuario);
@@ -64,6 +69,11 @@ namespace Web.Controllers
         {
             IEnumerable<Pedido> lista = new List<Pedido>();
 
+            if (((Usuario)Session["User"]).Direccion.Count() <= 0)
+            {
+                return RedirectToAction("UnAuthorized", "Login");
+            }
+
             try
             {
                 Usuario user = Session["User"] as Usuario;
@@ -88,7 +98,12 @@ namespace Web.Controllers
 
             try
             {
-                if(id == null)
+                if (((Usuario)Session["User"]).MetodoPago.Count() <= 0 || ((Usuario)Session["User"]).Direccion.Count() <= 0)
+                {
+                    return RedirectToAction("UnAuthorized", "Login");
+                }
+
+                if (id == null)
                 {
                     return RedirectToAction("Index");
                 }
@@ -161,7 +176,13 @@ namespace Web.Controllers
         [CustomAuthorize((int)Roles.Cliente)]
         public ActionResult Carrito ()
         {
-            if(TempData.ContainsKey("NotificationMessage"))
+
+            if (((Usuario)Session["User"]).MetodoPago.Count() <= 0 || ((Usuario)Session["User"]).Direccion.Count() <= 0)
+            {
+                return RedirectToAction("UnAuthorized", "Login");
+            }
+
+            if (TempData.ContainsKey("NotificationMessage"))
             {
                 ViewBag.NotificationMessage = TempData["NotificationMessage"];
             }
@@ -258,6 +279,8 @@ namespace Web.Controllers
         {
             try
             {
+                Pedido oPedido = null;
+
                 if(Web.Utils.Carrito.Instancia.Items.Count() <= 0)
                 {
                     TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Carrito", "Seleccione los productos a ordenar", SweetAlertMessageType.warning);
@@ -288,11 +311,16 @@ namespace Web.Controllers
                         };
 
                         IServicePedido _ServicePedido = new ServicePedido();
-                        _ServicePedido.Save(pedido);
+                        oPedido = _ServicePedido.Save(pedido);
                     }
 
-                    Utils.Carrito.Instancia.EliminarCarrito();
-                    TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Pedido", "Pedido guardado satisfactoriamente!", SweetAlertMessageType.success);
+                    if(oPedido != null)
+                    {
+                        Utils.Carrito.Instancia.EliminarCarrito();
+                        TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Pedido", "Pedido guardado satisfactoriamente!", SweetAlertMessageType.success);
+                        return RedirectToAction($"Details/{oPedido.IdCompraEncabezado}", "Pedido");
+                    }
+
                     return RedirectToAction("Carrito");
                 }
             }

@@ -214,7 +214,7 @@
                     </div>
 
                     <div class="col-md-12 mb-4">
-                        <label for="Sennas" class="control-label">Sennas:</label>
+                        <label for="Sennas" class="control-label">Señas:</label>
                         <div class="form-group">
                             <textarea id="Sennas" name="Sennas" class="form-control"></textarea>
                             <span class="text-danger" id="Sennas-error"></span>
@@ -321,6 +321,8 @@
 <script type="text/javascript">
 
 
+    var idProvincia = -1;
+
     $(document).ready(function () {
 
         var idUsuario = @Html.Raw(Json.Encode(Model.IdUsuario));
@@ -340,7 +342,6 @@
         }
 
         var idUsuario = @Html.Raw(Json.Encode(Model.IdUsuario));
-        $("#loaderSpinner").removeClass("d-none");
 
         $.ajax({
             method: "GET",
@@ -383,7 +384,6 @@
                 console.log("error" + error, "no Error: " + xhr.status)
             }
         });
-        $("#loaderSpinner").addClass("d-none");
 
         //Formulario para métodos de Pago
         $.validator.addMethod("formatoFecha", function (value, element) {
@@ -629,6 +629,31 @@
                 });
             }
         })
+
+        $.ajax({
+            method: "GET",
+            url: "/Usuario/ObtenerProvincias",
+            data: {},
+            success: function (result) {
+
+                var html = '<option value="-1" class="active provincia">Provincia</option>'
+
+                var data = (result.Result.replace('{', "").replace('}', "").split(","));
+
+                data.forEach(provincia => {
+
+                    provincia = provincia.split(":")
+                    html += `<option value=${provincia[0]} class="active provincia">${provincia[1].replace(/\"+/g, "")}</option >`
+                })
+
+                $("#Provincia").html("");
+                $("#Provincia").html(html);
+            },
+            error: function (xhr, status, error) {
+                console.log("error" + error, "no Error: " + xhr.status)
+
+            }
+        })
     });
 
 
@@ -652,36 +677,6 @@
                 }
             }
 
-        });
-
-
-        var idProvincia = -1;
-
-        $(document).ready(function () {
-            $.ajax({
-                method: "GET",
-                url: "/Usuario/ObtenerProvincias",
-                data: {},
-                success: function (result) {
-
-                    var html = '<option value="-1" class="active provincia">Provincia</option>'
-
-                    var data = (result.Result.replace('{', "").replace('}', "").split(","));
-
-                    data.forEach(provincia => {
-
-                        provincia = provincia.split(":")
-                        html += `<option value=${provincia[0]} class="active provincia">${provincia[1].replace(/\"+/g, "")}</option >`
-                    })
-
-                    $("#Provincia").html("");
-                    $("#Provincia").html(html);
-                },
-                error: function (xhr, status, error) {
-                    console.log("error" + error, "no Error: " + xhr.status)
-
-                }
-            })
         });
 
         $("#Provincia").on("change", function () {

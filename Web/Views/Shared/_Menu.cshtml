@@ -1,4 +1,39 @@
 ﻿
+@functions {
+    public bool PerfilCompleto()
+    {
+        bool UsuarioPermitido = Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente", "Vendedor" });
+        bool PerfilCompleto = true;
+
+        if (UsuarioPermitido)
+        {
+
+            Infraestructure.Models.Usuario usuario = Session["User"] as Infraestructure.Models.Usuario;
+
+            if (ContieneRol(usuario, 2) && ContieneRol(usuario, 3))
+            {
+                PerfilCompleto = usuario.MetodoPago.Count() > 0 && usuario.Direccion.Count() > 0;
+            }
+            else if (ContieneRol(usuario, 3) && !ContieneRol(usuario, 2))
+            {
+                PerfilCompleto = usuario.MetodoPago.Count() > 0 && usuario.Direccion.Count() > 0;
+            }
+            else if (ContieneRol(usuario, 2) && !ContieneRol(usuario, 3))
+            {
+                PerfilCompleto = usuario.Direccion.Count() > 0;
+            }
+
+        }
+
+        return PerfilCompleto;
+    }
+
+    private bool ContieneRol (Infraestructure.Models.Usuario usuario, int rol)
+    {
+        return usuario.Rol.Where(r => r.IdRol == rol).ToList().Count() > 0;
+    }
+}
+
 <nav class="navbar navbar-expand-lg bg-primary position-fixed z-3 w-100" data-bs-theme="dark">
     <div class="container-fluid">
         @*Helper: Texto del usuario, Accion a llamar, Nombre controlador, parámetros, Atributos HTML*@
@@ -14,7 +49,7 @@
                 <li class="nav-item me-3">
                     <a href="@Url.Action("Index","Producto")" class="nav-link fw-bold"><i class="fa-solid fa-gamepad"></i> Productos</a>
                 </li>
-                @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente", "Vendedor" }) && (((Infraestructure.Models.Usuario)Session["User"]).MetodoPago.Count() <= 0 || ((Infraestructure.Models.Usuario)Session["User"]).Direccion.Count() <= 0))
+                @if (!PerfilCompleto())
                 {
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
@@ -115,7 +150,7 @@
                     }
                 }
             </ul>
-            
+
         </div>
     </div>
 </nav>

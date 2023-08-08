@@ -25,7 +25,9 @@ namespace Infraestructure.Repositories
                     usuario = ctx.Usuario.
                               Include(u => u.Rol).
                               Include(u => u.MetodoPago).
+                              Include(u => u.MetodoPago.Select(m => m.TipoPago)).
                               Include(u => u.Direccion).
+                              Include(u => u.Telefono).
                               Where(p => p.IdUsuario == id).
                               FirstOrDefault<Usuario>();
                 }

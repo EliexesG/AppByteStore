@@ -20,7 +20,7 @@ namespace Infraestructure.Repositories
             {
                 using (var ctx = new ByteStoreContext())
                 {
-                    metodoPago = ctx.MetodoPago.Where(m => m.IdMetodoPago == id).FirstOrDefault();
+                    metodoPago = ctx.MetodoPago.Include(m => m.TipoPago).Where(m => m.IdMetodoPago == id).FirstOrDefault();
                     metodoPago.NumeroTarjeta = UTF8Encoding.UTF8.GetBytes(Encrypter.Desencrypt(metodoPago.NumeroTarjeta));
                 }
             }
@@ -51,6 +51,7 @@ namespace Infraestructure.Repositories
 
                     lista = ctx.MetodoPago
                             .Include(m => m.Usuario)
+                            .Include(m => m.TipoPago)
                             .Include(m => m.TipoPago)
                             .Where(m => m.Usuario.IdUsuario == idUsuario)
                             .ToList();
