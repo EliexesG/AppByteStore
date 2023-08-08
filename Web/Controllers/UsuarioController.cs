@@ -83,6 +83,7 @@ namespace Web.Controllers
         public JsonResult SaveTelefono(string numero, int tipo)
         {
             IServiceTelefono _ServiceTelefono = new ServiceTelefono();
+
             bool resultado = false;
 
             try
@@ -100,6 +101,7 @@ namespace Web.Controllers
 
                 if (telefono != null)
                 {
+                    ((Usuario)Session["User"]).Telefono.Add(telefono);
                     resultado = true;
                 }
             }
@@ -138,6 +140,7 @@ namespace Web.Controllers
         public JsonResult SaveMetodoPago (string proveedor, string numeroTarjeta, string fechaExpiracion, string codigo, int idTipoPago)
         {
             IServiceMetodoPago _ServiceMetodoPago = new ServiceMetodoPago();
+
             bool resultado = false;
 
             try
@@ -159,6 +162,7 @@ namespace Web.Controllers
 
                 if (metodoPago != null)
                 {
+                    ((Usuario)Session["User"]).MetodoPago.Add(metodoPago);
                     resultado = true;
                 }
             }
@@ -209,6 +213,7 @@ namespace Web.Controllers
         public JsonResult SaveDireccion(int provincia, int canton, int distrito, string telefono, string codigoPostal, string sennas)
         {
             IServiceDireccion _ServiceDireccion = new ServiceDireccion();
+
             bool resultado = false;
 
             try
@@ -230,6 +235,7 @@ namespace Web.Controllers
 
                 if (direccion != null)
                 {
+                    ((Usuario)Session["User"]).Direccion.Add(direccion);
                     resultado = true;
                 }
             }
@@ -386,15 +392,16 @@ namespace Web.Controllers
             {
 
                 Usuario usuarioVerificacionRol = _ServiceUsuario.GetUsuarioByID(pUsuario.IdUsuario);
+                bool esEditar = usuarioVerificacionRol != null;
                 
 
-                if (usuarioVerificacionRol != null)
+                if (esEditar)
                 {
                     bool esVendedor = usuarioVerificacionRol.Rol.Where(u => u.IdRol == 2).FirstOrDefault() != null;
                     if (esVendedor && !selectedRol.Contains("2") && _ServiceProducto.GetProductoPorVendedor(usuarioVerificacionRol.IdUsuario).Count() > 0)
                     {
-                        ViewBag.NotificationMessage = Util.SweetAlertHelper.Mensaje("Login",
-                            "El usuario posee Rol Vendedor, no se puede eliminar", Util.SweetAlertMessageType.warning);
+                        TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Cuidado",
+                            "El usuario posee productos a la venta, no se puede eliminar el Rol de Vendedor", Util.SweetAlertMessageType.warning);
                         return RedirectToAction($"Update/{pUsuario.IdUsuario}", "Usuario");
                     }
                 }
@@ -407,6 +414,22 @@ namespace Web.Controllers
                 {
 
                     oUsuario = _ServiceUsuario.Guardar(pUsuario, selectedRol);
+
+                    if(esEditar)
+                    {
+                        Session["User"] = oUsuario;
+                        TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Actualización",
+                            "Información de usuario actualizada correctamente", Util.SweetAlertMessageType.success);
+                    }
+                    else
+                    {
+
+                        TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Registro",
+                            "Usuario registrado correctamente", Util.SweetAlertMessageType.success);
+                    }
+
+
+
                     return RedirectToAction("Index", "Home");
                 }
                 else

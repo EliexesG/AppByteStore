@@ -39,7 +39,7 @@ namespace Web.Controllers
                         Log.Info($"Accede{oUsuario.Nombre} {oUsuario.PrimerApellido} {oUsuario.SegundoApellido} " +
                             $"con los roles {oUsuario.Rol.FirstOrDefault().IdRol}");
 
-                        ViewBag.NotificationMessage = Util.SweetAlertHelper.Mensaje("Login",
+                        TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Login",
                             "Usuario autenticado correctamente", Util.SweetAlertMessageType.success);
 
                         return RedirectToAction("Index", "Home");
@@ -47,7 +47,7 @@ namespace Web.Controllers
                     else
                     {
                         Log.Warn($"Intento de inicio de secion{login.CorreoElectronico}");
-                        ViewBag.NotificationMessage = Util.SweetAlertHelper.Mensaje("Login",
+                        TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Login",
                             "Usuario no válido", Util.SweetAlertMessageType.warning);
                     }
                 }

@@ -77,6 +77,12 @@ namespace Web.Controllers
             IEnumerable<Producto> lista = null;
             try
             {
+
+                if (((Usuario)Session["User"]).Direccion.Count() <= 0)
+                {
+                    return RedirectToAction("UnAuthorized", "Login");
+                }
+
                 //Instancia 
                 Usuario user = Session["User"] as Usuario;
                 IServiceProducto _ServiceProducto = new ServiceProducto();
@@ -244,7 +250,7 @@ namespace Web.Controllers
             return PartialView("_PartialCatalogoProducto", lista);
         }
 
-        public PartialViewResult OrdenarxPrecio (int tipoOrden)
+        public PartialViewResult OrdenarxPrecio(int tipoOrden)
         {
             IEnumerable<Producto> lista = null;
 
@@ -382,6 +388,12 @@ namespace Web.Controllers
         [CustomAuthorize((int)Roles.Vendedor, (int)Roles.Administrador)]
         public ActionResult Create()
         {
+
+            if (((Usuario)Session["User"]).Direccion.Count() <= 0)
+            {
+                return RedirectToAction("UnAuthorized", "Login");
+            }
+
             //Para cargar la lista de categorías
             IServiceCategoria _ServiceCategoria = new ServiceCategoria();
             ViewBag.listaCategoria = new SelectList(_ServiceCategoria.GetCategoria(), "IdCategoria", "Descripcion");
@@ -400,6 +412,11 @@ namespace Web.Controllers
         [CustomAuthorize((int)Roles.Vendedor, (int)Roles.Administrador)]
         public ActionResult Update(int? id)
         {
+
+            if (((Usuario)Session["User"]).Direccion.Count() <= 0)
+            {
+                return RedirectToAction("UnAuthorized", "Login");
+            }
 
             if (id == null)
             {
@@ -432,6 +449,7 @@ namespace Web.Controllers
         {
             IServiceProducto _ServiceProducto = new ServiceProducto();
             Producto oProducto = null;
+            bool esEditar = producto.IdProducto != 0;
 
             try
             {
@@ -466,21 +484,21 @@ namespace Web.Controllers
 
                     if (oProducto != null)
                     {
-                        if (producto.IdProducto != 0)
+                        if (esEditar)
                         {
-                            ViewBag.NotificationMessage = Util.SweetAlertHelper.Mensaje("Actualizado",
+                            TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Actualizado",
                             "Producto Actualizado Correctamente", Util.SweetAlertMessageType.success);
                         }
                         else
                         {
-                            ViewBag.NotificationMessage = Util.SweetAlertHelper.Mensaje("Creado",
+                            TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Creado",
                             "Producto Creado Correctamente", Util.SweetAlertMessageType.success);
                         }
 
                     }
                     else
                     {
-                        ViewBag.NotificationMessage = Util.SweetAlertHelper.Mensaje("Error",
+                        TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Error",
                            "Verifique de Nuevo", Util.SweetAlertMessageType.error);
                     }
                 }
