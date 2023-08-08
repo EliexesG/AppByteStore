@@ -65,8 +65,11 @@
                                        border: none;">
                         </button>
                     }
+                <div class="bg-white rounded-4">
                     <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.FotoProducto.FirstOrDefault().Foto)"
-                         alt="Imagen @Html.DisplayFor(modelItem => item.Nombre)" class="card-img" />
+                         alt="Imagen @Html.DisplayFor(modelItem => item.Nombre)" class="card-img" style="object-fit: scale-down;" />
+                </div>
+                    
                     <div class="card-body">
                         <div class="card-body">
                             <h4 class="card-title text-white">@Html.DisplayFor(modelItem => item.Nombre)</h4>

@@ -449,6 +449,7 @@ namespace Web.Controllers
         {
             IServiceProducto _ServiceProducto = new ServiceProducto();
             Producto oProducto = null;
+            bool esEditar = producto.IdProducto != 0;
 
             try
             {
@@ -483,21 +484,21 @@ namespace Web.Controllers
 
                     if (oProducto != null)
                     {
-                        if (producto.IdProducto != 0)
+                        if (esEditar)
                         {
-                            ViewBag.NotificationMessage = Util.SweetAlertHelper.Mensaje("Actualizado",
+                            TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Actualizado",
                             "Producto Actualizado Correctamente", Util.SweetAlertMessageType.success);
                         }
                         else
                         {
-                            ViewBag.NotificationMessage = Util.SweetAlertHelper.Mensaje("Creado",
+                            TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Creado",
                             "Producto Creado Correctamente", Util.SweetAlertMessageType.success);
                         }
 
                     }
                     else
                     {
-                        ViewBag.NotificationMessage = Util.SweetAlertHelper.Mensaje("Error",
+                        TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Error",
                            "Verifique de Nuevo", Util.SweetAlertMessageType.error);
                     }
                 }
