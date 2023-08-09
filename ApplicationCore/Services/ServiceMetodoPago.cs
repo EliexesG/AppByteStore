@@ -37,5 +37,10 @@ namespace ApplicationCore.Services
         {
             return repository.mostradorNumeroTarjeta(numeroTarjeta);
         }
+
+        public string mostradorCodigoTarjeta(string codigo)
+        {
+            return repository.mostradorCodigoTarjeta(codigo);
+        }
     }
 }

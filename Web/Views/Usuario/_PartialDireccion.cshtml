@@ -36,7 +36,7 @@
                     @Html.DisplayFor(model => Model.ElementAt(i).CodigoPostal)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => Model.ElementAt(i).Telefono)
+                    +506 @string.Format("{0:####-####}", Convert.ToInt32(Model.ElementAt(i).Telefono))
                 </td>
             </tr>
         }

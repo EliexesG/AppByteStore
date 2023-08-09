@@ -15,7 +15,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => tel.Numero)
+                    +506 @string.Format("{0:####-####}", Convert.ToInt32(tel.Numero))
                 </td>
                 <td>
                     @if (tel.Tipo == false)
