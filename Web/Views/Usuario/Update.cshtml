@@ -129,7 +129,7 @@
                     <div class="col-md-6 mb-4">
                         <label for="Numero" class="control-label">Número:</label>
                         <div class="form-group">
-                            <input type="text" id="Numero" name="Numero" class="form-control" />
+                            <input type="text" id="Numero" name="Numero" class="form-control" placeholder="85214398" />
                             <span class="text-danger" id="Numero-error"></span>
                         </div>
                     </div>
@@ -199,7 +199,7 @@
                         <div class="col-md-4 mb-4 me-4">
                             <label for="Telefono" class="control-label">Teléfono:</label>
                             <div class="form-group">
-                                <input type="text" id="Telefono" name="Telefono" class="form-control" />
+                                <input type="text" id="Telefono" name="Telefono" class="form-control" placeholder="24224321" />
                                 <span class="text-danger" id="Telefono-error"></span>
                             </div>
                         </div>
@@ -207,7 +207,7 @@
                         <div class="col-md-4 mb-4">
                             <label for="CodigoPostal" class="control-label">Código Postal:</label>
                             <div class="form-group">
-                                <input type="text" id="CodigoPostal" name="CodigoPostal" class="form-control" />
+                                <input type="text" id="CodigoPostal" name="CodigoPostal" class="form-control" placeholder="20101" />
                                 <span class="text-danger" id="CodigoPostal-error"></span>
                             </div>
                         </div>
@@ -216,7 +216,7 @@
                     <div class="col-md-12 mb-4">
                         <label for="Sennas" class="control-label">Señas:</label>
                         <div class="form-group">
-                            <textarea id="Sennas" name="Sennas" class="form-control"></textarea>
+                            <textarea id="Sennas" name="Sennas" class="form-control" placeholder="Detras de la Mariana Merced."></textarea>
                             <span class="text-danger" id="Sennas-error"></span>
                         </div>
                     </div>
@@ -251,7 +251,7 @@
                     <div class="col-md-4 mb-4">
                         <label for="Proveedor" class="control-label">Proveedor Bancario:</label>
                         <div class="form-group">
-                            <input type="text" id="Proveedor" name="Proveedor" class="form-control" />
+                            <input type="text" id="Proveedor" name="Proveedor" class="form-control" placeholder="BAC" />
                             <span class="text-danger metodopago-error" id="Proveedor-error"></span>
                         </div>
                     </div>
@@ -259,7 +259,7 @@
                     <div class="col-md-4 mb-4">
                         <label for="NumeroTarjeta" class="control-label">Número de Tarjeta:</label>
                         <div class="form-group">
-                            <input type="text" id="NumeroTarjeta" name="NumeroTarjeta" class="form-control" />
+                            <input type="text" id="NumeroTarjeta" name="NumeroTarjeta" class="form-control" placeholder="XXXXXXXXXXXXXXXX" />
                             <span class="text-danger metodopago-error" id="NumeroTarjeta-error"></span>
                         </div>
                     </div>
@@ -267,7 +267,7 @@
                     <div class="col-md-4 mb-4">
                         <label for="FechaExpiracion" class="control-label">Fecha de Expiración:</label>
                         <div class="form-group">
-                            <input type="text" id="FechaExpiracion" name="FechaExpiracion" class="form-control" />
+                            <input type="text" id="FechaExpiracion" name="FechaExpiracion" class="form-control" placeholder="12/24" />
                             <span class="text-danger metodopago-error" id="FechaExpiracion-error"></span>
                         </div>
                     </div>
@@ -275,7 +275,7 @@
                     <div class="col-md-4 mb-4">
                         <label for="Codigo" class="control-label">Código:</label>
                         <div class="form-group">
-                            <input type="text" id="Codigo" name="Codigo" class="form-control" />
+                            <input type="text" id="Codigo" name="Codigo" class="form-control" placeholder="XXX" />
                             <span class="text-danger metodopago-error" id="Codigo-error"></span>
                         </div>
                     </div>
@@ -400,8 +400,8 @@
                 },
                 NumeroTarjeta: {
                     required: true,
-                    minlength: 13,
-                    maxlength: 18,
+                    minlength: 16,
+                    maxlength: 16,
                     digits: true,
                 },
                 FechaExpiracion: {
@@ -421,7 +421,7 @@
             },
             messages: {
                 Proveedor: 'Debes escribir el Proveedor Bancario',
-                NumeroTarjeta: 'El número de tarjeta debe ser numérico y tener un mínimo de 13 y maxímo de 18 dígitos',
+                NumeroTarjeta: 'El número de tarjeta debe ser numérico y tener 16 dígitos',
                 FechaExpiracion: 'La fecha de expiración debe representar un dato en formato (mes/año)',
                 Codigo: 'El Código debe ser numérico de 3 dígitos',
                 TipoPago: 'Debe seleccionar un Método de Pago',

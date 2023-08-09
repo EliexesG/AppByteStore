@@ -29,7 +29,7 @@
                     @Html.DisplayFor(model => metodo.FechaExpiracion)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => metodo.Codigo)
+                    @service.mostradorCodigoTarjeta(metodo.Codigo)
                 </td>
                 <td>
                     @Html.DisplayFor(model => metodo.TipoPago.Descripcion)

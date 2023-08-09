@@ -28,7 +28,7 @@
         return PerfilCompleto;
     }
 
-    private bool ContieneRol (Infraestructure.Models.Usuario usuario, int rol)
+    private bool ContieneRol(Infraestructure.Models.Usuario usuario, int rol)
     {
         return usuario.Rol.Where(r => r.IdRol == rol).ToList().Count() > 0;
     }
@@ -37,7 +37,7 @@
 <nav class="navbar navbar-expand-lg bg-primary position-fixed z-3 w-100" data-bs-theme="dark">
     <div class="container-fluid">
         @*Helper: Texto del usuario, Accion a llamar, Nombre controlador, parámetros, Atributos HTML*@
-        <a href="@Url.Action("Index","Home")" class="navbar-brand"><img alt="icon" src="~/img/Logo_completo.png" /></a>
+        <a href="@Url.Action("Index","Home")" class="navbar-brand"><img class="rounded-4 shadow" style="max-height:55px; max-width:150px;" alt="icon" src="~/img/Logo_completo.png" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -76,8 +76,15 @@
                         </div>
                     </li>
                     <li class="nav-item ms-md-5 d-flex align-items-center justify-content-center">
-                        <div class="bg-danger rounded-4 p-1 pe-3 ps-3">
-                            <h5 class="text-white text-center"><i class="fa-solid fa-warning text-white"></i> Para poder realizar cualquier acción debe completar perfil</h5>
+                        <button class="rounded-5 fa-solid fa-cart-shopping fa-2xl m-3 shadow-lg text-dark position-absolute text-center ordenarProducto"
+                                style="box-shadow: 0px 5px 15px 2px rgba(0, 0, 0, 0.5) !important;
+                                       top: -5px; left: -5px;
+                                       padding: 25px 12px 25px 10px;
+                                       background-color: rgba(255, 255, 255, 255);
+                                       border: none;">
+                        </button>
+                        <div class="bg-danger rounded-4 p-1 pe-3 ps-3" id="advertenciaMenu">
+                            <h5 class="text-white text-center"><i class="fa-solid fa-warning text-white"></i> ¡Para poder realizar cualquier acción debe completar perfil!</h5>
                         </div>
                     </li>
                 }
@@ -142,9 +149,11 @@
                     </li>
                     if (!Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
                     {
-                        <li class="nav-item ms-md-5 d-flex align-items-center justify-content-center">
+
+                        <li class="nav-item ms-md-5 d-flex align-items-center justify-content-center" id="advertenciaMenu">
                             <div class="bg-danger rounded-4 p-1 pe-3 ps-3">
-                                <h5 class="text-white text-center"><i class="fa-solid fa-warning text-white"></i> No puede ordenar si no es un cliente registrado</h5>
+                                <h5 class="text-white text-center"><i class="fa-solid fa-warning text-white"></i> ¡No puedes ordenar si no eres un cliente registrado!</h5>
+
                             </div>
                         </li>
                     }

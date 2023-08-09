@@ -145,22 +145,41 @@ namespace Infraestructure.Repositories
 
         public string mostradorNumeroTarjeta(byte[] numeroTarjeta)
         {
-            string numATarjeta = UTF8Encoding.UTF8.GetString(numeroTarjeta);
-            string mostrarNumero = "";
 
-            for (int i = 0; i < numATarjeta.Length; i++)
+            try
             {
-                if(numATarjeta.Length - i <= 4)
+                string numTarjeta = UTF8Encoding.UTF8.GetString(numeroTarjeta);
+                string mostrarNumero = "";
+
+                for (int i = 0; i < numTarjeta.Length; i++)
                 {
-                    mostrarNumero += numATarjeta[1];
+                    if (numTarjeta.Length - i <= 4)
+                    {
+
+                        mostrarNumero += (numTarjeta.Length - i) == 4 ? $" {numTarjeta[i]}" : numTarjeta[i].ToString();
+
+                    }
+                    else
+                    {
+
+                        mostrarNumero += mostrarNumero.Length % 4 == 0 && mostrarNumero.Length != 0 ? " X" : "X";
+                    }
                 }
-                else
-                {
-                    mostrarNumero += "*";
-                }
+
+                return mostrarNumero;
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
             }
 
-            return mostrarNumero;
+        }
+
+        public string mostradorCodigoTarjeta (string codigo)
+        {
+            return "XX" + codigo[2];
         }
     }
 }
