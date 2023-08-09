@@ -37,10 +37,11 @@
 
 </div>
 
+<hr class="fw-bold text-white" />
+
 @if (Model.Count() > 0)
 {
     <h3 class="text-center text-light fw-bold mt-4">Productos Populares</h3>
-    <hr class="fw-bold" />
 
     <div id="infoProductosCarousel" class="carousel">
         <div class="carousel-inner">
@@ -50,9 +51,9 @@
 
                     <div class="card border-dark bg-gradien rounded-4" style="background-color: rgba(0, 43, 54, 0.4);">
                         <div class="bg-white rounded-4 img-wrapper">
-                            <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.FotoProducto.FirstOrDefault().Foto)" 
-                                 class="d-block w-100" 
-                                 alt="Imagen @Html.DisplayFor(modelItem => item.Nombre)"> 
+                            <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.FotoProducto.FirstOrDefault().Foto)"
+                                 class="d-block w-100"
+                                 alt="Imagen @Html.DisplayFor(modelItem => item.Nombre)">
                         </div>
                         <div class="card-body">
                             <h5 class="card-title text-white">@Html.DisplayFor(modelItem => item.Nombre)</h5>
@@ -91,7 +92,6 @@
 
     .carousel-inner {
         padding: 1em;
-        justify-content
     }
 
     .card {
@@ -151,8 +151,8 @@
 </style>
 
 @section Scripts {
-    
-    <script type="text/javascript" >
+
+    <script type="text/javascript">
 
         var infoProductosCarousel = document.querySelector(
             "#infoProductosCarousel"
@@ -185,9 +185,9 @@
         } else {
             $(infoProductosCarousel).addClass("slide");
         }
-        
 
-    </script>    
-    
+
+    </script>
+
 }
 
