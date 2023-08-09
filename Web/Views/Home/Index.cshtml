@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Infraestructure.Models.Producto>
+
+@{
     ViewBag.Title = "ByteStore - Todo en Gaming";
 }
 
@@ -19,7 +21,7 @@
         </div>
     </a>
 
-    @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor", "Cliente" }))
+    @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }))
     {
         <a href="@Url.Action("Create", "Producto")" class="col-md text-decoration-none">
             <div class="card text-white mb-3 p-3 rounded-4 bg-info hover">
@@ -35,53 +37,157 @@
 
 </div>
 
-<h3 class="text-center text-light fw-bold mt-4">Categorías Disponibles Principales</h3>
-<hr class="fw-bold" />
+@if (Model.Count() > 0)
+{
+    <h3 class="text-center text-light fw-bold mt-4">Productos Populares</h3>
+    <hr class="fw-bold" />
 
-<div class="row">
+    <div id="infoProductosCarousel" class="carousel">
+        <div class="carousel-inner h-100">
+            @foreach (var item in Model)
+            {
+                <div class="carousel-item active">
 
-    <a href="@Url.Action("", "Producto")" class="col-sm-6 col-md-3 text-decoration-none">
-        <div class="card text-white mb-3 p-3 rounded-4 bg-warning hover">
-            <i class="fa-solid fa-gamepad fa-2xl m-3"></i>
-            <div class="card-body">
-                <h3 class="card-title">Juegos de Consola</h3>
-                <p class="card-text">Explicación categoría</p>
-            </div>
+                    <div class="card border-dark bg-gradien rounded-4" style="background-color: rgba(0, 43, 54, 0.4);">
+                        <div class="bg-white rounded-4 img-wrapper">
+                            <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.FotoProducto.FirstOrDefault().Foto)" 
+                                 class="d-block w-100" 
+                                 alt="Imagen @Html.DisplayFor(modelItem => item.Nombre)"> 
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-white">@Html.DisplayFor(modelItem => item.Nombre)</h5>
+                            <p class="card-text text-white">
+                                @Html.DisplayNameFor(model => model.Stock):
+                                @if (@item.Stock > 0)
+                                {
+                                    <span class="card-text" style="color: rgb(50,205,50);">Disponible</span>
+                                }
+                                else
+                                {
+                                    <span class="card-text" style="color:red">Agotado</span>
+                                }
+                            </p>
+                            <p class="card-title text-white"> @Html.DisplayNameFor(model => model.Precio): @Html.DisplayFor(modelItem => item.Precio)</p>
 
+                            <hr class="mb-4" />
+                            <a href="@Url.Action("Details", "Producto", new {id = item.IdProducto})" class="btn btn-info"><i class="fa-regular fa-note-sticky"></i> Ver más</a>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
-    </a>
+        <button class="carousel-control-prev" type="button" data-bs-target="#infoProductosCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#infoProductosCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+}
 
-    <a href="@Url.Action("", "Producto")" class="col-sm-6  col-md-3 text-decoration-none">
-        <div class="card text-white mb-3 p-3 rounded-4 bg-warning hover">
-            <i class="fa-solid fa-desktop fa-2xl m-3"></i>
-            <div class="card-body">
-                <h3 class="card-title">Juegos de PC</h3>
-                <p class="card-text">Explicación categoría</p>
-            </div>
+<style type="text/css">
 
-        </div>
-    </a>
+    .carousel-inner {
+        padding: 1em;
+        justify-content
+    }
 
-    <a href="@Url.Action("", "Producto")" class=" col-sm-6 col-md-3 text-decoration-none">
-        <div class="card text-white mb-3 p-3 rounded-4 bg-warning hover">
-            <i class="fa-solid fa-headset fa-2xl m-3"></i>
-            <div class="card-body">
-                <h3 class="card-title">Accesorios Consola</h3>
-                <p class="card-text">Explicación categoría</p>
-            </div>
+    .card {
+        margin: 0 0.5em;
+        box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+        border: none;
+    }
 
-        </div>
-    </a>
+    .carousel-control-prev,
+    .carousel-control-next {
+        background-color: #e1e1e1;
+        width: 6vh;
+        height: 6vh;
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 
-    <a href="@Url.Action("", "Producto")" class="col-sm-6 col-md-3 text-decoration-none">
-        <div class="card text-white mb-3 p-3 rounded-4 bg-warning hover">
-            <i class="fa-solid fa-keyboard fa-2xl m-3"></i>
-            <div class="card-body">
-                <h3 class="card-title">Accesorios PC</h3>
-                <p class="card-text">Explicación categoría</p>
-            </div>
+    .card .img-wrapper, .card .img-wrapper img {
+        border-radius: 15px;
+    }
 
-        </div>
-    </a>
+    @@media (min-width: 768px) {
+        .carousel-item {
+            margin-right: 0;
+            flex: 0 0 calc(100% / 3);
+            display: block;
+        }
 
-</div>
+        .carousel-inner {
+            display: flex;
+        }
+
+        .card .img-wrapper, .card .img-wrapper img {
+            border-radius: 15px;
+        }
+    }
+
+    .card .img-wrapper {
+        max-width: 100%;
+        height: 13em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card img {
+        max-height: 100%;
+        object-fit: scale-down;
+    }
+
+    @@media (max-width: 767px) {
+        .card .img-wrapper {
+            height: 17em;
+        }
+    }
+</style>
+
+@section Scripts {
+    
+    <script type="text/javascript" >
+
+        var infoProductosCarousel = document.querySelector(
+            "#infoProductosCarousel"
+        );
+        if (window.matchMedia("(min-width: 768px)").matches) {
+            var carousel = new bootstrap.Carousel(infoProductosCarousel, {
+                interval: false,
+            });
+            var carouselWidth = $(".carousel-inner")[0].scrollWidth;
+            var cardWidth = $(".carousel-item").width();
+            var scrollPosition = 0;
+            $("#infoProductosCarousel .carousel-control-next").on("click", function () {
+                if (scrollPosition < carouselWidth - cardWidth * 4) {
+                    scrollPosition += cardWidth;
+                    $("#infoProductosCarousel .carousel-inner").animate(
+                        { scrollLeft: scrollPosition },
+                        600
+                    );
+                }
+            });
+            $("#infoProductosCarousel .carousel-control-prev").on("click", function () {
+                if (scrollPosition > 0) {
+                    scrollPosition -= cardWidth;
+                    $("#infoProductosCarousel .carousel-inner").animate(
+                        { scrollLeft: scrollPosition },
+                        600
+                    );
+                }
+            });
+        } else {
+            $(infoProductosCarousel).addClass("slide");
+        }
+        
+
+    </script>    
+    
+}
+
