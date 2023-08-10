@@ -45,6 +45,7 @@ namespace Web.Controllers
             }
         }
 
+
         [CustomAuthorize((int)Roles.Administrador)]
         public ActionResult IndexAdmin()
         {
@@ -67,12 +68,21 @@ namespace Web.Controllers
         [CustomAuthorize((int)Roles.Vendedor)]
         public ActionResult IndexVendedor()
         {
-            IEnumerable<Pedido> lista = new List<Pedido>();
 
             if (((Usuario)Session["User"]).Direccion.Count() <= 0)
             {
                 return RedirectToAction("UnAuthorized", "Login");
             }
+            
+            return View();
+            
+        }
+
+
+        public PartialViewResult ListaPedidosVendedor(int estadoEntrega)
+        {
+
+            IEnumerable<Pedido> lista = new List<Pedido>();
 
             try
             {
@@ -80,14 +90,53 @@ namespace Web.Controllers
                 IServicePedido _ServicePedido = new ServicePedido();
                 lista = _ServicePedido.GetPedidoByVendedor(user.IdUsuario);
                 ViewBag.Vendedor = user.IdUsuario;
-                return View(lista);
+                ViewBag.EstadoEntrega = estadoEntrega;
             }
             catch (Exception ex)
             {
                 Log.Error(ex, MethodBase.GetCurrentMethod());
                 TempData["Message"] = "Error al procesar los datos!" + ex.Message;
-                return RedirectToAction("Default", "Error");
             }
+
+            return PartialView("_PartialListaPedidosVendedor", lista);
+        }
+
+        [HttpPost]
+        public JsonResult ActualizarEstadoEntregado (int idCompraEncabezado, int idProducto, bool estadoEntrega)
+        {
+
+            IServicePedido servicePedido = new ServicePedido();
+            bool resultado = false;
+
+            try
+            {
+
+                CompraDetalle oCompraDetalle = new CompraDetalle()
+                {
+                    IdCompraEncabezado = idCompraEncabezado,
+                    IdProducto = idProducto,
+                    EstadoEntrega = !estadoEntrega
+                };
+
+                CompraDetalle compraDetalle = servicePedido.ActualizarEstadoEntregado(oCompraDetalle);
+
+                if(compraDetalle != null)
+                {
+                    resultado = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+
+            return Json(new
+            {
+                success = resultado,
+                mensaje = Web.Util.SweetAlertHelper.Mensaje("Entregado", "Producto ha sido marcado como entregado", SweetAlertMessageType.success)
+            });
         }
 
         [CustomAuthorize((int)Roles.Cliente)]

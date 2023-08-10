@@ -180,6 +180,76 @@ namespace Infraestructure.Repositories
             }
         }
 
+        public CompraDetalle ActualizarEstadoEntregado(CompraDetalle compraDetalle)
+        {
+
+            
+            int retorno = 0;
+            CompraDetalle oCompraDetalle = null;
+
+            try
+            {
+
+                using(ByteStoreContext ctx = new ByteStoreContext())
+                {
+                    Pedido oPedido = null;
+                    ctx.CompraDetalle.Attach(compraDetalle);
+                    ctx.Entry(compraDetalle).Property("EstadoEntrega").IsModified = true;
+                    retorno = ctx.SaveChanges();
+
+                    if(retorno >= 0)
+                    {
+                        oPedido = this.GetPedidoByID(compraDetalle.IdCompraEncabezado);
+                    }
+
+                    if(oPedido != null)
+                    {
+
+                        int totalDetalles = oPedido.CompraEncabezado.CompraDetalle.Count();
+                        int totalDetallesEntregados = oPedido.CompraEncabezado.CompraDetalle.Where(cd => cd.EstadoEntrega == true).Count();
+
+                        if(totalDetalles == totalDetallesEntregados)
+                        {
+                            oPedido.EstadoEntrega = 2;
+                        }
+                        else if (totalDetallesEntregados > 0)
+                        {
+                            oPedido.EstadoEntrega = 1;
+                        }
+
+                        oPedido.CompraEncabezado.CompraDetalle = null;
+
+                        ctx.Pedido.Attach(oPedido);
+                        ctx.Entry(oPedido).Property("EstadoEntrega").IsModified=true;
+                        retorno += ctx.SaveChanges();
+
+                        if (retorno > 0) {
+                            oCompraDetalle = ctx.CompraDetalle.Where(cd => cd.IdCompraEncabezado == compraDetalle.IdCompraEncabezado && cd.IdProducto == compraDetalle.IdProducto).FirstOrDefault();
+                        }
+
+                    }
+
+                }
+
+
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+
+
+            return oCompraDetalle;
+        }
+
         public Pedido Save(Pedido pedido)
         {
             int resultado = 0;

@@ -43,6 +43,11 @@ namespace ApplicationCore.Services
             return _repositoryPedido.GetPedidoByVendedor(idVendedor);
         }
 
+        public CompraDetalle ActualizarEstadoEntregado(CompraDetalle compraDetalle)
+        {
+            return _repositoryPedido.ActualizarEstadoEntregado(compraDetalle);
+        }
+
         public Pedido Save(Pedido pedido)
         {
             return _repositoryPedido.Save(pedido);

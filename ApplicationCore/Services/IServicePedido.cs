@@ -14,6 +14,7 @@ namespace ApplicationCore.Services
         IEnumerable<Pedido> GetPedidoByVendedor(int idVendedor);
         Pedido GetPedidoByID(int id);
         void DeletePedido(int id);
+        CompraDetalle ActualizarEstadoEntregado(CompraDetalle compraDetalle);
         Pedido Save(Pedido pedido);
     }
 }
