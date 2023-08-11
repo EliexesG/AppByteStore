@@ -253,6 +253,7 @@
     <Content Include="Views\Usuario\_PartialListaUsuarios.cshtml" />
     <Content Include="Views\Usuario\IndexAdmin.cshtml" />
     <Content Include="Views\Pedido\_PartialListaPedidosVendedor.cshtml" />
+    <Content Include="Views\Reportes\ReportesAdmin.cshtml" />
     <Content Include="Views\Pedido\_PartialEvaluacionPedidoVendedor.cshtml" />
     <Content Include="Views\Reportes\AdminCompras.cshtml" />
   </ItemGroup>

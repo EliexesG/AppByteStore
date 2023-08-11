@@ -42,7 +42,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse fs-5 " id="navbarColor01"  >
-            <ul class="navbar-nav me-auto" >
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item me-3">
                     <a href="@Url.Action("Index","Home")" class="nav-link active fw-bold"><i class="fa-solid fa-home"></i> Home</a>
                 </li>
@@ -101,14 +101,8 @@
                             <a href="@Url.Action("IndexVendedor", "Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-money-bill"></i><i class="fa-solid fa-truck-fast"></i> Tus Ventas</a>
                         </li>
 
-                        <li class="nav-item dropdown me-3">
-                            <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-file-contract"></i> Reportes</a>
-                            <div class="dropdown-menu fs-5">
-                                @Html.ActionLink("Reporte de compras y ventas", "IndexAdmin", "Reportes", null, new { @class = "dropdown-item fw-bold" })
-                                @Html.ActionLink("Reporte de Evaluaciones", "IndexAdmin", "Reportes", null, new { @class = "dropdown-item fw-bold" })
-
-                            </div>
-                         
+                        <li class="nav-item me-3">
+                            <a href="@Url.Action("ReportesVendedor", "Reportes")" class="nav-link fw-bold"><i class="fa-solid fa-file-contract"></i> Reportes</a>
                         </li>
                     }
                     if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
@@ -126,12 +120,8 @@
                             </div>
                         </li>
 
-                        <li class="nav-item dropdown me-3">
-                            <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-file-contract"></i> Reportes</a>
-                            <div class="dropdown-menu fs-5">
-                                @Html.ActionLink("Reporte de compras", "AdminCompras", "Reportes", null, new { @class = "dropdown-item fw-bold" })
-                                @Html.ActionLink("Reporte de Vendedores", "IndexAdmin", "Reportes", null, new { @class = "dropdown-item fw-bold" })
-                            </div>
+                        <li class="nav-item me-3">
+                            <a href="@Url.Action("ReportesAdmin", "Reportes")" class="nav-link fw-bold"><i class="fa-solid fa-file-contract"></i> Reportes</a>
                         </li>
                     }
                     <li class="nav-item dropdown">
