@@ -18,6 +18,7 @@ namespace Infraestructure.Repositories
         Rol GetRolByID(int id);
         Usuario ActualizarEstado(int idUsuario, bool estadoNuevo);
         Usuario Guardar(Usuario usuario, string[] selectedRol);
-
+        IEnumerable<Usuario> GetVendedoresMejorEvaluados();
+        IEnumerable<Usuario> GetVendedoresPeorEvaluados();
     }
 }

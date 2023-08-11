@@ -5,21 +5,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Web.Security;
 
 namespace Web.Controllers
 {
     public class ReportesController : Controller
     {
-        // GET: Reportes
+        [CustomAuthorize((int)Roles.Administrador)]
         public ActionResult ReportesAdmin()
         {
 
             return View();
 
+        }
+
+        [CustomAuthorize((int)Roles.Vendedor)]
+        public ActionResult ReportesVendedor()
+        {
+
+            return View();
 
         }
 
-
+        [HttpGet]
         public JsonResult ReporteCompras()
         {
             IEnumerable<CompraEncabezado> lista = null;
@@ -30,80 +38,77 @@ namespace Web.Controllers
             return Json(new
             {
                 lista = lista
-            });
-
-
-        }
-        // GET: Reportes/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
+            }, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Reportes/Create
-        public ActionResult Create()
+        [HttpGet]
+        public JsonResult GetTopProductosVendidosByMes()
         {
-            return View();
-        }
+            IEnumerable<object> lista = null;
+            IServicePedido _ServicePedido = new ServicePedido();
 
-        // POST: Reportes/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
+            lista = _ServicePedido.GetTopProductosVendidosByMes();
+
+            return Json(new
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+                lista = lista
+            }, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Reportes/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        public JsonResult GetVendedoresMejorEvaluados()
         {
-            return View();
+            IEnumerable<Usuario> lista = null;
+            IServiceUsuario _ServiceUsuario = new ServiceUsuario();
+
+            lista = _ServiceUsuario.GetVendedoresMejorEvaluados();
+
+            return Json(new
+            {
+                lista = lista
+            }, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: Reportes/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [HttpGet]
+        public JsonResult GetVendedoresPeorEvaluados()
         {
-            try
-            {
-                // TODO: Add update logic here
+            IEnumerable<Usuario> lista = null;
+            IServiceUsuario _ServiceUsuario = new ServiceUsuario();
 
-                return RedirectToAction("Index");
-            }
-            catch
+            lista = _ServiceUsuario.GetVendedoresPeorEvaluados();
+
+            return Json(new
             {
-                return View();
-            }
+                lista = lista
+            }, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Reportes/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        public JsonResult GetProductoMasVendidoVendedor(int idVendedor)
         {
-            return View();
+            object productoMasVendido = null;
+            IServicePedido _ServicePedido = new ServicePedido();
+
+            productoMasVendido = _ServicePedido.GetProductoMasVendidoVendedor(idVendedor);
+
+            return Json(new
+            {
+                productoMasVendido
+            }, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: Reportes/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpGet]
+        public JsonResult GetClienteMasFiel(int idVendedor)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            object clienteMasFiel = null;
+            IServicePedido _ServicePedido = new ServicePedido();
 
-                return RedirectToAction("Index");
-            }
-            catch
+            clienteMasFiel = _ServicePedido.GetClienteMasFiel(idVendedor);
+
+            return Json(new
             {
-                return View();
-            }
+                clienteMasFiel
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

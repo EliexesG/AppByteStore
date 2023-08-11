@@ -1,45 +1,7 @@
-﻿
-@{
-    ViewBag.Title = "ByteStore - Reportes para Administrador";
-}
-
-<h2 class="text-center text-decoration-underline border-3 text-light rounded-4 w-auto mb-4">Reporte de Compras</h2>
-<hr class="mb-4" />
-
-<div class="row justify-content-center mb-4">
-    <div class="col-md-6 border border-4 border-primary text-light fw-bold rounded-4 bg-light mb-4 g-1">
-        <canvas id="comprasDia"></canvas>
-    </div>
-    <div class="col-md-6 border border-4 border-success text-light fw-bold rounded-4 bg-light mb-4 g-1">
-        <canvas id="topProductosVendidosMes"></canvas>
-    </div>
-</div>
-
-<hr class="mb-4" />
-
-<h2 class="text-center text-decoration-underline border-3 text-light rounded-4 w-auto mb-4">Reporte de Vendedores</h2>
-<hr class="mb-4" />
-
-<div class="row justify-content-center mb-4">
-
-    <div class="col-md-6 border border-4 border-info text-light fw-bold rounded-4 bg-light mb-4">
-        <canvas id="mejorEvaluacion"></canvas>
-    </div>
-    <div class="col-md-6 border border-4 border-warning text-light fw-bold rounded-4 bg-light">
-        <canvas id="peorEvaluacion"></canvas>
-    </div>
-</div>
+/* BEGIN EXTERNAL SOURCE */
 
 
-@section Scripts {
-
-    <!--Librería para gráficos-->
-
-
-    <script type="text/javascript">
-
-
-        $(document).ready(function () {
+      $(document).ready(function () {
 
             $.ajax({
                 method: "GET",
@@ -53,7 +15,7 @@
                         data: {
                             labels: ['Hoy'],
                             datasets: [{
-                                label: 'Compras registradas en el día',
+                                label: 'Compras registradas en el d�a',
                                 data: [result.lista.length],
                                 backgroundColor: 'rgba(255,215,0, 0.5)',
                                 borderColor: 'rgba(255,215,0,1)',
@@ -87,7 +49,7 @@
                         data: {
                             labels: result.lista.map(p => p.NombreProducto),
                             datasets: [{
-                                label: 'Productos más comprados del mes',
+                                label: 'Productos m�s comprados del mes',
                                 data: result.lista.map(p => p.TotalVendidos),
                                 backgroundColor: 'rgba(43, 94, 33, 0.5)',
                                 borderColor: 'rgba(43, 94, 33 , 1)',
@@ -123,7 +85,7 @@
                         data: {
                             labels: result.lista.map(p => `${p.Nombre} ${p.PrimerApellido}`),
                             datasets: [{
-                                label: 'Vendedores con mejor evaluación ',
+                                label: 'Vendedores con mejor evaluaci�n ',
                                 data: result.lista.map(p => p.PromedioEvaluaciones),
                                 backgroundColor: 'rgba(46, 175, 249, 0.5)',
                                 borderColor: 'rgba(46, 175, 249, 1)',
@@ -179,5 +141,5 @@
             });
         });
 
-    </script>
-}
+    
+/* END EXTERNAL SOURCE */

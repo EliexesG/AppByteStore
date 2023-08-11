@@ -233,7 +233,7 @@ namespace Infraestructure.Repositories
             }
         }
 
-        public Usuario ActualizarEstado (int idUsuario, bool estadoNuevo)
+        public Usuario ActualizarEstado(int idUsuario, bool estadoNuevo)
         {
             Usuario oUsuario = null;
             int retorno = 0;
@@ -332,7 +332,7 @@ namespace Infraestructure.Repositories
                         ctx.Entry(pUsuario).State = EntityState.Modified;
                         retorno += ctx.SaveChanges();
                     }
-                    
+
                 }
 
             }
@@ -343,6 +343,60 @@ namespace Infraestructure.Repositories
 
             return oUsuario;
 
+        }
+
+        public IEnumerable<Usuario> GetVendedoresMejorEvaluados ()
+        {
+            IEnumerable<Usuario> lista = null;
+
+            try
+            {
+
+                lista = this.GetUsuarioByRol(2).OrderByDescending(u => u.PromedioEvaluaciones).Take(5).ToList();
+                (lista as List<Usuario>).ForEach(u => u.Rol = null);    
+
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+
+            return lista;
+        }
+
+        public IEnumerable<Usuario> GetVendedoresPeorEvaluados()
+        {
+            IEnumerable<Usuario> lista = null;
+
+            try
+            {
+
+                lista = this.GetUsuarioByRol(2).OrderBy(u => u.PromedioEvaluaciones).Take(3).ToList();
+                (lista as List<Usuario>).ForEach(u => u.Rol = null);
+
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+
+            return lista;
         }
     }
 }

@@ -57,5 +57,20 @@ namespace ApplicationCore.Services
         {
            return _repositoryPedido.GetComprasRegistradasEnElDia();
         }
+
+        public IEnumerable<object> GetTopProductosVendidosByMes()
+        {
+            return _repositoryPedido.GetTopProductosVendidosByMes();
+        }
+
+        public object GetProductoMasVendidoVendedor(int idVendedor)
+        {
+            return _repositoryPedido.GetProductoMasVendidoVendedor(idVendedor);
+        }
+
+        public object GetClienteMasFiel(int idVendedor)
+        {
+            return _repositoryPedido.GetClienteMasFiel(idVendedor);
+        }
     }
 }

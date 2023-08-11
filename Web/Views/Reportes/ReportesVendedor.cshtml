@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "ByteStore - Reportes para Vendedor";
+}
+
+
+<h2 class="text-center text-decoration-underline border-3 text-light rounded-4 w-auto mb-4">Reporte de ventas y evaluaciones</h2>
+<hr class="mb-4" />
+
+<div class="row justify-content-center mb-4">
+    <div class="col-md-6 border border-4 border-primary text-light fw-bold rounded-4 bg-light mb-4 g-1">
+        <canvas id="productoMasVendido"></canvas>
+    </div>
+    <div class="col-md-6 border border-4 border-success text-light fw-bold rounded-4 bg-light mb-4 g-1">
+        <canvas id="clienteMasFiel"></canvas>
+    </div>
+</div>
+
+<hr class="mb-4" />
+
+<div class="row justify-content-center mb-4">
+
+    <div class="col-md-6 border border-4 border-info text-light fw-bold rounded-4 bg-light mb-4">
+        <canvas id="evaluaciones"></canvas>
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+
+<script type="text/javascript">
+
+      $(document).ready(function () {
+
+          var idVendedor = @Html.Raw(Json.Encode(((Infraestructure.Models.Usuario)Session["User"]).IdUsuario));
+          console.log(idVendedor)
+
+            $.ajax({
+                method: "GET",
+                url: "/Reportes/GetProductoMasVendidoVendedor",
+                data: { idVendedor },
+                success: function (result) {
+
+                    var ctx = $('#productoMasVendido')[0].getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: [result.productoMasVendido.NombreProducto],
+                            datasets: [{
+                                label: "Total de unidades vendidas",
+                                data: [result.productoMasVendido.TotalVendidos],
+                                backgroundColor: 'rgba(255,215,0, 0.5)',
+                                borderColor: 'rgba(255,215,0,1)',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                },
+                            }
+                        }
+                    });
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "/Reportes/GetClienteMasFiel",
+                data: { idVendedor },
+                success: function (result) {
+
+                    var ctx = $('#clienteMasFiel')[0].getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: [result.clienteMasFiel.NombreUsuario],
+                            datasets: [{
+                                label: 'Cantidad de articulos comprados',
+                                data: [result.clienteMasFiel.TotalComprado],
+                                backgroundColor: 'rgba(43, 94, 33, 0.5)',
+                                borderColor: 'rgba(43, 94, 33 , 1)',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            });
+
+    });
+
+</script>
+
+
+}
+
+
+

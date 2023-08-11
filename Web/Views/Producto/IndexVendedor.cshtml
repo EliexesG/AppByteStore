@@ -160,7 +160,7 @@
 
             //Buscar
             $(function () {
-                var lista = @Html.Raw(Json.Encode(ViewBag.Nombres));
+                var lista = /*************************************/@Html.Raw(Json.Encode(ViewBag.Nombres));
                 $("#filtro").autocomplete({ // aplica autocompletado para lista y nombres
                     source: lista
                 })
