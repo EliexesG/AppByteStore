@@ -309,5 +309,27 @@ namespace Infraestructure.Repositories
                 throw;
             }
         }
-    }
+
+        public IEnumerable<CompraEncabezado> GetCompras()
+        {
+            try
+            {
+
+                IEnumerable<CompraEncabezado> lista = null;
+                using (ByteStoreBDEntities ctx = new ByteStoreBDEntities())
+                {
+                    ctx.Configuration.LazyLoadingEnabled = false;
+                    lista = ctx.CompraEncabezado.ToList<CompraEncabezado>();
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+        }
+        }
 }
+

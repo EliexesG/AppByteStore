@@ -150,7 +150,7 @@ namespace Web.Controllers
             }
             else if (string.IsNullOrEmpty(filtro.Trim()) && (tipoUsuario == 3))
             {
-                lista = _ServiceProducto.GetProducto().OrderByDescending(p => p.Precio).ToList(); ;
+                lista = _ServiceProducto.GetProducto().OrderByDescending(p => p.Precio).ToList();
                 partialView = "_PartialCatalogoProducto";
             }
             else

@@ -52,5 +52,10 @@ namespace ApplicationCore.Services
         {
             return _repositoryPedido.Save(pedido);
         }
+
+       public IEnumerable<CompraEncabezado> GetCompras()
+        {
+           return _repositoryPedido.GetCompras();
+        }
     }
 }

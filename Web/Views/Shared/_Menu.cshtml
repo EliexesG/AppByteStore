@@ -34,15 +34,15 @@
     }
 }
 
-<nav class="navbar navbar-expand-lg bg-primary position-fixed z-3 w-100" data-bs-theme="dark">
-    <div class="container-fluid">
+<nav class="navbar navbar-expand-lg bg-primary position-fixed z-3 w-100 " data-bs-theme="dark">
+    <div class="container-fluid ">
         @*Helper: Texto del usuario, Accion a llamar, Nombre controlador, parámetros, Atributos HTML*@
         <a href="@Url.Action("Index","Home")" class="navbar-brand"><img class="rounded-4 shadow" style="max-height:55px; max-width:150px;" alt="icon" src="~/img/Logo_completo.png" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse fs-5" id="navbarColor01">
-            <ul class="navbar-nav me-auto">
+        <div class="collapse navbar-collapse fs-5 " id="navbarColor01"  >
+            <ul class="navbar-nav me-auto" >
                 <li class="nav-item me-3">
                     <a href="@Url.Action("Index","Home")" class="nav-link active fw-bold"><i class="fa-solid fa-home"></i> Home</a>
                 </li>
@@ -100,6 +100,16 @@
                         <li class="nav-item me-3">
                             <a href="@Url.Action("IndexVendedor", "Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-money-bill"></i><i class="fa-solid fa-truck-fast"></i> Tus Ventas</a>
                         </li>
+
+                        <li class="nav-item dropdown me-3">
+                            <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-file-contract"></i> Reportes</a>
+                            <div class="dropdown-menu fs-5">
+                                @Html.ActionLink("Reporte de compras y ventas", "IndexAdmin", "Reportes", null, new { @class = "dropdown-item fw-bold" })
+                                @Html.ActionLink("Reporte de Evaluaciones", "IndexAdmin", "Reportes", null, new { @class = "dropdown-item fw-bold" })
+
+                            </div>
+                         
+                        </li>
                     }
                     if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
                     {
@@ -113,6 +123,14 @@
                             <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-wrench"></i> Mantenimientos</a>
                             <div class="dropdown-menu fs-5">
                                 @Html.ActionLink("Gestionar Usuarios", "IndexAdmin", "Usuario", null, new { @class = "dropdown-item fw-bold" })
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown me-3">
+                            <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-file-contract"></i> Reportes</a>
+                            <div class="dropdown-menu fs-5">
+                                @Html.ActionLink("Reporte de compras", "AdminCompras", "Reportes", null, new { @class = "dropdown-item fw-bold" })
+                                @Html.ActionLink("Reporte de Vendedores", "IndexAdmin", "Reportes", null, new { @class = "dropdown-item fw-bold" })
                             </div>
                         </li>
                     }
