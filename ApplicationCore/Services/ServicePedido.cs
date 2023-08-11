@@ -53,9 +53,9 @@ namespace ApplicationCore.Services
             return _repositoryPedido.Save(pedido);
         }
 
-       public IEnumerable<CompraEncabezado> GetCompras()
+       public IEnumerable<CompraEncabezado> GetComprasRegistradasEnElDia()
         {
-           return _repositoryPedido.GetCompras();
+           return _repositoryPedido.GetComprasRegistradasEnElDia();
         }
     }
 }
