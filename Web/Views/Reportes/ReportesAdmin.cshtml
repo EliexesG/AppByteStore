@@ -16,40 +16,61 @@
 
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/jqueryajax")
+
     <!--Librería para gráficos-->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.bundle.min.js"></script>
-    <script src="~/Scripts/graficoChartJS.js"></script>
 
     <script type="text/javascript">
 
 
         $(document).ready(function () {
 
-            var ctx = $('#bar')[0].getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
-                    datasets: [{
-                        label: 'Productos más comprados en el mes',
-                        data: [12, 19, 3, 5, 2],
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
+            $.ajax({
+                method: "GET",
+                url: "/Usuario/ReporteCompras",
+                data: {},
+                success: function (result) {
+                    console.log(result)
                 },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
                 }
             });
-        });
+     @*   $.ajax({
+            method: "GET",
+            url: "/Reportes/ReporteCompras",
+            data: {},
+            success: function(data) {
 
+                var ctx = $('#bar')[0].getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+                        datasets: [{
+                            label: 'Compras registradas en el día',
+                            data: [data.lista.length],
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                }
+            });
+
+            },
+            error: function (xhr, status, error) {
+                console.log("error" + error, "no Error: " + xhr.status)
+            }
+        }); *@
+        });
 
     </script>
 }

@@ -255,7 +255,6 @@
     <Content Include="Views\Pedido\_PartialListaPedidosVendedor.cshtml" />
     <Content Include="Views\Reportes\ReportesAdmin.cshtml" />
     <Content Include="Views\Pedido\_PartialEvaluacionPedidoVendedor.cshtml" />
-    <Content Include="Views\Reportes\AdminCompras.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

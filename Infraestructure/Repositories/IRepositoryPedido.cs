@@ -17,6 +17,6 @@ namespace Infraestructure.Repositories
         CompraDetalle ActualizarEstadoEntregado(CompraDetalle compraDetalle);
         Pedido Save(Pedido pedido);
 
-        IEnumerable<CompraEncabezado> GetCompras();
+        IEnumerable<CompraEncabezado> GetComprasRegistradasEnElDia();
     }
 }

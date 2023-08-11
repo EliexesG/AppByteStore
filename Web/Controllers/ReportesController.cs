@@ -24,13 +24,13 @@ namespace Web.Controllers
         {
             IEnumerable<CompraEncabezado> lista = null;
             IServicePedido _ServicePedido = new ServicePedido();
-            CompraEncabezado oCompra = new CompraEncabezado();
 
-            DateTime Hoy = DateTime.Today;
+            lista = _ServicePedido.GetComprasRegistradasEnElDia();
 
-            lista = _ServicePedido.GetCompras().Where(c => c.FechaHora == Hoy).ToList();
-
-            return Json(lista, JsonRequestBehavior.AllowGet);
+            return Json(new
+            {
+                lista = lista
+            });
 
 
         }

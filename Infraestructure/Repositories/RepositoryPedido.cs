@@ -184,32 +184,32 @@ namespace Infraestructure.Repositories
         public CompraDetalle ActualizarEstadoEntregado(CompraDetalle compraDetalle)
         {
 
-            
+
             int retorno = 0;
             CompraDetalle oCompraDetalle = null;
 
             try
             {
 
-                using(ByteStoreContext ctx = new ByteStoreContext())
+                using (ByteStoreContext ctx = new ByteStoreContext())
                 {
                     Pedido oPedido = null;
                     ctx.CompraDetalle.Attach(compraDetalle);
                     ctx.Entry(compraDetalle).Property("EstadoEntrega").IsModified = true;
                     retorno = ctx.SaveChanges();
 
-                    if(retorno >= 0)
+                    if (retorno >= 0)
                     {
                         oPedido = this.GetPedidoByID(compraDetalle.IdCompraEncabezado);
                     }
 
-                    if(oPedido != null)
+                    if (oPedido != null)
                     {
 
                         int totalDetalles = oPedido.CompraEncabezado.CompraDetalle.Count();
                         int totalDetallesEntregados = oPedido.CompraEncabezado.CompraDetalle.Where(cd => cd.EstadoEntrega == true).Count();
 
-                        if(totalDetalles == totalDetallesEntregados)
+                        if (totalDetalles == totalDetallesEntregados)
                         {
                             oPedido.EstadoEntrega = 2;
                         }
@@ -221,10 +221,11 @@ namespace Infraestructure.Repositories
                         oPedido.CompraEncabezado.CompraDetalle = null;
 
                         ctx.Pedido.Attach(oPedido);
-                        ctx.Entry(oPedido).Property("EstadoEntrega").IsModified=true;
+                        ctx.Entry(oPedido).Property("EstadoEntrega").IsModified = true;
                         retorno += ctx.SaveChanges();
 
-                        if (retorno > 0) {
+                        if (retorno > 0)
+                        {
                             oCompraDetalle = ctx.CompraDetalle.Where(cd => cd.IdCompraEncabezado == compraDetalle.IdCompraEncabezado && cd.IdProducto == compraDetalle.IdProducto).FirstOrDefault();
                         }
 
@@ -261,9 +262,9 @@ namespace Infraestructure.Repositories
             {
                 using (ByteStoreContext ctx = new ByteStoreContext())
                 {
-                    using(var transaccion = ctx.Database.BeginTransaction())
+                    using (var transaccion = ctx.Database.BeginTransaction())
                     {
-                        foreach(var detalleCompra in pedido.CompraEncabezado.CompraDetalle)
+                        foreach (var detalleCompra in pedido.CompraEncabezado.CompraDetalle)
                         {
                             detalleCompra.Producto.Usuario = null;
                             detalleCompra.Producto.Categoria = null;
@@ -284,7 +285,7 @@ namespace Infraestructure.Repositories
                     }
                 }
 
-                if(resultado >= 0)
+                if (resultado >= 0)
                 {
                     _Pedido = GetPedidoByID(pedido.IdCompraEncabezado);
 
@@ -311,16 +312,19 @@ namespace Infraestructure.Repositories
             }
         }
 
-        public IEnumerable<CompraEncabezado> GetCompras()
+        public IEnumerable<CompraEncabezado> GetComprasRegistradasEnElDia()
         {
             try
             {
 
                 IEnumerable<CompraEncabezado> lista = null;
-                using (ByteStoreBDEntities ctx = new ByteStoreBDEntities())
+                using (ByteStoreContext ctx = new ByteStoreContext())
                 {
+
+                    DateTime Hoy = DateTime.Today;
+
                     ctx.Configuration.LazyLoadingEnabled = false;
-                    lista = ctx.CompraEncabezado.ToList<CompraEncabezado>();
+                    lista = ctx.CompraEncabezado.Where(c => DbFunctions.TruncateTime(c.FechaHora) == Hoy.Date).OrderBy(c => c.FechaHora).ToList();
                 }
                 return lista;
             }
@@ -331,6 +335,48 @@ namespace Infraestructure.Repositories
                 throw;
             }
         }
+
+        public IEnumerable<object> GetTopProductosVendidosByMes()
+        {
+            try
+            {
+
+                IEnumerable<object> productosPorMes = null;
+
+
+                using (ByteStoreContext ctx = new ByteStoreContext())
+                {
+
+                    DateTime Hoy = DateTime.Today;
+
+                    ctx.Configuration.LazyLoadingEnabled = false;
+
+                    productosPorMes = ctx.CompraDetalle
+                              .Include(d => d.Producto)
+                              .Include(d => d.CompraEncabezado)
+                              .Where(e => DbFunctions.TruncateTime(e.CompraEncabezado.FechaHora).Value.Month == Hoy.Month)
+                              .GroupBy(d => new { d.Producto.IdProducto, d.Producto.Nombre }, d => d)
+                              .Select(g => new
+                              {
+                                  IdProducto = g.Key.IdProducto,
+                                  NombreProducto = g.Key.Nombre,
+                                  TotalVendidos = g.Sum(x => x.Cantidad)
+                              })
+                              .OrderByDescending(p => p.TotalVendidos)
+                              .Take(5)
+                              .ToList();
+
+
+                }
+                return productosPorMes;
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
         }
+    }
 }
 
