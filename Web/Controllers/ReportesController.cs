@@ -11,7 +11,7 @@ namespace Web.Controllers
     public class ReportesController : Controller
     {
         // GET: Reportes
-        public ActionResult AdminCompras()
+        public ActionResult ReportesAdmin()
         {
 
             return View();
@@ -28,7 +28,7 @@ namespace Web.Controllers
 
             DateTime Hoy = DateTime.Today;
 
-            lista = _ServicePedido.GetCompras().Where(c => c.FechaHora.Value == Hoy).ToList();
+            lista = _ServicePedido.GetCompras().Where(c => c.FechaHora == Hoy).ToList();
 
             return Json(lista, JsonRequestBehavior.AllowGet);
 
