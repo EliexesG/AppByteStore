@@ -13,7 +13,7 @@
         <button class="nav-link @(estadoEntrega == 0 ? "active" : "") text-white tab-btn-estadoentrega" data-estadoentrega="0" id="pendientes-tab" data-bs-toggle="tab" data-bs-target="#pendientes" type="button" role="tab" aria-controls="pendientes" aria-selected="@(estadoEntrega == 0 ? "true" : "false")">Pendientes (@Model.Where(p => p.EstadoEntrega == 0).ToList().Count())</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link @(estadoEntrega == 2 ? "active" : "") text-white tab-btn-estadoentrega" data-estadoentrega="2" id="finalizados-tab" data-bs-toggle="tab" data-bs-target="#finalizados" type="button" role="tab" aria-controls="finalizado" aria-selected="@(estadoEntrega == 2 ? "true" : "false")">Finalizado (@Model.Where(p => p.EstadoEntrega == 2).ToList().Count())</button>
+        <button class="nav-link @(estadoEntrega == 2 ? "active" : "") text-white tab-btn-estadoentrega" data-estadoentrega="2" id="finalizados-tab" data-bs-toggle="tab" data-bs-target="#finalizados" type="button" role="tab" aria-controls="finalizado" aria-selected="@(estadoEntrega == 2 ? "true" : "false")">Finalizados (@Model.Where(p => p.EstadoEntrega == 2).ToList().Count())</button>
     </li>
 </ul>
 <div class="tab-content p-4 bg-body" id="myTabContent" style="border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem;">
@@ -166,7 +166,7 @@
         @if (Model.Where(pedido => pedido.EstadoEntrega == 2).ToList().Count() > 0)
         {
             <h3 class="text-white fw-bold mb-4">
-                Finalizado
+                Finalizados
             </h3>
 
             <div class="row mb-4">
@@ -181,7 +181,7 @@
                                         Pedido de
                                         @pedido.CompraEncabezado.Usuario.Nombre
                                         @pedido.CompraEncabezado.Usuario.PrimerApellido
-                                        @pedido.CompraEncabezado.Usuario.SegundoApellido 
+                                        @pedido.CompraEncabezado.Usuario.SegundoApellido
                                     </h3>
                                     <p class="card-text fs-4">
                                         <span>•</span>
@@ -220,7 +220,37 @@
                                         }
                                     </tbody>
                                 </table>
-                                <a href="@Url.Action("","")" class="btn btn-info fs-4 mb-4"><i class="fa-solid fa-star"></i> Calificar Cliente</a>
+
+                                @{
+                                    Infraestructure.Models.Evaluacion evaluacion = pedido.CompraEncabezado.Evaluacion.Where(e => e.Usuario.IdUsuario == ((Infraestructure.Models.Usuario)Session["User"]).IdUsuario).FirstOrDefault();
+                                }
+
+                                @if (evaluacion != null)
+                                {
+                                    <div class="p-3 rounded-4 bg-body card mb-4 shadow-lg bg-gradient">
+                                        <h3 class="card-title text-white-50 mb-3 fs-4 ps-3">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                if (i <= evaluacion.Escala)
+                                                {
+                                                    <i class="fa-solid fa-star"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa-regular fa-star"></i>
+                                                }
+                                            }
+                                            (@Html.DisplayFor(model => evaluacion.Escala) estrellas evaluadas)
+                                        </h3>
+                                        <h4 class="card-text fs-5 text-white mb-4 ps-3">@evaluacion.Comentario</h4>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div id="@("contenedorEvaluacion" + pedido.CompraEncabezado.IdCompraEncabezado)"></div>
+                                    <button class="btn btn-info fs-4 mb-4 btnCalificarCliente" data-idpedido="@pedido.CompraEncabezado.IdCompraEncabezado" data-idevaluador="@(((Infraestructure.Models.Usuario)Session["User"]).IdUsuario)" data-idevaluado="@pedido.CompraEncabezado.Usuario.IdUsuario"><i class="fa-solid fa-star"></i> Calificar Cliente</button>
+                                }
+
                             </div>
                         </div>
                     </div>

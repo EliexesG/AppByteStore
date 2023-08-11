@@ -159,7 +159,11 @@ namespace Infraestructure.Repositories
                         .Include(x => x.CompraEncabezado.MetodoPago.TipoPago)
                         .Include(x => x.CompraEncabezado.CompraDetalle.Select(c => c.Producto))
                         .Include(x => x.CompraEncabezado.CompraDetalle.Select(c => c.Producto.Usuario))
+                        .Include(x => x.CompraEncabezado.Evaluacion)
+                        .Include(x => x.CompraEncabezado.Evaluacion.Select(e => e.Usuario))
+                        .Include(x => x.CompraEncabezado.Evaluacion.Select(e => e.Usuario1))
                         .Where(pedido => pedido.CompraEncabezado.CompraDetalle.Any(c => c.Producto.Usuario.IdUsuario == idVendedor))
+                        .OrderByDescending(x => x.CompraEncabezado.FechaHora)
                         .ToList();
 
                 }

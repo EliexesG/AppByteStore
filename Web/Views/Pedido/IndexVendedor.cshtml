@@ -13,9 +13,17 @@
 
 <div id="infoPedidosVendedor"></div>
 
+<style type="text/css">
+    .error {
+        color: red;
+    }
+</style>
+
 @section Scripts {
-    
-    <script type="text/javascript">
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
 
 
         var estadoEntregaTab = 1;
@@ -76,7 +84,7 @@
                             }
                         });
                     }
-                    
+
                 },
                 error: function (xhr, status, error) {
                     console.log("error" + error, "no Error: " + xhr.status)
@@ -86,6 +94,129 @@
 
         });
 
-    </script>    
-    
+
+        $(document).on('click', '.btnCalificarCliente', function () {
+
+
+            var esOcultar = String($(this).html()).includes("Cancelar");
+            var idEvaluador = $(this).data('idevaluador');
+            var idEvaluado = $(this).data('idevaluado');
+            var idPedido = $(this).data('idpedido');
+
+            if (!esOcultar) {
+
+                var idFormulario = `formEvaluarUsuario${idPedido}`;
+
+                var htmlEvaluación = `
+                    <form id="${idFormulario}">
+                                    <div class="p-3 rounded-4 bg-body card mb-4 shadow-lg bg-gradient">
+                                        <h3 class="card-title text-white-50 mb-2 fs-4">
+                                            <input type="radio" id="estrella1${idPedido}" name="Escala" value="1" style="display: none;">
+                                            <label for="estrella1${idPedido}"><i id="labelEstrella1${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="1" style="cursor:pointer;"></i></label>
+                                            <input type="radio" id="estrella2${idPedido}" name="Escala" value="2" style="display: none;">
+                                            <label for="estrella2${idPedido}"><i id="labelEstrella2${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="2" style="cursor:pointer;"></i></label>
+                                            <input type="radio" id="estrella3${idPedido}" name="Escala" value="3" style="display: none;">
+                                            <label for="estrella3${idPedido}"><i id="labelEstrella3${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="3" style="cursor:pointer;"></i></label>
+                                            <input type="radio" id="estrella4${idPedido}" name="Escala" value="4" style="display: none;">
+                                            <label for="estrella4${idPedido}"><i id="labelEstrella4${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="4" style="cursor:pointer;"></i></label>
+                                            <input type="radio" id="estrella5${idPedido}" name="Escala" value="5" style="display: none;">
+                                            <label for="estrella5${idPedido}"><i id="labelEstrella5${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="5" style="cursor:pointer;"></i></label>
+                                        </h3>
+                                        <label id="Escala${idPedido}-error" class="error"></label>
+                                        <div class="mb-2">
+                                            <label for="CodigoPostal" class="mb-2 form-label"> Escribir comentario</label>
+                                            <textarea type="text" id="Comentario${idPedido}" name="Comentario" class="form-control" placeholder="Fue un gran cliente"></textarea>
+                                        </div>
+                                        <button id="btnEnviarCalificacionCliente${idPedido}" class="btn btn-primary my-2 my-sm-0 shadow-lg" type="submit" form="${idFormulario}">Calificar</button>
+                                    </div>
+                    </form>
+                `;
+
+                var idcontenedor = `#contenedorEvaluacion${idPedido}`;
+
+                $(idcontenedor).html("");
+                $(idcontenedor).html(htmlEvaluación);
+
+
+                $(`.estrella${idPedido}`).hover(
+                    function () {
+                        var numeroEstrella = Number($(this).attr('num'));
+
+                        for (var i = 1; i <= numeroEstrella; i++) {
+                            $(`#labelEstrella${i}${idPedido}`).addClass('fa-solid');
+                        }
+                    },
+                    function () {
+                        var numeroEstrella = Number($(this).attr('num'));
+
+                        for (var i = 1; i <= numeroEstrella; i++) {
+                            $(`#labelEstrella${i}${idPedido}`).removeClass('fa-solid');
+                        }
+                    }
+                );
+
+                $(`.estrella${idPedido}`).on('click',
+                    function () {
+
+                        var numeroEstrella = Number($(this).attr('num'));
+
+                        $(`.estrella${idPedido}`).off("mouseenter mouseleave");
+
+                        for (var i = 1; i <= 5; i++) {
+
+                            if (i <= numeroEstrella) {
+                                $(`#labelEstrella${i}${idPedido}`).addClass('fa-solid');
+                            }
+                            else {
+                                $(`#labelEstrella${i}${idPedido}`).removeClass('fa-solid');
+                            }
+                        }
+                    }
+                );
+
+
+                idFormulario = '#' + idFormulario;
+
+                $(idFormulario).validate({
+                    errorClass: "error",
+                    rules: {
+                        Comentario: {
+                            required: true,
+                            minlength: 10
+                        }
+                    },
+                    messages: {
+                        Comentario: "Debe escribir un comentario de mínimo 10 carárteres"
+                    },
+                    submitHandler: function (form, event) {
+                        event.preventDefault();
+
+                        var comentario = $(form).find('[name="Comentario"]').val();
+                        var escala = $(form).find('[name="Escala"]:checked').val();
+
+                        if (escala === undefined) {
+                            var aviso = "@Html.Raw(Web.Util.SweetAlertHelper.Mensaje("Cuidado", "Debe calificar al cliente", Web.Util.SweetAlertMessageType.warning))"
+                            eval(aviso);
+                        }
+                        else {
+                            console.log(comentario, escala)
+                        }
+                    }
+                });
+
+                $(this).html("");
+                $(this).html('<i class="fa-solid fa-x"></i> Cancelar');
+
+            }
+            else {
+                var idcontenedor = `#contenedorEvaluacion${idPedido}`;
+                $(idcontenedor).html("");
+                $(this).html("");
+                $(this).html('<i class="fa-solid fa-star"></i> Calificar Cliente');
+            }
+
+        });
+
+</script>
+
 }
