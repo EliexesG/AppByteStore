@@ -323,6 +323,52 @@ namespace Web.Controllers
             return PartialView("_DetalleCarritoNoEditable", compraEncabezado);
         }
 
+        public PartialViewResult EvaluacionPedidoVendedor (int idPedido, int idUsuario)
+        {
+            IServiceEvaluacion serviceEvaluacion = new ServiceEvaluacion();
+            Evaluacion evaluacion = serviceEvaluacion.GetEvaluacionByPedidoForVendedor(idPedido, idUsuario);
+            return PartialView("_PartialEvaluacionPedidoVendedor", evaluacion);
+        }
+
+        [HttpPost]
+        public JsonResult SaveEvaluacion(int idEvaluador, int idEvaluado, int idPedido, string comentario, int escala)
+        {
+            IServiceEvaluacion _ServiceEvaluacion = new ServiceEvaluacion();
+
+            bool resultado = false;
+
+            try
+            {
+                int idUsuario = ((Usuario)Session["User"]).IdUsuario;
+
+                Evaluacion oEvaluacion = new Evaluacion()
+                {
+                    Usuario = new Usuario() { IdUsuario = idEvaluador },
+                    Usuario1 = new Usuario() { IdUsuario = idEvaluado },
+                    CompraEncabezado = new CompraEncabezado() { IdCompraEncabezado = idPedido },
+                    Comentario = comentario,
+                    Escala = escala
+                };
+
+                Evaluacion evaluacion = _ServiceEvaluacion.SaveEvaluacion(oEvaluacion);
+
+                if (evaluacion != null)
+                {
+                    resultado = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+            }
+
+            return Json(new
+            {
+                success = resultado
+            });
+        }
+
         [HttpPost]
         public ActionResult Save (CompraEncabezado compraEncabezado)
         {

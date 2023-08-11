@@ -160,6 +160,7 @@ namespace Infraestructure.Repositories
                         .Include(x => x.CompraEncabezado.CompraDetalle.Select(c => c.Producto))
                         .Include(x => x.CompraEncabezado.CompraDetalle.Select(c => c.Producto.Usuario))
                         .Where(pedido => pedido.CompraEncabezado.CompraDetalle.Any(c => c.Producto.Usuario.IdUsuario == idVendedor))
+                        .OrderByDescending(x => x.CompraEncabezado.FechaHora)
                         .ToList();
 
                 }
