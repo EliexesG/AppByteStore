@@ -112,15 +112,15 @@
                                     <div class="p-3 rounded-4 bg-body card mb-4 shadow-lg bg-gradient">
                                         <h3 class="card-title text-white-50 mb-2 fs-4">
                                             <input type="radio" id="estrella1${idPedido}" name="Escala" value="1" style="display: none;">
-                                            <label for="estrella1${idPedido}"><i id="labelEstrella1${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="1" style="cursor:pointer;"></i></label>
+                                            <label for="estrella1${idPedido}"><i id="labelEstrella1${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="1" style="cursor:pointer; color: white;"></i></label>
                                             <input type="radio" id="estrella2${idPedido}" name="Escala" value="2" style="display: none;">
-                                            <label for="estrella2${idPedido}"><i id="labelEstrella2${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="2" style="cursor:pointer;"></i></label>
+                                            <label for="estrella2${idPedido}"><i id="labelEstrella2${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="2" style="cursor:pointer; color: white;"></i></label>
                                             <input type="radio" id="estrella3${idPedido}" name="Escala" value="3" style="display: none;">
-                                            <label for="estrella3${idPedido}"><i id="labelEstrella3${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="3" style="cursor:pointer;"></i></label>
+                                            <label for="estrella3${idPedido}"><i id="labelEstrella3${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="3" style="cursor:pointer; color: white;"></i></label>
                                             <input type="radio" id="estrella4${idPedido}" name="Escala" value="4" style="display: none;">
-                                            <label for="estrella4${idPedido}"><i id="labelEstrella4${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="4" style="cursor:pointer;"></i></label>
+                                            <label for="estrella4${idPedido}"><i id="labelEstrella4${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="4" style="cursor:pointer; color: white;"></i></label>
                                             <input type="radio" id="estrella5${idPedido}" name="Escala" value="5" style="display: none;">
-                                            <label for="estrella5${idPedido}"><i id="labelEstrella5${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="5" style="cursor:pointer;"></i></label>
+                                            <label for="estrella5${idPedido}"><i id="labelEstrella5${idPedido}" class="fa-regular fa-star estrella${idPedido}" num="5" style="cursor:pointer; color: white;"></i></label>
                                         </h3>
                                         <label id="Escala${idPedido}-error" class="error"></label>
                                         <div class="mb-2">
@@ -132,7 +132,7 @@
                     </form>
                 `;
 
-                var idcontenedor = `#contenedorEvaluacion${idPedido}`;
+                var idcontenedor = `#contenedorEvaluacionForm${idPedido}`;
 
                 $(idcontenedor).html("");
                 $(idcontenedor).html(htmlEvaluación);
@@ -166,9 +166,11 @@
 
                             if (i <= numeroEstrella) {
                                 $(`#labelEstrella${i}${idPedido}`).addClass('fa-solid');
+                                $(`#labelEstrella${i}${idPedido}`).css('color', 'rgb(255,215,0)');
                             }
                             else {
                                 $(`#labelEstrella${i}${idPedido}`).removeClass('fa-solid');
+                                $(`#labelEstrella${i}${idPedido}`).css('color', 'white');
                             }
                         }
                     }
@@ -199,7 +201,38 @@
                             eval(aviso);
                         }
                         else {
-                            console.log(comentario, escala)
+                            $.ajax({
+                                method: "POST",
+                                url: "/Pedido/SaveEvaluacion",
+                                data: { idEvaluador, idEvaluado, idPedido, comentario, escala },
+                                success: function (result) {
+
+                                    if (result.success) {
+
+                                        
+                                        $("#loaderSpinner").removeClass("d-none");
+                                        $.ajax({
+                                            method: "GET",
+                                            url: "/Pedido/EvaluacionPedidoVendedor",
+                                            data: { idPedido, idUsuario: idEvaluador },
+                                            success: function (html) {
+                                                $(`#contenedorEvaluacion${idPedido}`).html("");
+                                                $(`#contenedorEvaluacion${idPedido}`).html(html);
+                                                $("#loaderSpinner").addClass("d-none");
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.log("error" + error, "no Error: " + xhr.status)
+
+                                            }
+                                        });
+                                    }
+
+                                },
+                                error: function (xhr, status, error) {
+                                    console.log("error" + error, "no Error: " + xhr.status)
+
+                                }
+                            });
                         }
                     }
                 });
@@ -209,7 +242,7 @@
 
             }
             else {
-                var idcontenedor = `#contenedorEvaluacion${idPedido}`;
+                var idcontenedor = `#contenedorEvaluacionForm${idPedido}`;
                 $(idcontenedor).html("");
                 $(this).html("");
                 $(this).html('<i class="fa-solid fa-star"></i> Calificar Cliente');

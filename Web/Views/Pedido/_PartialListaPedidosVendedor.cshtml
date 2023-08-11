@@ -222,34 +222,21 @@
                                 </table>
 
                                 @{
-                                    Infraestructure.Models.Evaluacion evaluacion = pedido.CompraEncabezado.Evaluacion.Where(e => e.Usuario.IdUsuario == ((Infraestructure.Models.Usuario)Session["User"]).IdUsuario).FirstOrDefault();
+                                    ApplicationCore.Services.IServiceEvaluacion serviceEvaluacion = new ApplicationCore.Services.ServiceEvaluacion();
+                                    Infraestructure.Models.Evaluacion evaluacion = serviceEvaluacion.GetEvaluacionByPedidoForVendedor(pedido.IdCompraEncabezado, (int)((Infraestructure.Models.Usuario)Session["User"]).IdUsuario);
                                 }
 
-                                @if (evaluacion != null)
-                                {
-                                    <div class="p-3 rounded-4 bg-body card mb-4 shadow-lg bg-gradient">
-                                        <h3 class="card-title text-white-50 mb-3 fs-4 ps-3">
-                                            @for (int i = 1; i <= 5; i++)
-                                            {
-                                                if (i <= evaluacion.Escala)
-                                                {
-                                                    <i class="fa-solid fa-star"></i>
-                                                }
-                                                else
-                                                {
-                                                    <i class="fa-regular fa-star"></i>
-                                                }
-                                            }
-                                            (@Html.DisplayFor(model => evaluacion.Escala) estrellas evaluadas)
-                                        </h3>
-                                        <h4 class="card-text fs-5 text-white mb-4 ps-3">@evaluacion.Comentario</h4>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div id="@("contenedorEvaluacion" + pedido.CompraEncabezado.IdCompraEncabezado)"></div>
-                                    <button class="btn btn-info fs-4 mb-4 btnCalificarCliente" data-idpedido="@pedido.CompraEncabezado.IdCompraEncabezado" data-idevaluador="@(((Infraestructure.Models.Usuario)Session["User"]).IdUsuario)" data-idevaluado="@pedido.CompraEncabezado.Usuario.IdUsuario"><i class="fa-solid fa-star"></i> Calificar Cliente</button>
-                                }
+                                <div id="@("contenedorEvaluacion" + pedido.CompraEncabezado.IdCompraEncabezado)">
+                                    @if (evaluacion != null)
+                                    {
+                                        @Html.Partial("_PartialEvaluacionPedidoVendedor", evaluacion)
+                                    }
+                                    else
+                                    {
+                                        <div id="@("contenedorEvaluacionForm" + pedido.CompraEncabezado.IdCompraEncabezado)"></div>
+                                        <button class="btn btn-info fs-4 mb-4 btnCalificarCliente" data-idpedido="@pedido.CompraEncabezado.IdCompraEncabezado" data-idevaluador="@(((Infraestructure.Models.Usuario)Session["User"]).IdUsuario)" data-idevaluado="@pedido.CompraEncabezado.Usuario.IdUsuario"><i class="fa-solid fa-star"></i> Calificar Cliente</button>
+                                    }
+                                </div>
 
                             </div>
                         </div>
