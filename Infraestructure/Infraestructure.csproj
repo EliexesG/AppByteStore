@@ -128,6 +128,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IRepositoryCategoria.cs" />
     <Compile Include="Repositories\IRepositoryDireccion.cs" />
+    <Compile Include="Repositories\IRepositoryEvaluacion.cs" />
     <Compile Include="Repositories\IRepositoryMetodoPago.cs" />
     <Compile Include="Repositories\IRepositoryPregunta.cs" />
     <Compile Include="Repositories\IRepositoryProducto.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Repositories\IRepositoryUsuario.cs" />
     <Compile Include="Repositories\RepositoryCategoria.cs" />
     <Compile Include="Repositories\RepositoryDireccion.cs" />
+    <Compile Include="Repositories\RepositoryEvaluacion.cs" />
     <Compile Include="Repositories\RepositoryMetodoPago.cs" />
     <Compile Include="Repositories\RepositoryPregunta.cs" />
     <Compile Include="Repositories\RepositoryTelefono.cs" />
