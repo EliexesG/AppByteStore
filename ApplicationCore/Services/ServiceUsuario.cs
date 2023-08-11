@@ -57,5 +57,15 @@ namespace ApplicationCore.Services
         {
             return repository.ActualizarEstado(idUsuario, estadoNuevo);
         }
+
+        public IEnumerable<Usuario> GetVendedoresMejorEvaluados()
+        {
+            return repository.GetVendedoresMejorEvaluados();
+        }
+
+        public IEnumerable<Usuario> GetVendedoresPeorEvaluados()
+        {
+            return repository.GetVendedoresPeorEvaluados();
+        }
     }
 }

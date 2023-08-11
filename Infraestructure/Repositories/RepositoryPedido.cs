@@ -377,6 +377,89 @@ namespace Infraestructure.Repositories
                 throw;
             }
         }
+
+        public object GetProductoMasVendidoVendedor(int idVendedor)
+        {
+            try
+            {
+
+                object productoMasVendido = null;
+
+
+                using (ByteStoreContext ctx = new ByteStoreContext())
+                {
+
+                    ctx.Configuration.LazyLoadingEnabled = false;
+
+                    productoMasVendido = ctx.CompraDetalle
+                              .Include(d => d.Producto)
+                              .Include(d => d.CompraEncabezado)
+                              .Include(d => d.Producto.Usuario)
+                              .Where(e => e.Producto.Usuario.IdUsuario == idVendedor)
+                              .GroupBy(d => new { d.Producto.IdProducto, d.Producto.Nombre }, d => d)
+                              .Select(g => new
+                              {
+                                  IdProducto = g.Key.IdProducto,
+                                  NombreProducto = g.Key.Nombre,
+                                  TotalVendidos = g.Sum(x => x.Cantidad)
+                              })
+                              .OrderByDescending(p => p.TotalVendidos)
+                              .Take(1)
+                              .FirstOrDefault();
+
+
+                }
+                return productoMasVendido;
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+        }
+
+        public object GetClienteMasFiel(int idVendedor)
+        {
+            try
+            {
+
+                object clienteMasFiel = null;
+
+
+                using (ByteStoreContext ctx = new ByteStoreContext())
+                {
+
+                    ctx.Configuration.LazyLoadingEnabled = false;
+
+                    clienteMasFiel = ctx.CompraDetalle
+                              .Include(d => d.Producto)
+                              .Include(d => d.CompraEncabezado)
+                              .Include(d => d.CompraEncabezado.Usuario)
+                              .Include(d => d.Producto.Usuario)
+                              .Where(e => e.Producto.Usuario.IdUsuario == idVendedor)
+                              .GroupBy(d => new { d.CompraEncabezado.Usuario.IdUsuario, d.CompraEncabezado.Usuario.Nombre }, d => d)
+                              .Select(g => new
+                              {
+                                  IdProducto = g.Key.IdUsuario,
+                                  NombreUsuario = g.Key.Nombre,
+                                  TotalComprado = g.Sum(x => x.Cantidad)
+                              })
+                              .OrderByDescending(p => p.TotalComprado)
+                              .Take(1)
+                              .FirstOrDefault();
+
+
+                }
+                return clienteMasFiel;
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+        }
     }
 }
 
