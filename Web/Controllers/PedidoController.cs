@@ -326,8 +326,17 @@ namespace Web.Controllers
         public PartialViewResult EvaluacionPedidoVendedor (int idPedido, int idUsuario)
         {
             IServiceEvaluacion serviceEvaluacion = new ServiceEvaluacion();
-            Evaluacion evaluacion = serviceEvaluacion.GetEvaluacionByPedidoForVendedor(idPedido, idUsuario);
-            return PartialView("_PartialEvaluacionPedidoVendedor", evaluacion);
+            
+            IEnumerable<Evaluacion> evaluaciones = new List<Evaluacion>(new Evaluacion[1] { serviceEvaluacion.GetEvaluacionByPedidoForVendedor(idPedido, idUsuario) });
+
+            return PartialView("_PartialEvaluacionPedido", evaluaciones);
+        }
+
+        public PartialViewResult EvaluacionPedidoCliente(int idPedido, int idUsuario)
+        {
+            IServiceEvaluacion serviceEvaluacion = new ServiceEvaluacion();
+            IEnumerable<Evaluacion> evaluaciones = serviceEvaluacion.GetEvaluacionByPedidoForCliente(idPedido, idUsuario);
+            return PartialView("_PartialEvaluacionPedido", evaluaciones);
         }
 
         [HttpPost]

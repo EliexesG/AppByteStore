@@ -229,7 +229,7 @@
                                 <div id="@("contenedorEvaluacion" + pedido.CompraEncabezado.IdCompraEncabezado)">
                                     @if (evaluacion != null)
                                     {
-                                        @Html.Partial("_PartialEvaluacionPedidoVendedor", evaluacion)
+                                        @Html.Partial("_PartialEvaluacionPedido", new List<Infraestructure.Models.Evaluacion>(new Infraestructure.Models.Evaluacion[1] {evaluacion}))
                                     }
                                     else
                                     {

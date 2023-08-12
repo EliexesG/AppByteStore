@@ -312,7 +312,7 @@ namespace Infraestructure.Repositories
             }
         }
 
-        public IEnumerable<CompraEncabezado> GetComprasRegistradasEnElDia()
+        public int GetCantComprasRegistradasEnElDia()
         {
             try
             {
@@ -326,7 +326,7 @@ namespace Infraestructure.Repositories
                     ctx.Configuration.LazyLoadingEnabled = false;
                     lista = ctx.CompraEncabezado.Where(c => DbFunctions.TruncateTime(c.FechaHora) == Hoy.Date).OrderBy(c => c.FechaHora).ToList();
                 }
-                return lista;
+                return lista.Count();
             }
             catch (Exception ex)
             {
@@ -354,7 +354,7 @@ namespace Infraestructure.Repositories
                     productosPorMes = ctx.CompraDetalle
                               .Include(d => d.Producto)
                               .Include(d => d.CompraEncabezado)
-                              .Where(e => DbFunctions.TruncateTime(e.CompraEncabezado.FechaHora).Value.Month == Hoy.Month)
+                              .Where(e => DbFunctions.TruncateTime(e.CompraEncabezado.FechaHora).Value.Month == Hoy.Month && e.EstadoEntrega == true)
                               .GroupBy(d => new { d.Producto.IdProducto, d.Producto.Nombre }, d => d)
                               .Select(g => new
                               {
@@ -395,7 +395,7 @@ namespace Infraestructure.Repositories
                               .Include(d => d.Producto)
                               .Include(d => d.CompraEncabezado)
                               .Include(d => d.Producto.Usuario)
-                              .Where(e => e.Producto.Usuario.IdUsuario == idVendedor)
+                              .Where(e => e.Producto.Usuario.IdUsuario == idVendedor && e.EstadoEntrega == true)
                               .GroupBy(d => new { d.Producto.IdProducto, d.Producto.Nombre }, d => d)
                               .Select(g => new
                               {
@@ -438,11 +438,12 @@ namespace Infraestructure.Repositories
                               .Include(d => d.CompraEncabezado.Usuario)
                               .Include(d => d.Producto.Usuario)
                               .Where(e => e.Producto.Usuario.IdUsuario == idVendedor)
-                              .GroupBy(d => new { d.CompraEncabezado.Usuario.IdUsuario, d.CompraEncabezado.Usuario.Nombre }, d => d)
+                              .GroupBy(d => new { d.CompraEncabezado.Usuario.IdUsuario, d.CompraEncabezado.Usuario.Nombre, d.CompraEncabezado.Usuario.PrimerApellido }, d => d)
                               .Select(g => new
                               {
                                   IdProducto = g.Key.IdUsuario,
                                   NombreUsuario = g.Key.Nombre,
+                                  PrimerApellido = g.Key.PrimerApellido,
                                   TotalComprado = g.Sum(x => x.Cantidad)
                               })
                               .OrderByDescending(p => p.TotalComprado)
