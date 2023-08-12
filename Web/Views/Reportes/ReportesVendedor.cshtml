@@ -4,14 +4,16 @@
 }
 
 
-<h2 class="text-center text-decoration-underline border-3 text-light rounded-4 w-auto mb-4">Reporte de ventas y evaluaciones</h2>
+<h2 class="text-center text-decoration-underline border-3 text-light rounded-4 w-auto mb-4">Reporte de Ventas y Evaluaciones</h2>
 <hr class="mb-4" />
 
 <div class="row justify-content-center mb-4">
     <div class="col-md-6 border border-4 border-primary text-light fw-bold rounded-4 bg-light mb-4 g-1">
+        <h5 class="mb-2 text-center text-black p-3">Producto más Vendido</h5>
         <canvas id="productoMasVendido"></canvas>
     </div>
     <div class="col-md-6 border border-4 border-success text-light fw-bold rounded-4 bg-light mb-4 g-1">
+        <h5 class="mb-2 text-center text-black p-3">Cliente más Fiel (Quien más ha Comprado)</h5>
         <canvas id="clienteMasFiel"></canvas>
     </div>
 </div>
@@ -21,6 +23,7 @@
 <div class="row justify-content-center mb-4">
 
     <div class="col-md-6 border border-4 border-info text-light fw-bold rounded-4 bg-light mb-4">
+        <h5 class="mb-2 text-center text-black p-3">Cantidad de Evaluaciones por Escala</h5>
         <canvas id="evaluaciones"></canvas>
     </div>
 
@@ -49,7 +52,7 @@
                         data: {
                             labels: [result.productoMasVendido.NombreProducto],
                             datasets: [{
-                                label: "Total de unidades vendidas",
+                                label: "Total de Unidades Vendidas",
                                 data: [result.productoMasVendido.TotalVendidos],
                                 backgroundColor: 'rgba(255,215,0, 0.5)',
                                 borderColor: 'rgba(255,215,0,1)',
@@ -81,9 +84,9 @@
                     var myChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: [result.clienteMasFiel.NombreUsuario],
+                            labels: [`${result.clienteMasFiel.NombreUsuario} ${result.clienteMasFiel.PrimerApellido}`],
                             datasets: [{
-                                label: 'Cantidad de articulos comprados',
+                                label: 'Cantidad de Articulos Comprados',
                                 data: [result.clienteMasFiel.TotalComprado],
                                 backgroundColor: 'rgba(43, 94, 33, 0.5)',
                                 borderColor: 'rgba(43, 94, 33 , 1)',

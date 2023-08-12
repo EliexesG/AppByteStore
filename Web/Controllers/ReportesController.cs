@@ -28,16 +28,16 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult ReporteCompras()
+        public JsonResult GetCantComprasRegistradasEnElDia()
         {
-            IEnumerable<CompraEncabezado> lista = null;
+            int cant = 0;
             IServicePedido _ServicePedido = new ServicePedido();
 
-            lista = _ServicePedido.GetComprasRegistradasEnElDia();
+            cant = _ServicePedido.GetCantComprasRegistradasEnElDia();
 
             return Json(new
             {
-                lista = lista
+                CantComprasRegistradasEnElDia = cant
             }, JsonRequestBehavior.AllowGet);
         }
 

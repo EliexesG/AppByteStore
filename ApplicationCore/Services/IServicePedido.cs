@@ -16,7 +16,7 @@ namespace ApplicationCore.Services
         void DeletePedido(int id);
         CompraDetalle ActualizarEstadoEntregado(CompraDetalle compraDetalle);
         Pedido Save(Pedido pedido);
-        IEnumerable<CompraEncabezado> GetComprasRegistradasEnElDia();
+        int GetCantComprasRegistradasEnElDia();
         IEnumerable<object> GetTopProductosVendidosByMes();
         object GetProductoMasVendidoVendedor(int idVendedor);
         object GetClienteMasFiel(int idVendedor);

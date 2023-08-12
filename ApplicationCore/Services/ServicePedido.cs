@@ -53,9 +53,9 @@ namespace ApplicationCore.Services
             return _repositoryPedido.Save(pedido);
         }
 
-       public IEnumerable<CompraEncabezado> GetComprasRegistradasEnElDia()
+        public int GetCantComprasRegistradasEnElDia()
         {
-           return _repositoryPedido.GetComprasRegistradasEnElDia();
+            return _repositoryPedido.GetCantComprasRegistradasEnElDia();
         }
 
         public IEnumerable<object> GetTopProductosVendidosByMes()

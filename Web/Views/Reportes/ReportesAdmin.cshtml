@@ -8,9 +8,11 @@
 
 <div class="row justify-content-center mb-4">
     <div class="col-md-6 border border-4 border-primary text-light fw-bold rounded-4 bg-light mb-4 g-1">
+        <h5 class="mb-2 text-center text-black p-3">Cantidad de Compras Registradas en el Día</h5>
         <canvas id="comprasDia"></canvas>
     </div>
     <div class="col-md-6 border border-4 border-success text-light fw-bold rounded-4 bg-light mb-4 g-1">
+        <h5 class="mb-2 text-center text-black p-3">Top 5 Productos más Comprado en el Mes</h5>
         <canvas id="topProductosVendidosMes"></canvas>
     </div>
 </div>
@@ -23,9 +25,12 @@
 <div class="row justify-content-center mb-4">
 
     <div class="col-md-6 border border-4 border-info text-light fw-bold rounded-4 bg-light mb-4">
+        <h5 class="mb-2 text-center text-black p-3">Vendedores con Mejor Evaluación</h5>
         <canvas id="mejorEvaluacion"></canvas>
     </div>
     <div class="col-md-6 border border-4 border-warning text-light fw-bold rounded-4 bg-light">
+        <h5 class="mb-2 text-center text-black p-3">Vendedores con Peor Evaluación</h5>
+
         <canvas id="peorEvaluacion"></canvas>
     </div>
 </div>
@@ -43,7 +48,7 @@
 
             $.ajax({
                 method: "GET",
-                url: "/Reportes/ReporteCompras",
+                url: "/Reportes/GetCantComprasRegistradasEnElDia",
                 data: {},
                 success: function (result) {
 
@@ -53,8 +58,8 @@
                         data: {
                             labels: ['Hoy'],
                             datasets: [{
-                                label: 'Compras registradas en el día',
-                                data: [result.lista.length],
+                                label: 'Cantidad Total',
+                                data: [result.CantComprasRegistradasEnElDia],
                                 backgroundColor: 'rgba(255,215,0, 0.5)',
                                 borderColor: 'rgba(255,215,0,1)',
                                 borderWidth: 2
@@ -87,7 +92,7 @@
                         data: {
                             labels: result.lista.map(p => p.NombreProducto),
                             datasets: [{
-                                label: 'Productos más comprados del mes',
+                                label: 'Cantidad Comprada',
                                 data: result.lista.map(p => p.TotalVendidos),
                                 backgroundColor: 'rgba(43, 94, 33, 0.5)',
                                 borderColor: 'rgba(43, 94, 33 , 1)',
@@ -123,7 +128,7 @@
                         data: {
                             labels: result.lista.map(p => `${p.Nombre} ${p.PrimerApellido}`),
                             datasets: [{
-                                label: 'Vendedores con mejor evaluación ',
+                                label: 'Evaluación',
                                 data: result.lista.map(p => p.PromedioEvaluaciones),
                                 backgroundColor: 'rgba(46, 175, 249, 0.5)',
                                 borderColor: 'rgba(46, 175, 249, 1)',
@@ -157,7 +162,7 @@
                         data: {
                             labels: result.lista.map(p => `${p.Nombre} ${p.PrimerApellido}`),
                             datasets: [{
-                                label: 'Vendedores peores calificados',
+                                label: 'Evaluación',
                                 data: result.lista.map(p => p.PromedioEvaluaciones),
                                 backgroundColor: 'rgba(249, 46, 65, 0.5)',
                                 borderColor: 'rgba(255, 0, 23 , 1)',
