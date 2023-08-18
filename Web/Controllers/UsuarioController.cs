@@ -152,6 +152,41 @@ namespace Web.Controllers
             });
         }
 
+        [HttpPost]
+        public JsonResult EliminarMetodoPago(int pIdMetodoPago)
+        {
+
+            int retorno = 0;
+
+            try
+            {
+                IServiceMetodoPago _ServiceMetodoPago = new ServiceMetodoPago();
+                retorno = _ServiceMetodoPago.DeleteMetodoPagoByID(Convert.ToInt32(pIdMetodoPago));
+
+                if (retorno > 0)
+                {
+                    ((Usuario)Session["User"]).MetodoPago = _ServiceMetodoPago.GetMetodoPagoByUsuario((int)((Usuario)Session["User"]).IdUsuario).ToList();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+
+                return Json(new
+                {
+                    success = false
+                });
+            }
+
+            return Json(new
+            {
+                success = retorno > 0
+            });
+
+        }
+
         public PartialViewResult PartialMetodoPago(int idUsuario)
         {
             IEnumerable<MetodoPago> lista = null;

@@ -34,10 +34,10 @@
     }
 }
 
-<nav class="navbar navbar-expand-lg bg-primary position-fixed z-3 w-100 " data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg bg-primary position-fixed w-100 " data-bs-theme="dark">
     <div class="container-fluid ">
         @*Helper: Texto del usuario, Accion a llamar, Nombre controlador, parámetros, Atributos HTML*@
-        <a href="@Url.Action("Index","Home")" class="navbar-brand"><img class="rounded-4 shadow" style="max-height:55px; max-width:150px;" alt="icon" src="~/img/Logo_completo.png" /></a>
+        <a id="logo" href="@Url.Action("Index","Home")" class="navbar-brand"><img class="rounded-4 shadow" style="max-height:55px; max-width:150px;" alt="icon" src="~/img/Logo_completo.png" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -143,8 +143,8 @@
                             else
                             {
                                 <div class="dropdown-divider"></div>
-                                <a href="@Url.Action("Update", "Usuario")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user"></i> Editar Cuenta</a>
-                                <a href="@Url.Action("Logout", "Login")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user-minus"></i> Cerrar Sesión</a>
+                                <a href="@Url.Action("Update", "Usuario")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-user-pen"></i> Editar Cuenta</a>
+                                <a href="@Url.Action("Logout", "Login")" class="dropdown-item text-decoration-none"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a>
                             }
                         </div>
                     </li>
@@ -165,7 +165,28 @@
 </nav>
 
 <style>
-    .nav-link{
+    .nav-link {
         color: white;
+        transition: transform 0.3s;
+    }
+
+    .dropdown-item {
+        color: white !important;
+    }
+
+    .nav-link:hover {
+        color: blanchedalmond !important;
+        transform: scale(1.05);
+    }
+
+    #logo {
+        transition: transform 0.3s;
+    }
+
+    #logo:hover {
+        transform: scale(1.1);
+    }
+    nav {
+        z-index: 10;
     }
 </style>

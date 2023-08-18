@@ -65,9 +65,9 @@
                                        border: none;">
                         </button>
                     }
-                <div class="bg-white rounded-4">
+                <div class="bg-white rounded-4 img-wrapper">
                     <img src="data:image/jpeg;charset=utf-8;base64,@Convert.ToBase64String(item.FotoProducto.FirstOrDefault().Foto)"
-                         alt="Imagen @Html.DisplayFor(modelItem => item.Nombre)" class="card-img" style="object-fit: scale-down; max-height: 450px;" />
+                         alt="Imagen @Html.DisplayFor(modelItem => item.Nombre)" />
                 </div>
                     
                     <div class="card-body">
@@ -88,7 +88,7 @@
 
                             <hr class="mb-4" />
                             @* Detalle Ajax Modal *@
-                            <a href="@Url.Action("Details", "Producto", new {id = item.IdProducto})" class="btn btn-info detalle w-100 position-absolute bottom-0 start-0 w-75" data-id="@item.IdProducto"><i class="fa-regular fa-note-sticky"></i> Ver más</a>
+                            <a href="@Url.Action("Details", "Producto", new {id = item.IdProducto})" class="btn btn-info detalle w-100 position-absolute bottom-0 start-0 w-75" data-id="@item.IdProducto"><i class="fa-regular fa-note-sticky"></i> Ver artículo</a>
                         </div>
                     </div>
                 </div>
@@ -105,7 +105,160 @@
 
 </div>
 
+<style type="text/css">
+
+    .ordenarProducto {
+        z-index: 7;
+    }
+
+    .card {
+        transition: transform 0.3s;
+    }
+
+    .card:hover {
+       transform: translateY(-5px);
+    }
+
+    .img-wrapper {
+        transition: transform 0.3s;
+    }
+
+    .card:hover .img-wrapper {
+        transform: scale(1.02);
+    }
+
+    .card .img-wrapper {
+        max-width: 100%;
+        height: 13em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: scale-down;
+    }
+
+    @@media (max-width: 767px) {
+        .card .img-wrapper {
+            height: 17em;
+        }
+    }
+
+</style>
+
 @section Scripts{
-    <script type="text/javascript">@Html.Raw(Json.Encode(ViewBag.Nombres))</script>
+    <script type="text/javascript">
+        $(function () {
+            var lista = @Html.Raw(Json.Encode(ViewBag.Nombres));
+            $("#filtro").autocomplete({ // aplica autocompletado para lista y nombres
+            source: lista
+            })
+        });
+
+        $("#btnBuscar").click(function () {
+
+            var filtro = $("#filtro").val();
+            $('.form-check-label').html("Ordenar x Precio (Mayor a Menor)")
+            $("#preciofilter").prop("checked", false);
+            $("#loaderSpinner").removeClass("d-none");
+
+            $.ajax({
+                method: "GET",
+                url: "/Producto/buscarProductoxNombre",
+                data: { "filtro": filtro, "tipoUsuario": 3},
+                success: function (result) {
+                    $("#categoria").val('-1');
+                    $("#resultado").html("");
+                    $("#resultado").html(result);
+                    $("#loaderSpinner").addClass("d-none");
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+
+                }
+            });
+        });
+
+        //Buscar por categoría
+
+        $("#categoria").on('change', function () {
+
+            var categoria = $("#categoria").val();
+            $("#filtro").val('');
+            $('.form-check-label').html("Ordenar x Precio (Mayor a Menor)")
+            $("#preciofilter").prop("checked", false);
+            $("#loaderSpinner").removeClass("d-none");
+
+            //    Llamar al ajax
+            $.ajax({
+                method: "GET",
+                url: "/Producto/BuscarProductoxCategoria",
+                data: { "categoria": categoria },
+                success: function (result) {
+                    $("#resultado").html("");
+                    $("#resultado").html(result);
+                    $("#loaderSpinner").addClass("d-none");
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+
+                }
+            })
+        });
+
+        $("#preciofilter").change(function () {
+
+            var valor = $(this).is(":checked");
+            $('#filtro').val('');
+            $('#categoria').val(-1);
+            $("#loaderSpinner").removeClass("d-none");
+
+            $.ajax({
+                method: "GET",
+                url: "/Producto/OrdenarxPrecio",
+                data: { "tipoOrden": valor == true ? 1 : 0 },
+                success: function (result) {
+                    $("#resultado").html("");
+                    $("#resultado").html(result);
+                    $("#loaderSpinner").addClass("d-none");
+                    $('.form-check-label').html(valor == true ? "Ordenar x Precio (Menor a Mayor)" : "Ordenar x Precio (Mayor a Menor)")
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+
+                }
+            })
+        })
+
+        $(document).on('click', '.ordenarProducto', function () {
+
+            var idProducto = $(this).data('idproducto');
+            var stockActual = $(this).data('stockactual');
+            var btn = $(this);
+
+            $.ajax({
+                method: "POST",
+                url: "/Pedido/IngresarProductoCarrito",
+                data: { idProducto },
+                success: function (result) {
+
+                    $('.cantCarrito').html(result.cantCarrito);
+
+                    if (result.cantProducto + 1 > stockActual) {
+                        btn.prop('disabled', true);
+                        btn.css({"background-color": 'grey'})
+                    }
+
+                    eval(result.mensaje);
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            })
+        });
+    </script>
 }
 

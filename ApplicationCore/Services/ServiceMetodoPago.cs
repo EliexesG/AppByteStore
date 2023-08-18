@@ -13,6 +13,11 @@ namespace ApplicationCore.Services
 
         IRepositoryMetodoPago repository = new RepositoryMetodoPago();
 
+        public int DeleteMetodoPagoByID(int id)
+        {
+            return repository.DeleteMetodoPagoByID(id);
+        }
+
         public MetodoPago GetMetodoPagoByID(int id)
         {
             return repository.GetMetodoPagoByID(id);

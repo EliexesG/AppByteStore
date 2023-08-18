@@ -836,6 +836,50 @@
 
         })
 
+        $(document).on('click', '.btnEliminarMetodoPago', function() {
+
+            var pIdMetodoPago = $(this).data("idmetodopago");
+            var idUsuario = @Html.Raw(Json.Encode(Model.IdUsuario));
+
+            $.ajax({
+                method: "POST",
+                url: "/Usuario/EliminarMetodoPago",
+                data: { pIdMetodoPago },
+                success: function (result) {
+
+                    if (result.success) {
+
+                        $("#loaderSpinner").removeClass("d-none");
+
+                            $.ajax({
+                                method: "GET",
+                                url: "/Usuario/PartialMetodoPago",
+                                data: { "idUsuario": idUsuario },
+                                success: function (result) {
+
+                                    $("#infoMetodoPago").html("");
+                                    $("#infoMetodoPago").html(result);
+                                    $("#loaderSpinner").addClass("d-none");
+                                },
+                                error: function (xhr, status, error) {
+                                    console.log("error" + error, "no Error: " + xhr.status)
+                                }
+                            });
+                    }
+                    else {
+                        var notificacion = "@Html.Raw(Web.Util.SweetAlertHelper.Mensaje("Error",
+                            "No se puede eliminar Metodo de Pago debido a que ya está en uso", Web.Util.SweetAlertMessageType.error))";
+                        eval(notificacion)
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            });
+
+        })
+
 </script>
 }
 
