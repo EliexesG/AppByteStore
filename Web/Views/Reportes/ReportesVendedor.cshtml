@@ -22,7 +22,7 @@
 
 <div class="row justify-content-center mb-4">
 
-    <div class="col-md-6 border border-4 border-info text-light fw-bold rounded-4 bg-light mb-4">
+    <div class="col-md-6 border border-4 border-danger text-light fw-bold rounded-4 bg-light mb-4 p-3">
         <h5 class="mb-2 text-center text-black p-3">Cantidad de Evaluaciones por Escala</h5>
         <canvas id="evaluaciones"></canvas>
     </div>
@@ -33,7 +33,7 @@
 
 @section Scripts {
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
       $(document).ready(function () {
 
@@ -108,9 +108,68 @@
                 }
             });
 
+
+          $.ajax({
+              method: "GET",
+              url: "/Reportes/CantEvaluacionesPorEscalaVendedor",
+              data: { idVendedor },
+              success: function ({ EvaluacionesPorEscala }) {
+
+                  var colores = [
+                      'rgba(202, 43, 47, {opacity})',
+                      'rgba(117, 54, 124, {opacity})',
+                      'rgba(199, 214, 103, {opacity})',
+                      'rgba(70, 140, 162, {opacity})',
+                      'rgba(63, 121, 67, {opacity})']
+
+                  var coloresMostrar = colores.map((element, index) => {
+                      if (EvaluacionesPorEscala.some(e => {
+                          return (e.Escala - 1) === index
+                      })) {
+                          return element;
+                      }
+                  })
+
+                  coloresMostrar = coloresMostrar.filter(cm => cm)
+
+                  coloresMostrar.sort((a, b) => {
+                      const [a1] = a.match(/\d+/);
+                      const [b1] = b.match(/\d+/);
+                      return a1 - b1;
+                  });
+
+                  console.log(coloresMostrar)
+
+                    var ctx = $('#evaluaciones')[0].getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: EvaluacionesPorEscala.map(e => `${e.Escala} estrella(s)`),
+                            datasets: [{
+                                label: 'Evaluaciones por escala',
+                                data: EvaluacionesPorEscala.map(e => e.CantidadEvaluaciones),
+                                backgroundColor: coloresMostrar.map(e => e.replace('{opacity}', '0.5')),
+                                borderColor: coloresMostrar.map(e => e.replace('{opacity}', '1')),
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            });
     });
 
-</script>
+    </script>
 
 
 }

@@ -44,10 +44,10 @@
         <div class="collapse navbar-collapse fs-5 " id="navbarColor01"  >
             <ul class="navbar-nav me-auto">
                 <li class="nav-item me-3">
-                    <a href="@Url.Action("Index","Home")" class="nav-link active fw-bold"><i class="fa-solid fa-home"></i> Home</a>
+                    <a href="@Url.Action("Index","Home")" class="nav-link active "><i class="fa-solid fa-home"></i> Home</a>
                 </li>
                 <li class="nav-item me-3">
-                    <a href="@Url.Action("Index","Producto")" class="nav-link fw-bold"><i class="fa-solid fa-gamepad"></i> Productos</a>
+                    <a href="@Url.Action("Index","Producto")" class="nav-link "><i class="fa-solid fa-gamepad"></i> Productos</a>
                 </li>
                 @if (!PerfilCompleto())
                 {
@@ -86,42 +86,42 @@
                     if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }))
                     {
                         <li class="nav-item me-3">
-                            <a href="@Url.Action("IndexVendedor", "Producto")" class="nav-link fw-bold"><i class="fa-solid fa-money-bill"></i><i class="fa-solid fa-gamepad"></i> Tus Productos</a>
+                            <a href="@Url.Action("IndexVendedor", "Producto")" class="nav-link "><i class="fa-solid fa-money-bill"></i><i class="fa-solid fa-gamepad"></i> Tus Productos</a>
                         </li>
                     }
                     if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
                     {
                         <li class="nav-item me-3">
-                            <a href="@Url.Action("Index", "Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-truck-fast"></i> Pedidos</a>
+                            <a href="@Url.Action("Index", "Pedido")" class="nav-link"><i class="fa-solid fa-truck-fast"></i> Pedidos</a>
                         </li>
                     }
                     if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }))
                     {
                         <li class="nav-item me-3">
-                            <a href="@Url.Action("IndexVendedor", "Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-money-bill"></i><i class="fa-solid fa-truck-fast"></i> Tus Ventas</a>
+                            <a href="@Url.Action("IndexVendedor", "Pedido")" class="nav-link "><i class="fa-solid fa-money-bill"></i><i class="fa-solid fa-truck-fast"></i> Tus Ventas</a>
                         </li>
 
                         <li class="nav-item me-3">
-                            <a href="@Url.Action("ReportesVendedor", "Reportes")" class="nav-link fw-bold"><i class="fa-solid fa-file-contract"></i> Reportes</a>
+                            <a href="@Url.Action("ReportesVendedor", "Reportes")" class="nav-link"><i class="fa-solid fa-file-contract"></i> Reportes</a>
                         </li>
                     }
                     if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Cliente" }))
                     {
                         <li class="nav-item me-3">
-                            <a href="@Url.Action("Carrito", "Pedido")" class="nav-link fw-bold"><i class="fa-solid fa-cart-shopping"></i> Carrito (<span class="fw-bold text-white cantCarrito">@Web.Utils.Carrito.Instancia.GetCountItems()</span>)</a>
+                            <a href="@Url.Action("Carrito", "Pedido")" class="nav-link"><i class="fa-solid fa-cart-shopping"></i> Carrito (<span class="fw-bold text-white cantCarrito">@Web.Utils.Carrito.Instancia.GetCountItems()</span>)</a>
                         </li>
                     }
                     if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Administrador" }))
                     {
                         <li class="nav-item dropdown me-3">
-                            <a class="nav-link dropdown-toggle fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-wrench"></i> Mantenimientos</a>
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-wrench"></i> Mantenimientos</a>
                             <div class="dropdown-menu fs-5">
                                 @Html.ActionLink("Gestionar Usuarios", "IndexAdmin", "Usuario", null, new { @class = "dropdown-item fw-bold" })
                             </div>
                         </li>
 
                         <li class="nav-item me-3">
-                            <a href="@Url.Action("ReportesAdmin", "Reportes")" class="nav-link fw-bold"><i class="fa-solid fa-file-contract"></i> Reportes</a>
+                            <a href="@Url.Action("ReportesAdmin", "Reportes")" class="nav-link"><i class="fa-solid fa-file-contract"></i> Reportes</a>
                         </li>
                     }
                     <li class="nav-item dropdown">
@@ -163,3 +163,9 @@
         </div>
     </div>
 </nav>
+
+<style>
+    .nav-link{
+        color: white;
+    }
+</style>

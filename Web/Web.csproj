@@ -230,7 +230,6 @@
     <Content Include="Views\Producto\Index.cshtml" />
     <Content Include="Views\Pedido\Index.cshtml" />
     <Content Include="Views\Pedido\IndexVendedor.cshtml" />
-    <Content Include="Views\Pedido\Details.cshtml" />
     <Content Include="Views\Producto\_PaginacionYOrdenViewProducto.cshtml" />
     <Content Include="Views\Pedido\_PaginacionYOrdenViewPedido.cshtml" />
     <Content Include="Views\Producto\_PartialCatalogoProducto.cshtml" />
@@ -256,6 +255,7 @@
     <Content Include="Views\Reportes\ReportesAdmin.cshtml" />
     <Content Include="Views\Pedido\_PartialEvaluacionPedido.cshtml" />
     <Content Include="Views\Reportes\ReportesVendedor.cshtml" />
+    <Content Include="Views\Pedido\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

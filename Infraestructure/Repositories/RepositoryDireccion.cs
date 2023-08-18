@@ -12,6 +12,38 @@ namespace Infraestructure.Repositories
 {
     public class RepositoryDireccion : IRepositoryDireccion
     {
+
+        public int DeleteDireccionByID(int id)
+        {
+            Direccion oDireccion = this.GetDireccionByID(id);
+            int retorno = 0;
+
+            try
+            {
+                using (var ctx = new ByteStoreContext())
+                {
+                    ctx.Direccion.Attach(oDireccion);
+                    ctx.Direccion.Remove(oDireccion);
+                    retorno = ctx.SaveChanges();
+                }
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+
+            return retorno;
+
+        }
+
         public Direccion GetDireccionByID(int id)
         {
             Direccion direccion = null;

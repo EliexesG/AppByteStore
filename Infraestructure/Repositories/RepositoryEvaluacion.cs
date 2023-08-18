@@ -162,5 +162,51 @@ namespace Infraestructure.Repositories
             return oEvaluacion;
         }
 
+        public IEnumerable<object> CantEvaluacionesPorEscalaVendedor (int idVendedor)
+        {
+
+            IEnumerable<object> EvaluacionesPorEscala = null;
+
+            try
+            {
+
+                using (ByteStoreContext ctx = new ByteStoreContext())
+                {
+
+                    ctx.Configuration.LazyLoadingEnabled = false;
+
+                    EvaluacionesPorEscala = ctx.Evaluacion
+                                            .Include(e => e.Usuario1)
+                                            .Where(e => e.Usuario1.IdUsuario == idVendedor)
+                                            .GroupBy(d => new { d.Usuario1.IdUsuario, d.Escala })
+                                            .Select( g => new
+                                            {
+                                                IdUsuario = g.Key.IdUsuario,
+                                                Escala = g.Key.Escala,
+                                                CantidadEvaluaciones = g.Count()
+                                            })
+                                            .OrderByDescending(e => e.Escala)
+                                            .ToList();
+
+                }
+
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+
+            return EvaluacionesPorEscala;
+
+        }
+
     }
 }

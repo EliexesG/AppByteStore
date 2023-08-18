@@ -12,5 +12,6 @@ namespace ApplicationCore.Services
         Telefono GetTelefonoByID(int id);
         IEnumerable<Telefono> GetTelefonoByUsuario(int idUsuario);
         Telefono SaveTelefono(Telefono pTelefono);
+        int DeleteTelefonoByID(int id);
     }
 }

@@ -13,6 +13,11 @@ namespace ApplicationCore.Services
 
         IRepositoryTelefono repository = new RepositoryTelefono();
 
+        public int DeleteTelefonoByID(int id)
+        {
+            return repository.DeleteTelefonoByID(id);
+        }
+
         public Telefono GetTelefonoByID(int id)
         {
             return repository.GetTelefonoByID(id);

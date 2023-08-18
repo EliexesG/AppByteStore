@@ -61,6 +61,41 @@ namespace Web.Controllers
             return View(oUsuario);
         }
 
+        [HttpPost]
+        public JsonResult EliminarTelefono(int pIdTelefono)
+        {
+
+            int retorno = 0;
+
+            try
+            {
+                IServiceTelefono _ServiceTelefono = new ServiceTelefono();
+                retorno = _ServiceTelefono.DeleteTelefonoByID(Convert.ToInt32(pIdTelefono));
+
+                if(retorno > 0)
+                {
+                    ((Usuario)Session["User"]).Telefono = _ServiceTelefono.GetTelefonoByUsuario((int)((Usuario)Session["User"]).IdUsuario).ToList();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+
+                return Json(new
+                {
+                    success = false
+                });
+            }
+
+            return Json(new
+            {
+                success = retorno > 0
+            });
+
+        }
+
         public PartialViewResult PartialTelefonos(int idUsuario)
         {
             IEnumerable<Telefono> lista = null;
@@ -176,6 +211,41 @@ namespace Web.Controllers
             {
                 success = resultado
             });
+        }
+
+        [HttpPost]
+        public JsonResult EliminarDireccion(int pIdDireccion)
+        {
+
+            int retorno = 0;
+
+            try
+            {
+                IServiceDireccion _ServiceDireccion = new ServiceDireccion();
+                retorno = _ServiceDireccion.DeleteDireccionByID(Convert.ToInt32(pIdDireccion));
+
+                if (retorno > 0)
+                {
+                    ((Usuario)Session["User"]).Direccion = _ServiceDireccion.GetDireccionByUsuario((int)((Usuario)Session["User"]).IdUsuario).ToList();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Log.Error(ex, MethodBase.GetCurrentMethod());
+                TempData["Message"] = "Error al procesar los datos!" + ex.Message;
+
+                return Json(new
+                {
+                    success = false
+                });
+            }
+
+            return Json(new
+            {
+                success = retorno > 0
+            });
+
         }
 
         public async Task<PartialViewResult> PartialDireccion(int idUsuario)

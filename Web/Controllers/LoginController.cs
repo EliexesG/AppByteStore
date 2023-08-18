@@ -48,7 +48,7 @@ namespace Web.Controllers
                     {
                         Log.Warn($"Intento de inicio de secion{login.CorreoElectronico}");
                         TempData["NotificationMessage"] = Util.SweetAlertHelper.Mensaje("Login",
-                            "Usuario no válido", Util.SweetAlertMessageType.warning);
+                            "Usuario no válido", Util.SweetAlertMessageType.error);
                     }
                 }
             }

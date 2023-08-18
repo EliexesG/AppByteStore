@@ -110,5 +110,19 @@ namespace Web.Controllers
                 clienteMasFiel
             }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public JsonResult CantEvaluacionesPorEscalaVendedor(int idVendedor)
+        {
+            IEnumerable<object> EvaluacionesPorEscala = null;
+            IServiceEvaluacion _ServiceEvaluaciones = new ServiceEvaluacion();
+
+            EvaluacionesPorEscala = _ServiceEvaluaciones.CantEvaluacionesPorEscalaVendedor(idVendedor);
+
+            return Json(new
+            {
+                EvaluacionesPorEscala
+            }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

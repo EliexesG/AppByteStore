@@ -43,11 +43,7 @@
 
     @if (TempData["NotificationMessage"] != null)
     {
-        <script type="text/javascript">
-            var script = "@Html.Raw(TempData["NotificationMessage"])";
-            console.log(script)
-            eval(script);
-        </script>
+        <script type="text/javascript">@Html.Raw(TempData["NotificationMessage"])</script>
     }
 
     @*Gráficos*@

@@ -12,6 +12,11 @@ namespace ApplicationCore.Services
     {
         IRepositoryDireccion repository = new RepositoryDireccion();
 
+        public int DeleteDireccionByID(int id)
+        {
+            return repository.DeleteDireccionByID(id);
+        }
+
         public Direccion GetDireccionByID(int id)
         {
             return repository.GetDireccionByID(id);
