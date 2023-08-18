@@ -9,6 +9,7 @@ namespace ApplicationCore.Services
 {
     public interface IServiceMetodoPago
     {
+        int DeleteMetodoPagoByID(int id);
         MetodoPago GetMetodoPagoByID(int id);
         IEnumerable<MetodoPago> GetMetodoPagoByUsuario(int idUsuario);
         IEnumerable<TipoPago> GetTipoPago();

@@ -12,7 +12,7 @@
             <th scope="col">Fecha de expiración</th>
             <th scope="col">Código</th>
             <th scope="col">Tipo de pago</th>
-
+            <th></th>
         </tr>
     </thead>
     <tbody class="table-dark">
@@ -34,6 +34,7 @@
                 <td>
                     @Html.DisplayFor(model => metodo.TipoPago.Descripcion)
                 </td>
+                <th><button class="btn-warning btn btnEliminarMetodoPago" data-idmetodopago="@metodo.IdMetodoPago"><i class="fa-solid fa-trash"></i></button></th>
             </tr>
         }
     </tbody>

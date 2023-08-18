@@ -12,6 +12,37 @@ namespace Infraestructure.Repositories
 {
     public class RepositoryTelefono : IRepositoryTelefono
     {
+        public int DeleteTelefonoByID(int id)
+        {
+            Telefono oTelefono = this.GetTelefonoByID(id);
+            int retorno = 0;
+
+            try
+            {
+                using (var ctx = new ByteStoreContext())
+                {
+                    ctx.Telefono.Attach(oTelefono);
+                    ctx.Telefono.Remove(oTelefono);
+                    retorno = ctx.SaveChanges();
+                }
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+
+            return retorno;
+
+        }
+
         public Telefono GetTelefonoByID(int id)
         {
             Telefono telefono = null;

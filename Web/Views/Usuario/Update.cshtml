@@ -63,7 +63,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.CorreoElectronico, htmlAttributes: new { @class = "control-label" })
                         <div class="col-md-12">
-                            @Html.EditorFor(model => model.CorreoElectronico, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.CorreoElectronico, new { htmlAttributes = new { @class = "form-control", placeholder = "humano@correo.com" } })
                             @Html.ValidationMessageFor(model => model.CorreoElectronico, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -748,7 +748,137 @@
         });
 
 
+        $(document).on('click', '.btnEliminarTelefono', function() {
 
+            var pIdTelefono = $(this).data("idtelefono");
+            var idUsuario = @Html.Raw(Json.Encode(Model.IdUsuario));
+
+            $.ajax({
+                method: "POST",
+                url: "/Usuario/EliminarTelefono",
+                data: { pIdTelefono },
+                success: function (result) {
+
+                    if (result.success) {
+
+                        $("#loaderSpinner").removeClass("d-none");
+
+                        $.ajax({
+                            method: "GET",
+                            url: "/Usuario/PartialTelefonos",
+                            data: { "idUsuario": idUsuario },
+                            success: function (result) {
+
+                                $("#infoTelefonos").html("");
+                                $("#infoTelefonos").html(result);
+                                $("#loaderSpinner").addClass("d-none");
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("error" + error, "no Error: " + xhr.status)
+                            }
+                        });
+                    }
+                    else {
+                        var notificacion = "@Html.Raw(Web.Util.SweetAlertHelper.Mensaje("Error",
+                            "No se puede eliminar", Web.Util.SweetAlertMessageType.error))";
+                        eval(notificacion)
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            });
+
+        })
+
+        $(document).on('click', '.btnEliminarDireccion', function() {
+
+            var pIdDireccion = $(this).data("iddireccion");
+            var idUsuario = @Html.Raw(Json.Encode(Model.IdUsuario));
+
+            $.ajax({
+                method: "POST",
+                url: "/Usuario/EliminarDireccion",
+                data: { pIdDireccion },
+                success: function (result) {
+
+                    if (result.success) {
+
+                        $("#loaderSpinner").removeClass("d-none");
+
+                        $.ajax({
+                            method: "GET",
+                            url: "/Usuario/PartialDireccion",
+                            data: { "idUsuario": idUsuario },
+                            success: function (result) {
+
+                                $("#infoDireccion").html("");
+                                $("#infoDireccion").html(result);
+                                $("#loaderSpinner").addClass("d-none");
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("error" + error, "no Error: " + xhr.status)
+                            }
+                        });
+                    }
+                    else {
+                        var notificacion = "@Html.Raw(Web.Util.SweetAlertHelper.Mensaje("Error",
+                            "No se puede eliminar Dirección debido a que ya está en uso", Web.Util.SweetAlertMessageType.error))";
+                        eval(notificacion)
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            });
+
+        })
+
+        $(document).on('click', '.btnEliminarMetodoPago', function() {
+
+            var pIdMetodoPago = $(this).data("idmetodopago");
+            var idUsuario = @Html.Raw(Json.Encode(Model.IdUsuario));
+
+            $.ajax({
+                method: "POST",
+                url: "/Usuario/EliminarMetodoPago",
+                data: { pIdMetodoPago },
+                success: function (result) {
+
+                    if (result.success) {
+
+                        $("#loaderSpinner").removeClass("d-none");
+
+                            $.ajax({
+                                method: "GET",
+                                url: "/Usuario/PartialMetodoPago",
+                                data: { "idUsuario": idUsuario },
+                                success: function (result) {
+
+                                    $("#infoMetodoPago").html("");
+                                    $("#infoMetodoPago").html(result);
+                                    $("#loaderSpinner").addClass("d-none");
+                                },
+                                error: function (xhr, status, error) {
+                                    console.log("error" + error, "no Error: " + xhr.status)
+                                }
+                            });
+                    }
+                    else {
+                        var notificacion = "@Html.Raw(Web.Util.SweetAlertHelper.Mensaje("Error",
+                            "No se puede eliminar Metodo de Pago debido a que ya está en uso", Web.Util.SweetAlertMessageType.error))";
+                        eval(notificacion)
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error, "no Error: " + xhr.status)
+                }
+            });
+
+        })
 
 </script>
 }

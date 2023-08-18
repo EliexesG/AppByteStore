@@ -12,6 +12,38 @@ namespace Infraestructure.Repositories
 {
     public class RepositoryMetodoPago : IRepositoryMetodoPago
     {
+
+        public int DeleteMetodoPagoByID(int id)
+        {
+            MetodoPago oMetodoPago = this.GetMetodoPagoByID(id);
+            int retorno = 0;
+
+            try
+            {
+                using (var ctx = new ByteStoreContext())
+                {
+                    ctx.MetodoPago.Attach(oMetodoPago);
+                    ctx.MetodoPago.Remove(oMetodoPago);
+                    retorno = ctx.SaveChanges();
+                }
+            }
+            catch (DbUpdateException dbEx)
+            {
+                string mensaje = "";
+                Log.Error(dbEx, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw new Exception(mensaje);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = "";
+                Log.Error(ex, System.Reflection.MethodBase.GetCurrentMethod(), ref mensaje);
+                throw;
+            }
+
+            return retorno;
+
+        }
+
         public MetodoPago GetMetodoPagoByID(int id)
         {
             MetodoPago metodoPago = null;

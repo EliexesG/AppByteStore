@@ -9,6 +9,7 @@
             <th scope="col">Otras señas</th>
             <th scope="col">Código Postal</th>
             <th scope="col">Teléfono</th>
+            <th></th>
         </tr>
     </thead>
 
@@ -38,6 +39,7 @@
                 <td>
                     +506 @string.Format("{0:####-####}", Convert.ToInt32(Model.ElementAt(i).Telefono))
                 </td>
+                <th><button class="btn-warning btn btnEliminarDireccion" data-iddireccion="@Model.ElementAt(i).IdDireccion"><i class="fa-solid fa-trash"></i></button></th>
             </tr>
         }
     </tbody>

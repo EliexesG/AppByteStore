@@ -5,6 +5,7 @@ namespace Infraestructure.Repositories
 {
     public interface IRepositoryMetodoPago
     {
+        int DeleteMetodoPagoByID(int id);
         MetodoPago GetMetodoPagoByID(int id);
         IEnumerable<MetodoPago> GetMetodoPagoByUsuario(int idUsuario);
         IEnumerable<TipoPago> GetTipoPago();

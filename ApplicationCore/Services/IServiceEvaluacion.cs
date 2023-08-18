@@ -13,5 +13,6 @@ namespace ApplicationCore.Services
         IEnumerable<Evaluacion> GetEvaluacionByPedidoForCliente(int idPedido, int idUsuario);
         Evaluacion GetEvaluacionByPedidoForVendedor(int idPedido, int idUsuario);
         Evaluacion SaveEvaluacion(Evaluacion evaluacion);
+        IEnumerable<object> CantEvaluacionesPorEscalaVendedor(int idVendedor);
     }
 }

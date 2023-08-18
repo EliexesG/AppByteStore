@@ -11,7 +11,7 @@
 <div class="row">
 
     <a href="@Url.Action("Index", "Producto")" class="col-md text-decoration-none">
-        <div class="card text-white mb-3 p-3 rounded-4 bg-danger hover">
+        <div class="card text-white mb-3 p-3 rounded-4 bg-danger hover opcionesHome">
             <i class="fa-solid fa-gamepad fa-2xl m-3 shadow-lg"></i>
             <div class="card-body">
                 <h3 class="card-title">Variedad</h3>
@@ -24,7 +24,7 @@
     @if (Web.Security.AutorizeView.IsUserInRole(new string[] { "Vendedor" }))
     {
         <a href="@Url.Action("Create", "Producto")" class="col-md text-decoration-none">
-            <div class="card text-white mb-3 p-3 rounded-4 bg-info hover">
+            <div class="card text-white mb-3 p-3 rounded-4 bg-info hover opcionesHome">
                 <i class="fa-solid fa-arrow-up-from-bracket fa-2xl m-3"></i>
                 <div class="card-body">
                     <h3 class="card-title">Publicar Producto</h3>
@@ -71,7 +71,7 @@
                             <p class="card-title text-white"> @Html.DisplayNameFor(model => model.Precio): @Html.DisplayFor(modelItem => item.Precio)</p>
 
                             <hr class="mb-4" />
-                            <a href="@Url.Action("Details", "Producto", new {id = item.IdProducto})" class="btn btn-info"><i class="fa-regular fa-note-sticky"></i> Ver más</a>
+                            <a href="@Url.Action("Details", "Producto", new {id = item.IdProducto})" class="btn btn-info"><i class="fa-regular fa-note-sticky"></i> Ver Artículo</a>
                         </div>
                     </div>
                 </div>
@@ -89,6 +89,30 @@
 }
 
 <style type="text/css">
+
+    .opcionesHome {
+        transition: transform 0.3s;
+    }
+
+    .opcionesHome:hover {
+        transform: scale(1.05);
+    }
+
+    .carousel-item {
+        transition: transform 0.3s;
+    }
+
+    .carousel-item:hover {
+        transform: translateY(-5px);
+    }
+
+    .img-wrapper {
+        transition: transform 0.3s;
+    }
+
+    .carousel-item:hover .img-wrapper {
+        transform: scale(1.02);
+    }
 
     .carousel-inner {
         padding: 1em;

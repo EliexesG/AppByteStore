@@ -119,26 +119,29 @@
     @{
         ApplicationCore.Services.IServiceEvaluacion serviceEvaluacion = new ApplicationCore.Services.ServiceEvaluacion();
         IEnumerable<Infraestructure.Models.Evaluacion> evaluaciones = serviceEvaluacion.GetEvaluacionByPedidoForCliente(Model.IdCompraEncabezado, Model.CompraEncabezado.Usuario.IdUsuario);
+        int cantAEvaluar = Model.CompraEncabezado.CompraDetalle.Select(cd => new { IdUsuario = cd.Producto.Usuario.IdUsuario, Nombre = $"{cd.Producto.Usuario.Nombre} {cd.Producto.Usuario.PrimerApellido} {cd.Producto.Usuario.SegundoApellido}" }).Distinct().ToList().Count();
+        IEnumerable<object> seDebenEvaluar = Model.CompraEncabezado.CompraDetalle.Select(cd => new { IdUsuario = cd.Producto.Usuario.IdUsuario, Nombre = $"{cd.Producto.Usuario.Nombre} {cd.Producto.Usuario.PrimerApellido} {cd.Producto.Usuario.SegundoApellido}" }).Distinct().ToList().Where(sde => !evaluaciones.Any(e => e.Usuario1.IdUsuario == sde.IdUsuario));
     }
 
     <hr class="mb-4 mt-4" />
 
     @if (Model.EstadoEntrega == 2)
     {
-        <div id="InfoEvaluaciones" class="mt-4">
+        <div id="InfoEvaluacionesTemp" class="mt-4">
             <h2 class="text-center border-3 text-white rounded-4 w-auto mb-4 mt-4">Evaluaciones de Vendedores en el Pedido</h2>
             <hr class="mb-4" />
         </div>
     }
 
     <div>
+        <div id="InfoEvaluaciones">
+            @if (evaluaciones.Count() > 0 && Model.EstadoEntrega == 2)
+            {
 
-        @if (evaluaciones.Count() > 0 && Model.EstadoEntrega == 2)
-        {
-
-            @Html.Partial("_PartialEvaluacionPedido", evaluaciones)
-        }
-        else if(Model.EstadoEntrega == 2)
+                @Html.Partial("_PartialEvaluacionPedido", evaluaciones)
+            }
+        </div>
+        @if (Model.EstadoEntrega == 2 && cantAEvaluar != evaluaciones.Count())
         {
             <div id="contenedorEvaluacionForm"></div>
             <button id="btnCalificarVendedor" class="btn btn-info fs-4 mb-4" data-idpedido="@Model.IdCompraEncabezado" data-idevaluador="@(((Infraestructure.Models.Usuario)Session["User"]).IdUsuario)"><i class="fa-solid fa-star"></i> Calificar Vendedor(es)</button>
@@ -147,16 +150,26 @@
 
 </div>
 
+<style type="text/css">
+    .fa-star {
+        transition: transform 0.3s;
+    }
+
+    .fa-star:hover {
+        transform: scale(1.1);
+    }
+</style>
+
 @section Scripts {
 
     @Scripts.Render("~/bundles/jqueryval")
-    <script type="text/javascript">
+<script type="text/javascript">
 
         $("#btnCalificarVendedor").on('click', function () {
 
             var idPedido = $(this).data('idpedido');
             var idEvaluador = $(this).data('idevaluador');
-            var evaluados = @Html.Raw(Json.Encode(Model.CompraEncabezado.CompraDetalle.Select(cd => new { IdUsuario = cd.Producto.Usuario.IdUsuario, Nombre = $"{cd.Producto.Usuario.Nombre} {cd.Producto.Usuario.PrimerApellido} {cd.Producto.Usuario.SegundoApellido}" }).Distinct().ToList()));
+            var evaluados = @Html.Raw(Json.Encode(seDebenEvaluar));
             var esOcultar = String($(this).html()).includes("Cancelar");
 
             if (!esOcultar) {
@@ -289,8 +302,9 @@
                                                 url: "/Pedido/EvaluacionPedidoCliente",
                                                 data: { idPedido, idUsuario: idEvaluador },
                                                 success: function (html) {
-                                                    $(`#InfoEvaluaciones`).html("");
-                                                    $(`#InfoEvaluaciones`).html('<h2 class="text-center border-3 text-white rounded-4 w-auto mb-4 mt-4">Evaluaciones de Vendedores en el Pedido</h2><hr class= "mb-4"/>' + html);
+                                                    $("#InfoEvaluaciones").html("");
+                                                    $(`#InfoEvaluacionesTemp`).html("");
+                                                    $(`#InfoEvaluacionesTemp`).html('<h2 class="text-center border-3 text-white rounded-4 w-auto mb-4 mt-4">Evaluaciones de Vendedores en el Pedido</h2><hr class= "mb-4"/>' + html);
                                                     $(idFormulario).hide();
                                                     $("#btnCalificarVendedor").hide();
                                                     $("#loaderSpinner").addClass("d-none");
@@ -325,7 +339,6 @@
                 $(this).html('<i class="fa-solid fa-star"></i> Calificar Vendedor(es)');
             }
         });
-
-    </script>
+</script>
 
 }

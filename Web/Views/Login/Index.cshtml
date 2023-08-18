@@ -41,7 +41,7 @@
 
         <hr />
         <div class="col-md-12 text-center">
-            <a class="text-info" a href="@Url.Action("Create","Usuario")">¿No tienes una cuenta? Regístrate</a>
+            <a class="text-info" href="@Url.Action("Create","Usuario")">¿No tienes una cuenta? Regístrate</a>
         </div>
     </div>
 
@@ -52,6 +52,17 @@
     .text{
         color: white;
     }
+
+    .text-info {
+        color: cyan !important;
+        font-size: 14pt;
+        text-decoration: none;
+    }
+
+    .text-info:hover {
+        font-weight: bold;
+    }
+
 </style>
 }
 

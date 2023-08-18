@@ -31,5 +31,10 @@ namespace ApplicationCore.Services
         {
             return repository.SaveEvaluacion(evaluacion);
         }
+
+        public IEnumerable<object> CantEvaluacionesPorEscalaVendedor(int idVendedor)
+        {
+            return repository.CantEvaluacionesPorEscalaVendedor(idVendedor);
+        }
     }
 }
