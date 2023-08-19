@@ -7,11 +7,11 @@
 <hr class="mb-4" />
 
 <div class="row justify-content-center mb-4 p-3">
-    <div class="col-md-6 border border-4 border-primary text-light fw-bold rounded-4 bg-light mb-4 g-1">
+    <div class="reporte col-md-6 border border-4 border-primary text-light fw-bold rounded-4 bg-light mb-4 g-1">
         <h5 class="mb-2 text-center text-black p-3">Cantidad de Compras Registradas en el Día</h5>
         <canvas id="comprasDia"></canvas>
     </div>
-    <div class="col-md-6 border border-4 border-success text-light fw-bold rounded-4 bg-light mb-4 g-1">
+    <div class="reporte col-md-6 border border-4 border-success text-light fw-bold rounded-4 bg-light mb-4 g-1">
         <h5 class="mb-2 text-center text-black p-3">Top 5 Productos más Comprado en el Mes</h5>
         <canvas id="topProductosVendidosMes"></canvas>
     </div>
@@ -23,18 +23,27 @@
 <hr class="mb-4" />
 
 <div class="row justify-content-center mb-4">
-
-    <div class="col-md-6 border border-4 border-info text-light fw-bold rounded-4 bg-light mb-4">
+    <div class="reporte col-md-6 border border-4 border-info text-light fw-bold rounded-4 bg-light mb-4">
         <h5 class="mb-2 text-center text-black p-3">Vendedores con Mejor Evaluación</h5>
         <canvas id="mejorEvaluacion"></canvas>
     </div>
-    <div class="col-md-6 border border-4 border-warning text-light fw-bold rounded-4 bg-light">
+    <div class="reporte col-md-6 border border-4 border-warning text-light fw-bold rounded-4 bg-light">
         <h5 class="mb-2 text-center text-black p-3">Vendedores con Peor Evaluación</h5>
-
         <canvas id="peorEvaluacion"></canvas>
     </div>
 </div>
 
+<style type="text/css">
+
+    .reporte {
+        transition: all 0.3s;
+    }
+
+    .reporte:hover {
+        transform: scale(1.1);
+    }
+
+</style>
 
 @section Scripts {
 

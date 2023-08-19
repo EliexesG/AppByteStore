@@ -25,7 +25,7 @@
 </div>
 
 @*Datatable de los productos*@
-<table class="table table-info rounded-4 overflow-hidden p-3">
+<table class="table table-info rounded-4 table-hover overflow-hidden p-3">
     <thead>
         <tr class="text-center">
             <th scope="col">
@@ -69,6 +69,32 @@
 <style>
     .r {
         margin-left: 5px;
+    }
+
+    @@keyframes shake {
+        10%, 90% {
+            transform: translateX(-2px);
+        }
+
+        20%, 80% {
+            transform: translateX(2px);
+        }
+
+        30%, 50%, 70% {
+            transform: translateX(-2px);
+        }
+
+        40%, 60% {
+            transform: translateX(2px);
+        }
+    }
+
+    tr {
+       transition: transform 0.3s;
+    }
+
+    tr:hover {
+       animation: shake 0.15s cubic-bezier(.36,.07,.19,.97); 
     }
 </style>
 
